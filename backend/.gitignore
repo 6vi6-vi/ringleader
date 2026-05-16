@@ -1,0 +1,41 @@
+# Виртуальное окружение
+venv/
+.venv/
+env/
+.env/
+__pycache__/
+
+# Переменные окружения
+.env
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Python
+*.pyc
+*.pyo
+*.egg-info/
+dist/
+build/
+*.egg
+
+# Базы данных
+*.db
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Логи
+*.log
+logs/
+
+# Docker
+docker-compose.override.yml
+
+# Операционные системы
+.DS_Store
+Thumbs.db
