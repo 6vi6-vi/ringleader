@@ -1,5 +1,5 @@
 import enum
-from datetime import date, datetime
+from datetime import date, datetime, timezone
 from sqlalchemy import String, Integer, Text, Date, DateTime, Enum, ForeignKey
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
@@ -177,7 +177,7 @@ class ClubRequest(Base):
     description: Mapped[str | None] = mapped_column(Text, nullable=True)
     status: Mapped[RequestStatus] = mapped_column(Enum(RequestStatus), default=RequestStatus.PENDING, nullable=False)
     reject_reason: Mapped[str | None] = mapped_column(Text, nullable=True)
-    created_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow)
+    created_at: Mapped[datetime] = mapped_column(DateTime, default=lambda: datetime.now(timezone.utc))
 
     user: Mapped["User"] = relationship(foreign_keys=[user_id])
 
@@ -190,7 +190,7 @@ class ExpertRequest(Base):
     experience: Mapped[str | None] = mapped_column(Text, nullable=True)
     status: Mapped[RequestStatus] = mapped_column(Enum(RequestStatus), default=RequestStatus.PENDING, nullable=False)
     reject_reason: Mapped[str | None] = mapped_column(Text, nullable=True)
-    created_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow)
+    created_at: Mapped[datetime] = mapped_column(DateTime, default=lambda: datetime.now(timezone.utc))
 
     user: Mapped["User"] = relationship(foreign_keys=[user_id])
     specializations: Mapped[list["ExpertRequestSpecialization"]] = relationship(back_populates="request")
@@ -214,7 +214,7 @@ class ParticipationRequest(Base):
     exhibition_id: Mapped[int] = mapped_column(Integer, ForeignKey("exhibitions.id"), nullable=False)
     status: Mapped[RequestStatus] = mapped_column(Enum(RequestStatus), default=RequestStatus.PENDING, nullable=False)
     reject_reason: Mapped[str | None] = mapped_column(Text, nullable=True)
-    created_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow)
+    created_at: Mapped[datetime] = mapped_column(DateTime, default=lambda: datetime.now(timezone.utc))
 
     dog: Mapped["Dog"] = relationship(foreign_keys=[dog_id])
     exhibition: Mapped["Exhibition"] = relationship(foreign_keys=[exhibition_id])
