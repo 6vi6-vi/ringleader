@@ -1,11 +1,13 @@
 import asyncio
-from database import async_session_maker, create_tables
+from database import async_session_maker, create_tables, drop_tables
 from models import User, UserRole, Breed, Club
 from security import hash_password
 from sqlalchemy import select
 
 
 async def seed():
+    await drop_tables()
+
     await create_tables()
 
     async with async_session_maker() as db:
@@ -154,7 +156,6 @@ async def seed():
             "Борзая",
             "Боксёр",
             "Брабансон",
-            "Бриар",
             "Норвежский бухунд",
             "Бостонский бульдог",
             "Французский бульдог",

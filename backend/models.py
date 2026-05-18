@@ -91,6 +91,7 @@ class Exhibition(Base):
     id: Mapped[int] = mapped_column(Integer, primary_key=True, index=True)
     name: Mapped[str] = mapped_column(String(200), nullable=False)
     date: Mapped[date] = mapped_column(Date, nullable=False)
+    address: Mapped[str | None] = mapped_column(String(300), nullable=True)
     status: Mapped[ExhibitionStatus] = mapped_column(Enum(ExhibitionStatus), default=ExhibitionStatus.PLANNED, nullable=False)
     organizer_id: Mapped[int] = mapped_column(Integer, ForeignKey("users.id"), nullable=False)
 
@@ -104,7 +105,6 @@ class Ring(Base):
     id: Mapped[int] = mapped_column(Integer, primary_key=True, index=True)
     exhibition_id: Mapped[int] = mapped_column(Integer, ForeignKey("exhibitions.id"), nullable=False)
     number: Mapped[str] = mapped_column(String(50), nullable=False)
-    address: Mapped[str | None] = mapped_column(String(300), nullable=True)
 
     exhibition: Mapped["Exhibition"] = relationship(back_populates="rings")
     specializations: Mapped[list["RingSpecialization"]] = relationship(back_populates="ring")
