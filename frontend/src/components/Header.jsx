@@ -7,6 +7,14 @@ const Header = () => {
   const { isAuthenticated, logout } = useAuthStore();
   const location = useLocation();
 
+  const handleLogoClick = (e) => {
+    if (location.pathname === '/') {
+      e.preventDefault();
+      window.scrollTo({ top: 0, behavior: 'instant' });
+      window.location.reload();
+    }
+  };
+
   const isActive = (path) => location.pathname === path;
 
   return (
@@ -14,7 +22,11 @@ const Header = () => {
       <header className="header">
         <div className="header-background" />
 
-        <Link to="/" className="header-logo">
+        <Link
+          to="/"
+          className="header-logo"
+          onClick={handleLogoClick}
+        >
           <img src={logo} alt="Ringleader" className="header-logo-image" />
         </Link>
 

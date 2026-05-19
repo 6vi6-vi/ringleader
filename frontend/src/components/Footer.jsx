@@ -1,14 +1,29 @@
+import { Link, useLocation } from 'react-router-dom';
 import logo from '../images/logo.png';
 import './Footer.css';
 
 const Footer = () => {
+  const location = useLocation();
+
+    const handleLogoClick = (e) => {
+    if (location.pathname === '/') {
+      e.preventDefault();
+      window.scrollTo({ top: 0, behavior: 'instant' });
+      window.location.reload();
+    }
+  };
+  
   return (
     <footer className="footer">
-      <div className="footer-background" />
-
       <div className="footer-content">
         <div className="footer-brand">
-          <img className="footer-logo" src={logo} alt="Ringleader" />
+          <Link
+            to="/"
+            className="footer-logo-link"
+            onClick={handleLogoClick}
+          >
+            <img className="footer-logo" src={logo} alt="Ringleader" />
+          </Link>
           <p className="footer-copyright">
             &copy; 2026 RINGLEADER
             <br />

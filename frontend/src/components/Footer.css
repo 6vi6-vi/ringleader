@@ -29,6 +29,11 @@
   width: 90px;
 }
 
+.footer-logo-link {
+  display: block;
+  line-height: 0;
+}
+
 .footer-copyright {
   color: #fdf7da;
   font-family: 'Balsamiq Sans', sans-serif;
