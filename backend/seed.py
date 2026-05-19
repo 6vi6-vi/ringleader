@@ -6,7 +6,7 @@ from sqlalchemy import select
 
 
 async def seed():
-    await drop_tables()
+    #await drop_tables()
 
     await create_tables()
 
@@ -314,7 +314,7 @@ async def seed():
 
         await db.commit()
 
-    print("Seed completed.")
+    print("Seed completed")
 
 
 if __name__ == "__main__":
