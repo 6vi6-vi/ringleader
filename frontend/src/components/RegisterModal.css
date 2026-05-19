@@ -1,0 +1,195 @@
+.register-modal-overlay {
+  align-items: center;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  height: 100vh;
+  justify-content: center;
+  left: 0;
+  position: fixed;
+  top: 0;
+  width: 100vw;
+  z-index: 200;
+}
+
+.register-modal {
+  background-color: #fbe6bc;
+  border: 5px solid #a36b3d;
+  border-radius: 20px;
+  min-width: 375px;
+  overflow: hidden;
+  position: relative;
+  width: 100%;
+  max-width: 375px;
+}
+
+.register-modal-header {
+  background-color: #a36b3d;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 14px 40px;
+  position: relative;
+  width: 100%;
+}
+
+.register-modal-title {
+  color: #fdf1da;
+  font-family: 'Balsamiq Sans', sans-serif;
+  font-size: 26px;
+  font-weight: 700;
+  letter-spacing: 0;
+  line-height: 1;
+  margin: 0;
+  text-align: center;
+}
+
+.register-modal-close {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  position: absolute;
+  right: 12px;
+  top: 30%;
+  transform: translateY(-50%);
+  transition: transform 0.2s;
+}
+
+.register-modal-close:hover {
+  transform: translateY(-50%) scale(1.1);
+}
+
+.register-modal-close img {
+  display: block;
+  height: 17px;
+  width: 17px;
+}
+
+.register-modal-form {
+  padding: 20px 25px 16px;
+}
+
+.register-modal-field {
+  margin-bottom: 14px;
+}
+
+.register-modal-label {
+  color: #2a3f6d;
+  display: block;
+  font-family: 'Balsamiq Sans', sans-serif;
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: 0;
+  line-height: normal;
+  margin-bottom: 6px;
+}
+
+.register-modal-input {
+  background-color: #fdf7da;
+  border: none;
+  border-radius: 5px;
+  color: #a36b3d;
+  font-family: 'Balsamiq Sans', sans-serif;
+  font-size: 18px;
+  font-weight: 400;
+  letter-spacing: 0;
+  line-height: normal;
+  padding: 10px 14px;
+  width: 100%;
+}
+
+.register-modal-input::placeholder {
+  color: #bbc099;
+}
+
+.register-modal-input:focus {
+  outline: 2px solid #a36b3d;
+}
+
+.register-modal-password-wrapper {
+  position: relative;
+}
+
+.register-modal-password-wrapper .register-modal-input {
+  padding-right: 40px;
+}
+
+.register-modal-eye {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.register-modal-eye img {
+  display: block;
+  height: 20px;
+  width: 20px;
+}
+
+.register-modal-error {
+  color: #c0392b;
+  font-family: 'Balsamiq Sans', sans-serif;
+  font-size: 14px;
+  margin: 8px 0 0;
+  text-align: center;
+}
+
+.register-modal-submit {
+  background-color: #b9c1d4;
+  border: none;
+  border-radius: 11px;
+  color: #2a3f6d;
+  cursor: pointer;
+  display: block;
+  font-family: 'Balsamiq Sans', sans-serif;
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: 0;
+  line-height: normal;
+  margin: 16px auto 0;
+  padding: 10px 30px;
+  text-align: center;
+  transition: background-color 0.2s, transform 0.2s;
+}
+
+.register-modal-submit:hover {
+  transform: translateY(-2px);
+}
+
+.register-modal-footer {
+  font-family: 'Balsamiq Sans', sans-serif;
+  font-size: 15px;
+  font-weight: 400;
+  letter-spacing: 0;
+  line-height: normal;
+  margin: 0;
+  padding: 0px 25px 20px;
+  text-align: center;
+}
+
+.register-modal-footer-text {
+  color: #a36b3d;
+}
+
+.register-modal-switch {
+  background: none;
+  border: none;
+  color: #2a3f6d;
+  cursor: pointer;
+  font-family: 'Balsamiq Sans', sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 0;
+  line-height: normal;
+  padding: 0;
+  transition: transform 0.2s ease, color 0.2s ease;
+}
+
+.register-modal-switch:hover {
+  transform: translateY(-2px);
+}
