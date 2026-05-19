@@ -1,0 +1,53 @@
+.winners-carousel {
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  margin: 20px auto 0;
+  max-width: 900px;
+  width: 100%;
+}
+
+.winners-carousel-arrow {
+  background: none;
+  border: none;
+  cursor: pointer;
+  flex-shrink: 0;
+  padding: 0;
+  transition: transform 0.2s;
+}
+
+.winners-carousel-arrow:hover {
+  transform: scale(1.1);
+}
+
+.winners-carousel-arrow img {
+  height: 50px;
+  width: 50px;
+}
+
+.winners-carousel-arrow--left {
+  margin-right: 10px;
+}
+
+.winners-carousel-arrow--right {
+  margin-left: 10px;
+}
+
+.winners-carousel-content {
+  flex: 1;
+  text-align: center;
+}
+
+.winners-carousel-breed {
+  color: #2a3f6d;
+  font-family: 'Balsamiq Sans', sans-serif;
+  font-size: 25px;
+  font-weight: 700;
+  margin-bottom: 20px;
+}
+
+.winners-carousel-cards {
+  display: flex;
+  gap: 50px;
+  justify-content: center;
+}

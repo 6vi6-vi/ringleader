@@ -1,0 +1,230 @@
+/* ═══════════════════════════════════════════
+   ГЛАВНАЯ СТРАНИЦА
+   ═══════════════════════════════════════════ */
+
+.home-page {
+  background-color: #fae5bc;
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  min-height: 100vh;
+  min-width: 1440px;
+  padding: 50px 160px 60px;
+  width: 100%;
+}
+
+/* ── Приветственный блок (Hero) ── */
+.hero {
+  background-color: #fdf7da;
+  border-radius: 43px;
+  padding: 120px 100px;
+  position: relative;
+  text-align: center;
+  width: 100%;
+}
+
+.hero-title {
+  color: #2a3f6d;
+  font-family: 'Balsamiq Sans', sans-serif;
+  font-size: 48px;
+  font-weight: 700;
+  letter-spacing: 0;
+  line-height: normal;
+  margin: 0;
+  position: relative;
+  z-index: 1;
+}
+
+.hero-paws {
+  object-fit: cover;
+  position: absolute;
+  top: 33px;
+  height: 238px;
+  width: 61px;
+}
+
+.hero-paws--left {
+  left: 35px;
+}
+
+.hero-paws--right {
+  right: 35px;
+}
+
+/* ── О нас ── */
+.about {
+  background-color: #fdf7da;
+  border-radius: 43px;
+  padding: 40px 50px;
+  width: 100%;
+}
+
+.about-title {
+  color: #2a3f6d;
+  font-family: 'Balsamiq Sans', sans-serif;
+  font-size: 24px;
+  font-weight: 700;
+  letter-spacing: 0;
+  line-height: normal;
+  margin: 0 0 15px;
+}
+
+.about-content {
+  color: #a36b3d;
+  font-family: 'Balsamiq Sans', sans-serif;
+  font-size: 20px;
+  letter-spacing: 0;
+  line-height: 1.5;
+  margin: 0;
+  text-align: justify;
+}
+
+.about-brand {
+  color: #2a3f6d;
+  font-weight: 700;
+}
+
+/* ── Ближайшие выставки ── */
+.upcoming-exhibitions {
+  background-color: #fdf7da;
+  border-radius: 43px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 40px 50px 40px;
+  position: relative;
+  width: 100%;
+}
+
+.upcoming-exhibitions-title {
+  color: #2a3f6d;
+  font-family: 'Balsamiq Sans', sans-serif;
+  font-size: 24px;
+  font-weight: 700;
+  letter-spacing: 0;
+  line-height: normal;
+  margin: 0;
+}
+
+.upcoming-exhibitions-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.upcoming-exhibitions-item {
+  align-items: center;
+  display: flex;
+  gap: 12px;
+  margin-bottom: 15px;
+}
+
+.upcoming-exhibitions-item:last-child {
+  margin-bottom: 0;
+}
+
+.upcoming-exhibitions-paw {
+  flex-shrink: 0;
+  height: 20px;
+  width: 20px;
+}
+
+.upcoming-exhibitions-text {
+  color: #a36b3d;
+  font-family: 'Balsamiq Sans', sans-serif;
+  font-size: 20px;
+  font-weight: 400;
+  letter-spacing: 0;
+  line-height: 1.4;
+}
+
+.upcoming-exhibitions-button {
+  align-self: flex-end;
+  background-color: #b9c1d4;
+  border: none;
+  border-radius: 11px;
+  color: #2a3f6d;
+  cursor: pointer;
+  font-family: 'Balsamiq Sans', sans-serif;
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: 0;
+  line-height: 44px;
+  margin-top: auto;
+  text-align: center;
+  text-decoration: none;
+  transition: background-color 0.2s, transform 0.2s;
+  width: 175px;
+}
+
+.upcoming-exhibitions-button:hover {
+  transform: translateY(-2px);
+}
+
+/* ── Победители последней выставки ── */
+.latest-results {
+  background-color: #fdf7da;
+  border-radius: 43px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 40px 40px 30px;
+  position: relative;
+  width: 100%;
+}
+
+.latest-results-title {
+  color: #2a3f6d;
+  font-family: 'Balsamiq Sans', sans-serif;
+  font-size: 24px;
+  font-weight: 700;
+  letter-spacing: 0;
+  line-height: normal;
+  margin: 0;
+}
+
+.latest-results-content {
+  flex: 1;
+}
+
+.latest-results-exhibition {
+  font-family: 'Balsamiq Sans', sans-serif;
+  font-size: 20px;
+  font-weight: 400;
+  letter-spacing: 0;
+  line-height: normal;
+  margin: 0 0 20px;
+}
+
+.latest-results-exhibition-label {
+  color: #2a3f6d;
+  font-weight: 700;
+}
+
+.latest-results-exhibition-name {
+  color: #a36b3d;
+  margin-left: 8px;
+}
+
+.latest-results-button {
+  align-self: flex-end;
+  background-color: #b9c1d4;
+  border: none;
+  border-radius: 11px;
+  color: #2a3f6d;
+  cursor: pointer;
+  font-family: 'Balsamiq Sans', sans-serif;
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: 0;
+  line-height: 44px;
+  margin-top: auto;
+  text-align: center;
+  text-decoration: none;
+  transition: background-color 0.2s, transform 0.2s;
+  width: 175px;
+}
+
+.latest-results-button:hover {
+  transform: translateY(-2px);
+}

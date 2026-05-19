@@ -1,0 +1,62 @@
+.footer {
+  background-color: #a36b3d;
+  min-height: 75px;
+  padding: 0 40px;
+  position: relative;
+  width: 100%;
+}
+
+.footer-content {
+  align-items: center;
+  display: flex;
+  gap: 60px;
+  justify-content: space-between;
+  margin: 0 auto;
+  max-width: 1440px;
+  min-height: 81px;
+  padding: 7px 0;
+  width: 100%;
+}
+
+.footer-brand {
+  align-items: center;
+  display: flex;
+  gap: 14px;
+}
+
+.footer-logo {
+  height: 70px;
+  width: 90px;
+}
+
+.footer-copyright {
+  color: #fdf7da;
+  font-family: 'Balsamiq Sans', sans-serif;
+  font-size: 17px;
+  font-weight: 400;
+  letter-spacing: 0;
+  line-height: 1.4;
+  margin-top: 3px;
+}
+
+.footer-contacts {
+  color: #fdf7da;
+  font-family: 'Balsamiq Sans', sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+  letter-spacing: 0;
+  line-height: 1.5;
+  text-align: center;
+  margin-top: 2px;
+}
+
+.footer-links {
+  color: #fdf7da;
+  font-family: 'Balsamiq Sans', sans-serif;
+  font-size: 17px;
+  font-weight: 400;
+  letter-spacing: 0;
+  line-height: 1.5;
+  text-align: right;
+  margin-top: 3px;
+}

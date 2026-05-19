@@ -1,0 +1,105 @@
+/* ── Обёртка (фиксация) ── */
+.header-wrapper {
+  height: 81px;
+  position: relative;
+  width: 100%;
+}
+
+/* ── Сам хедер ── */
+.header {
+  background-color: transparent;
+  height: 81px;
+  left: 0;
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 100;
+}
+
+/* ── Фон ── */
+.header-background {
+  background-color: #a36b3d;
+  height: 81px;
+  left: 0;
+  position: absolute;
+  top: 0;
+  width: 100%;
+}
+
+/* ── Логотип ── */
+.header-logo {
+  left: 40px;
+  position: absolute;
+  text-decoration: none;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.header-logo-image {
+  height: 70px;
+  width: auto;
+  display: block;
+}
+
+/* ── Навигация ── */
+.header-nav {
+  align-items: center;
+  display: flex;
+  gap: 48px;
+  height: 100%;
+  justify-content: center;
+  left: 0;
+  position: absolute;
+  top: 0;
+  width: 100%;
+}
+
+.header-nav-item {
+  color: #fdf7da;
+  font-family: 'Balsamiq Sans', sans-serif;
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: 0;
+  line-height: normal;
+  text-decoration: none;
+  transition: transform 0.2s ease, color 0.2s ease;
+}
+
+.header-nav-item:hover {
+  transform: translateY(-3px);
+}
+
+/* ── Кнопка входа/выхода ── */
+.header-auth {
+  align-items: center;
+  display: flex;
+  height: 25px;
+  position: absolute;
+  right: 40px;
+  top: 28px;
+}
+
+.header-auth-link,
+.header-auth-button {
+  color: #fdf1da;
+  font-family: 'Balsamiq Sans', sans-serif;
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: 0;
+  line-height: normal;
+  text-decoration: none;
+  text-align: right;
+  transition: transform 0.2s ease, color 0.2s ease;
+}
+
+.header-auth-link:hover,
+.header-auth-button:hover {
+  transform: translateY(-3px);
+}
+
+.header-auth-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+}

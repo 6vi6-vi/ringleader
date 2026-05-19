@@ -1,0 +1,60 @@
+.winner-card {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  width: 200px;
+}
+
+.winner-card-medal {
+  color: #2a3f6d;
+  font-family: 'Balsamiq Sans', sans-serif;
+  font-size: 20px;
+  font-weight: 700;
+  margin-bottom: 12px;
+}
+
+.winner-card-medal--place-1 {
+  color: #d4a017;
+}
+
+.winner-card-medal--place-2 {
+  color: #808080;
+}
+
+.winner-card-medal--place-3 {
+  color: #8b4513;
+}
+
+.winner-card-photo {
+  background-color: #e0e0e0;
+  border-radius: 50%;
+  height: 150px;
+  margin-bottom: 12px;
+  object-fit: cover;
+  width: 150px;
+}
+
+.winner-card-name {
+  color: #2a3f6d;
+  font-family: 'Balsamiq Sans', sans-serif;
+  font-size: 20px;
+  font-weight: 700;
+  margin: 0 0 8px;
+}
+
+.winner-card-owner {
+  color: transparent;
+  font-family: 'Balsamiq Sans', sans-serif;
+  font-size: 15px;
+  font-weight: 400;
+  margin: 0;
+}
+
+.winner-card-owner-label {
+  color: #2a3f6d;
+  font-weight: 700;
+}
+
+.winner-card-owner-name {
+  color: #a36b3d;
+}
