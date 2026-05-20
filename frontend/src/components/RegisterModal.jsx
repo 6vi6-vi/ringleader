@@ -24,24 +24,62 @@ const RegisterModal = ({ isOpen, onClose, onSwitchToLogin }) => {
     e.preventDefault();
     setError('');
 
+    if (fullName.trim().length < 2) {
+        setError('ФИО должно содержать не менее 2 символов');
+        return;
+    }
+
+    if (passport.trim().length < 5) {
+        setError('Паспортные данные должны содержать не менее 5 символов');
+        return;
+    }
+
+    if (login.trim().length < 3) {
+        setError('Логин должен содержать не менее 3 символов');
+        return;
+    }
+
     if (password.length < 4) {
       setError('Пароль должен быть не менее 4 символов');
       return;
     }
 
+   
     try {
       const response = await client.post('/auth/register', {
-        full_name: fullName,
-        passport,
-        login,
+        full_name: fullName.trim(),
+        passport: passport.trim(),
+        login: login.trim(),
         password,
       });
+      
       const { access_token, role, full_name } = response.data;
       authLogin(access_token, role, full_name);
       onClose();
       navigate('/');
-    } catch (err) {
-      setError(err.response?.data?.detail || 'Ошибка регистрации');
+    } 
+    catch (err) {
+        if (err.response?.status === 409) {
+            setError('Пользователь с таким логином уже существует');
+        } else if (err.response?.status === 422) {
+            // Ошибка валидации Pydantic
+            const detail = err.response.data?.detail;
+            if (Array.isArray(detail)) {
+                // FastAPI возвращает массив ошибок валидации
+                const messages = detail.map((d) => d.msg).join('; ');
+                setError(messages);
+            } else if (typeof detail === 'string') {
+                setError(detail);
+            } else {
+                setError('Ошибка валидации данных');
+            }
+        } else if (err.response?.data?.detail) {
+            setError(err.response.data.detail);
+        } else if (err.request) {
+            setError('Сервер недоступен. Проверьте подключение.');
+        } else {
+            setError('Произошла ошибка при регистрации');
+        }
     }
   };
 
@@ -119,9 +157,9 @@ const RegisterModal = ({ isOpen, onClose, onSwitchToLogin }) => {
                 onClick={() => setShowPassword(!showPassword)}
               >
                 {showPassword ? (
-                  <img src={eyeOpenIcon} alt="Скрыть пароль" />
+                  <img src={eyeClosedIcon} alt="Скрыть пароль" />
                 ) : (
-                  <img src={eyeClosedIcon} alt="Показать пароль" />
+                  <img src={eyeOpenIcon} alt="Показать пароль" />
                 )}
               </button>
             </div>

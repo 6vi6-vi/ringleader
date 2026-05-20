@@ -1,0 +1,45 @@
+.user-menu-overlay {
+  bottom: 0;
+  left: 0;
+  position: fixed;
+  right: 0;
+  top: 0;
+  z-index: 150;
+}
+
+.user-menu {
+  background-color: #FDF7DA;
+  border: 5px solid #a36b3d;
+  border-radius: 20px;
+  overflow: hidden;
+  position: absolute;
+  top: calc(100% + 20px);
+  right: 42px;
+  width: 180px;
+  z-index: 151;
+}
+
+.user-menu-item {
+  background: none;
+  border: none;
+  color: #2a3f6d;
+  cursor: pointer;
+  display: block;
+  font-family: 'Balsamiq Sans', sans-serif;
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: 0;
+  line-height: normal;
+  padding: 10px 15px;
+  text-align: left;
+  transition: background-color 0.2s;
+  width: 100%;
+}
+
+.user-menu-item:hover {
+  background-color: #FBE6BC;
+}
+
+.user-menu-item--logout {
+    border-top: 4px solid #a36b3d;
+}

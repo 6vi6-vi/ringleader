@@ -70,36 +70,96 @@
   transform: translateY(-3px);
 }
 
-/* ── Кнопка входа/выхода ── */
+/* ── Авторизация ── */
 .header-auth {
   align-items: center;
   display: flex;
-  height: 25px;
   position: absolute;
   right: 40px;
-  top: 28px;
+  top: 50%;
+  transform: translateY(-50%);
 }
 
-.header-auth-button {
+/* Кнопка "Войти"*/
+.header-auth-login {
+  background: none;
+  border: none;
   color: #fdf1da;
+  cursor: pointer;
   font-family: 'Balsamiq Sans', sans-serif;
   font-size: 20px;
   font-weight: 700;
   letter-spacing: 0;
   line-height: normal;
-  text-decoration: none;
-  text-align: right;
+  padding: 0;
   transition: transform 0.2s ease, color 0.2s ease;
 }
 
-.header-auth-link:hover,
-.header-auth-button:hover {
+.header-auth-login:hover {
   transform: translateY(-3px);
 }
 
-.header-auth-button {
+/* Панель пользователя */
+.header-auth-user {
+  align-items: center;
+  display: flex;
+  gap: 15px;
+  position: relative;
+}
+
+/* Триггер (имя + аватар) */
+.header-auth-user-trigger {
+  align-items: center;
+  background: none;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  gap: 15px;
+  padding: 0;
+}
+
+/* Имя пользователя */
+.header-auth-name {
+  display: flex;
+  flex-direction: column;
+  text-align: right;
+  margin-right: 5px;
+}
+
+.header-auth-name-line {
+  color: #fdf1da;
+  font-family: 'Balsamiq Sans', sans-serif;
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: 0;
+  line-height: 1.2;
+  transition: color 0.2s;
+}
+
+/* Аватар */
+.header-auth-avatar {
+  border-radius: 50%;
+  height: 50px;
+  object-fit: cover;
+  width: 52px;
+  transition: opacity 0.2s;
+}
+
+/* Кнопка уведомлений */
+.header-auth-notifications {
   background: none;
   border: none;
   cursor: pointer;
   padding: 0;
+  transition: transform 0.2s;
+}
+
+.header-auth-notifications:hover {
+  transform: scale(1.1);
+}
+
+.header-auth-notifications img {
+  display: block;
+  height: 33px;
+  width: 33px;
 }

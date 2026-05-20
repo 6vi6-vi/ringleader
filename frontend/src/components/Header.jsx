@@ -1,17 +1,23 @@
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import useAuthStore from '../store/authStore';
 import logo from '../images/logo.png';
+import avatarPlaceholder from '../images/avatar.jpg';
+import bellIcon from '../images/bell.png';
 import './Header.css';
 import LoginModal from './LoginModal';
 import RegisterModal from './RegisterModal';
+import UserMenu from './UserMenu';
 
 const Header = () => {
   const [isLoginOpen, setIsLoginOpen] = useState(false);
   const [isRegisterOpen, setIsRegisterOpen] = useState(false);
 
-  const { isAuthenticated, logout } = useAuthStore();
+  const { isAuthenticated, fullName, logout } = useAuthStore();
   const location = useLocation();
+
+  const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
+  const userMenuRef = useRef(null);
 
   const handleLogoClick = (e) => {
     if (location.pathname === '/') {
@@ -22,6 +28,25 @@ const Header = () => {
   };
 
   const isActive = (path) => location.pathname === path;
+
+  const getNameParts = (fullName) => {
+    if (!fullName) return { surname: '', name: '' };
+    const parts = fullName.trim().split(/\s+/);
+    if (parts.length >= 2) {
+      return { surname: parts[0], name: parts[1] };
+    }
+    return { surname: fullName, name: '' };
+  };
+
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      if (userMenuRef.current && !userMenuRef.current.contains(e.target)) {
+        setIsUserMenuOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
 
   return (
     <>
@@ -44,28 +69,24 @@ const Header = () => {
             >
               ВЫСТАВКИ
             </Link>
-
             <Link
               to="/clubs"
               className={`header-nav-item ${isActive('/clubs') ? 'header-nav-item--active' : ''}`}
             >
               КЛУБЫ
             </Link>
-
             <Link
               to="/dogs"
               className={`header-nav-item ${isActive('/dogs') ? 'header-nav-item--active' : ''}`}
             >
               СОБАКИ
             </Link>
-
             <Link
               to="/experts"
               className={`header-nav-item ${isActive('/experts') ? 'header-nav-item--active' : ''}`}
             >
               ЭКСПЕРТЫ
             </Link>
-
             <Link
               to="/results"
               className={`header-nav-item ${isActive('/results') ? 'header-nav-item--active' : ''}`}
@@ -76,12 +97,37 @@ const Header = () => {
 
           <div className="header-auth">
             {isAuthenticated ? (
-              <button className="header-auth-button" onClick={logout}>
-                ВЫЙТИ
-              </button>
+              <div className="header-auth-user" ref={userMenuRef}>
+                <button
+                  className="header-auth-user-trigger"
+                  onClick={() => setIsUserMenuOpen(!isUserMenuOpen)}
+                >
+                  <div className="header-auth-name">
+                    <span className="header-auth-name-line">
+                      {getNameParts(fullName).surname}
+                    </span>
+                    <span className="header-auth-name-line">
+                      {getNameParts(fullName).name}
+                    </span>
+                  </div>
+                  <img
+                    className="header-auth-avatar"
+                    src={avatarPlaceholder}
+                    alt="Аватар"
+                  />
+                </button>
+                <button className="header-auth-notifications">
+                  <img src={bellIcon} alt="Уведомления" />
+                </button>
+                <UserMenu
+                  isOpen={isUserMenuOpen}
+                  onClose={() => setIsUserMenuOpen(false)}
+                  onLogout={logout}
+                />
+              </div>
             ) : (
               <button
-                className="header-auth-button"
+                className="header-auth-login"
                 onClick={() => setIsLoginOpen(true)}
               >
                 Войти

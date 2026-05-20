@@ -21,14 +21,33 @@ const LoginModal = ({ isOpen, onClose, onSwitchToRegister }) => {
     e.preventDefault();
     setError('');
 
+    if (!login.trim() || !password) {
+        setError('Заполните все поля');
+        return;
+    }
+
     try {
-      const response = await client.post('/auth/login', { login, password });
+      const response = await client.post('/auth/login', {
+        login: login.trim(),
+        password,
+      });
+
       const { access_token, role, full_name } = response.data;
       authLogin(access_token, role, full_name);
       onClose();
       navigate('/');
     } catch (err) {
-      setError(err.response?.data?.detail || 'Ошибка входа');
+        if (err.response?.status === 401) {
+            setError('Неверный логин или пароль');
+        } else if (err.response?.status === 403) {
+            setError('Пользователь заблокирован');
+        } else if (err.response?.data?.detail) {
+            setError(err.response.data.detail);
+        } else if (err.request) {
+            setError('Сервер недоступен. Проверьте подключение.');
+        } else {
+            setError('Произошла ошибка при входе');
+        }
     }
   };
 
