@@ -4,7 +4,7 @@ from sqlalchemy import select
 from sqlalchemy.orm import joinedload
 
 from database import get_db
-from models import User, UserRole, Dog, Breed
+from models import User, UserRole, Dog, Breed, Club
 from schemas import (
     UserRegister, UserLogin, TokenResponse, UserOut, UserUpdate, UserBlock,
     DogCreate, DogUpdate, DogOut,
@@ -20,6 +20,7 @@ auth_router = APIRouter(prefix="/api/auth", tags=["auth"])
 users_router = APIRouter(prefix="/api/users", tags=["users"])
 dogs_router = APIRouter(prefix="/api/dogs", tags=["dogs"])
 breeds_router = APIRouter(prefix="/api/breeds", tags=["breeds"])
+clubs_router = APIRouter(prefix="/api/clubs", tags=["clubs"])
 
 
 #  Регистрация и вход
@@ -296,7 +297,7 @@ async def delete_dog(
 
 @breeds_router.get("", response_model=list[BreedOut])
 async def get_all_breeds(db: AsyncSession = Depends(get_db)):
-    result = await db.execute(select(Breed))
+    result = await db.execute(select(Breed).order_by(Breed.name))
     return result.scalars().all()
 
 
@@ -348,3 +349,13 @@ async def delete_breed(
 
     await db.delete(breed)
     await db.commit()
+
+
+@clubs_router.get("")
+async def get_all_clubs(db: AsyncSession = Depends(get_db)):
+    result = await db.execute(select(Club).order_by(Club.name))
+    clubs = result.scalars().all()
+    return [
+        {"id": c.id, "name": c.name, "description": c.description}
+        for c in clubs
+    ]

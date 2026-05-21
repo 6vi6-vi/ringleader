@@ -3,7 +3,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from database import create_tables
-from routers import auth_router, users_router, dogs_router, breeds_router
+from routers import auth_router, users_router, dogs_router, breeds_router, clubs_router
 
 
 @asynccontextmanager
@@ -26,6 +26,7 @@ app.include_router(auth_router)
 app.include_router(users_router)
 app.include_router(dogs_router)
 app.include_router(breeds_router)
+app.include_router(clubs_router)
 
 
 @app.get("/")

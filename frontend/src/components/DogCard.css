@@ -1,0 +1,57 @@
+.dog-card {
+  align-items: center;
+  background-color: #fdf7da;
+  border-radius: 19px;
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  padding: 25px 20px;
+  text-align: center;
+  width: 95%;
+}
+
+.dog-card-photo {
+  border-radius: 10px;
+  height: 100px;
+  object-fit: cover;
+  width: 100px;
+}
+
+.dog-card-name {
+  color: #2a3f6d;
+  font-family: 'Balsamiq Sans', sans-serif;
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: 0;
+  line-height: normal;
+  margin: 0;
+}
+
+.dog-card-info {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  width: 100%;
+}
+
+.dog-card-row {
+  color: transparent;
+  font-family: 'Balsamiq Sans', sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+  letter-spacing: 0;
+  line-height: 1.5;
+  margin: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.dog-card-label {
+  color: #2a3f6d;
+  font-weight: 700;
+}
+
+.dog-card-value {
+  color: #a36b3d;
+}

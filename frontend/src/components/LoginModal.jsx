@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import useAuthStore from '../store/authStore';
 import client from '../api/client';
@@ -14,6 +14,15 @@ const LoginModal = ({ isOpen, onClose, onSwitchToRegister }) => {
   const [error, setError] = useState('');
   const { login: authLogin } = useAuthStore();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (isOpen) {
+      setLogin('');
+      setPassword('');
+      setShowPassword(false);
+      setError('');
+    }
+  }, [isOpen]);
 
   if (!isOpen) return null;
 
@@ -99,9 +108,9 @@ const LoginModal = ({ isOpen, onClose, onSwitchToRegister }) => {
                 onClick={() => setShowPassword(!showPassword)}
               >
                 {showPassword ? (
-                    <img src={eyeClosedIcon} alt="Скрыть пароль" />
+                    <img src={eyeOpenIcon} alt="Скрыть пароль" />
                 ) : (
-                    <img src={eyeOpenIcon} alt="Показать пароль" />
+                    <img src={eyeClosedIcon} alt="Показать пароль" />
                 )}
               </button>
             </div>

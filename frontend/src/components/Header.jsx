@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, useCallback } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import useAuthStore from '../store/authStore';
 import logo from '../images/logo.png';
@@ -38,15 +38,22 @@ const Header = () => {
     return { surname: fullName, name: '' };
   };
 
+  const handleUserMenuToggle = useCallback(() => {
+    setIsUserMenuOpen((prev) => !prev);
+  }, []);
+
   useEffect(() => {
+    if (!isUserMenuOpen) return;
+
     const handleClickOutside = (e) => {
       if (userMenuRef.current && !userMenuRef.current.contains(e.target)) {
         setIsUserMenuOpen(false);
       }
     };
+
     document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, []);
+  }, [isUserMenuOpen]);
 
   return (
     <>
@@ -100,7 +107,8 @@ const Header = () => {
               <div className="header-auth-user" ref={userMenuRef}>
                 <button
                   className="header-auth-user-trigger"
-                  onClick={() => setIsUserMenuOpen(!isUserMenuOpen)}
+                  onClick={handleUserMenuToggle}
+                  type="button"
                 >
                   <div className="header-auth-name">
                     <span className="header-auth-name-line">
@@ -116,7 +124,10 @@ const Header = () => {
                     alt="Аватар"
                   />
                 </button>
-                <button className="header-auth-notifications">
+                <button
+                  className="header-auth-notifications"
+                  type="button"
+                >
                   <img src={bellIcon} alt="Уведомления" />
                 </button>
                 <UserMenu
@@ -129,6 +140,7 @@ const Header = () => {
               <button
                 className="header-auth-login"
                 onClick={() => setIsLoginOpen(true)}
+                type="button"
               >
                 Войти
               </button>

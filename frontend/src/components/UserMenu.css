@@ -9,11 +9,11 @@
 
 .user-menu {
   background-color: #FDF7DA;
-  border: 5px solid #a36b3d;
+  border: 4px solid #a36b3d;
   border-radius: 20px;
   overflow: hidden;
   position: absolute;
-  top: calc(100% + 20px);
+  top: calc(100% + 18px);
   right: 42px;
   width: 180px;
   z-index: 151;

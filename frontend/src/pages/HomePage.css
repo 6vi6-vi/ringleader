@@ -228,3 +228,107 @@
 .latest-results-button:hover {
   transform: translateY(-2px);
 }
+
+/* ── Выпадающий список ── */
+.dogs-filter {
+  position: relative;
+}
+
+.dogs-filter-select {
+  align-items: center;
+  background-color: #fdf7da;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  display: flex;
+  font-family: 'Balsamiq Sans', sans-serif;
+  height: 43px;
+  padding: 0 14px;
+  position: relative;
+  width: 267px;
+}
+
+.dogs-filter-select--open {
+  border-radius: 5px 5px 0 0;
+}
+
+.dogs-filter-placeholder {
+  color: #bbc099;
+  font-size: 18px;
+  font-weight: 400;
+  letter-spacing: 0;
+  line-height: normal;
+}
+
+.dogs-filter-value {
+  color: #2a3f6d;
+  font-size: 18px;
+  font-weight: 400;
+  letter-spacing: 0;
+  line-height: normal;
+}
+
+.dogs-filter-arrow {
+  height: 21px;
+  margin-left: auto;
+  transition: transform 0.2s;
+  width: 21px;
+}
+
+.dogs-filter-select--open .dogs-filter-arrow {
+  transform: rotate(180deg);
+}
+
+.dogs-filter-dropdown {
+  background-color: #fdf7da;
+  border-radius: 0 0 5px 5px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  left: 0;
+  list-style: none;
+  margin: 0;
+  max-height: 200px;
+  overflow-y: auto;
+  padding: 0;
+  position: absolute;
+  top: 43px;
+  width: 267px;
+  z-index: 10;
+}
+
+.dogs-filter-option {
+  color: #2a3f6d;
+  cursor: pointer;
+  font-family: 'Balsamiq Sans', sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+  letter-spacing: 0;
+  line-height: normal;
+  padding: 10px 14px;
+  transition: background-color 0.2s;
+}
+
+.dogs-filter-option:hover {
+  background-color: #fbe6bc;
+}
+
+.dogs-filter-option--active {
+  background-color: #fbe6bc;
+  font-weight: 700;
+}
+
+.dogs-filter-input {
+  background: none;
+  border: none;
+  color: #2a3f6d;
+  font-family: 'Balsamiq Sans', sans-serif;
+  font-size: 18px;
+  font-weight: 400;
+  letter-spacing: 0;
+  line-height: normal;
+  outline: none;
+  width: 100%;
+}
+
+.dogs-filter-input::placeholder {
+  color: #bbc099;
+}
