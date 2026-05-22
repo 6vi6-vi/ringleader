@@ -1,27 +1,27 @@
-.expert-card {
+.club-card {
   align-items: center;
   background-color: #fdf7da;
   border-radius: 19px;
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 8px;
   min-width: 0;
   padding: 25px 20px;
   text-align: center;
   width: 100%;
 }
 
-.expert-card-photo {
+.club-card-photo {
   border-radius: 10px;
   height: 100px;
   object-fit: cover;
   width: 100px;
 }
 
-.expert-card-name {
+.club-card-name {
   color: #2a3f6d;
   font-family: 'Balsamiq Sans', sans-serif;
-  font-size: 19px;
+  font-size: 20px;
   font-weight: 700;
   letter-spacing: 0;
   line-height: 1.3;
@@ -31,30 +31,30 @@
   word-break: break-word;
 }
 
-.expert-card-info {
+.club-card-info {
   display: flex;
   flex-direction: column;
-  gap: 3px;
+  gap: 5px;
   width: 100%;
 }
 
-.expert-card-row {
+.club-card-row {
   color: transparent;
   font-family: 'Balsamiq Sans', sans-serif;
   font-size: 16px;
   font-weight: 400;
   letter-spacing: 0;
-  line-height: 1.4;
+  line-height: 1.5;
   margin: 0;
   overflow-wrap: break-word;
   word-break: break-word;
 }
 
-.expert-card-label {
+.club-card-label {
   color: #2a3f6d;
   font-weight: 700;
 }
 
-.expert-card-value {
+.club-card-value {
   color: #a36b3d;
 }

@@ -107,7 +107,7 @@ const ExpertsPage = () => {
 
       <div className="experts-toolbar">
         <div className="experts-filters">
-          <div className="experts-filter">
+          <div className="experts-filter experts-filter--wide">
             <label className="experts-filter-label">ФИО</label>
             <div className="experts-filter-select">
               <input
