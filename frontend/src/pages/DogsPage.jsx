@@ -229,7 +229,7 @@ const DogsPage = () => {
         </div>
 
         <Link to="/dogs/register" className="dogs-register-button">
-          Зарегистрировать
+          Зарегистрировать собаку
         </Link>
       </div>
 
