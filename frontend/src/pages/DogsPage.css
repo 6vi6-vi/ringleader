@@ -104,7 +104,7 @@
 }
 
 .dogs-filter-placeholder {
-  color: #bbc099;
+  color: #99a3c0;
   font-size: 18px;
   font-weight: 400;
   letter-spacing: 0;
@@ -176,7 +176,7 @@
 .dogs-filter-dropdown {
   background-color: #fdf7da;
   border-radius: 0 0 5px 5px;
-  box-shadow: none;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   left: 0;
   list-style: none;
   margin: 0;
@@ -240,7 +240,7 @@
   max-width: 200px;
   padding: 5px 16px;
   text-decoration: none;
-  transition: background-color 0.2s, transform 0.2s;
+  transition: transform 0.2s;
   margin-bottom: 9px;
   white-space: normal;
   word-break: break-word;
@@ -254,6 +254,6 @@
 .dogs-grid {
   display: grid;
   gap: 24px;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   width: 100%;
 }

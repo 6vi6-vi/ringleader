@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import client from '../api/client';
 import pawsPatternLeft from '../images/left.png';
@@ -6,24 +6,42 @@ import pawsPatternRight from '../images/right.png';
 import arrowDown from '../images/arrow-down.png';
 import './DogsPage.css';
 import DogCard from '../components/DogCard';
+import AddDogModal from '../components/AddDogModal';
 
 const DogsPage = () => {
+  const [dogs, setDogs] = useState([]);
   const [breeds, setBreeds] = useState([]);
   const [clubs, setClubs] = useState([]);
 
   const [selectedBreed, setSelectedBreed] = useState(null);
   const [selectedClub, setSelectedClub] = useState(null);
+  const [nameSearch, setNameSearch] = useState('');
 
   const [breedSearch, setBreedSearch] = useState('');
   const [clubSearch, setClubSearch] = useState('');
 
   const [isBreedOpen, setIsBreedOpen] = useState(false);
   const [isClubOpen, setIsClubOpen] = useState(false);
+  const [isAddDogOpen, setIsAddDogOpen] = useState(false);
 
   const breedRef = useRef(null);
   const clubRef = useRef(null);
   const breedInputRef = useRef(null);
   const clubInputRef = useRef(null);
+
+  const fetchDogs = useCallback(async () => {
+    try {
+      const params = {};
+      if (selectedBreed) params.breed_id = selectedBreed.id;
+      if (selectedClub) params.club_id = selectedClub.id;
+      if (nameSearch.trim()) params.name = nameSearch.trim();
+
+      const dogsRes = await client.get('/dogs', { params });
+      setDogs(dogsRes.data);
+    } catch (err) {
+      console.error('Ошибка загрузки собак:', err);
+    }
+  }, [selectedBreed, selectedClub, nameSearch]);
 
   // Загрузка пород и клубов
   useEffect(() => {
@@ -41,6 +59,10 @@ const DogsPage = () => {
     };
     fetchData();
   }, []);
+
+  useEffect(() => {
+    fetchDogs();
+  }, [fetchDogs]);
 
   // Закрытие при клике вне
   useEffect(() => {
@@ -145,6 +167,16 @@ const DogsPage = () => {
             </button>
             {isBreedOpen && (
               <ul className="dogs-filter-dropdown">
+                <li
+                  className={`dogs-filter-option ${!selectedBreed ? 'dogs-filter-option--active' : ''}`}
+                  onClick={() => {
+                    setSelectedBreed(null);
+                    setIsBreedOpen(false);
+                    setBreedSearch('');
+                  }}
+                >
+                  Все породы
+                </li>
                 {filteredBreeds.map((breed) => (
                   <li
                     key={breed.id}
@@ -193,6 +225,16 @@ const DogsPage = () => {
             </button>
             {isClubOpen && (
               <ul className="dogs-filter-dropdown">
+                <li
+                  className={`dogs-filter-option ${!selectedClub ? 'dogs-filter-option--active' : ''}`}
+                  onClick={() => {
+                    setSelectedClub(null);
+                    setIsClubOpen(false);
+                    setClubSearch('');
+                  }}
+                >
+                  Все клубы
+                </li>
                 {filteredClubs.map((club) => (
                   <li
                     key={club.id}
@@ -223,68 +265,37 @@ const DogsPage = () => {
                 className="dogs-filter-input"
                 type="text"
                 placeholder="Введите кличку"
+                value={nameSearch}
+                onChange={(e) => setNameSearch(e.target.value)}
               />
             </div>
           </div>
         </div>
 
-        <Link to="/dogs/register" className="dogs-register-button">
+        <button className="dogs-register-button" onClick={() => setIsAddDogOpen(true)}>
           Зарегистрировать собаку
-        </Link>
+        </button>
       </div>
 
       {/* ── Сетка карточек собак ── */}
       <div className="dogs-grid">
-        {/* Временные данные для демонстрации, позже будут подгружаться с бэкенда */}
-        <DogCard
-          dog={{
-            name: 'Рекс',
-            breed_name: 'Немецкая овчарка',
-            owner_name: 'Медведева О. Д.',
-            club_name: 'Малахит',
-          }}
-        />
-        <DogCard
-          dog={{
-            name: 'Лорд',
-            breed_name: 'Лабрадор',
-            owner_name: 'Петров П. П.',
-            club_name: 'Белый клык',
-          }}
-        />
-        <DogCard
-          dog={{
-            name: 'Грета',
-            breed_name: 'Такса',
-            owner_name: 'Сидорова А. В.',
-            club_name: 'Золотой ринг',
-          }}
-        />
-        <DogCard
-          dog={{
-            name: 'Арчи',
-            breed_name: 'Сибирский хаски',
-            owner_name: 'Кузнецов Д. М.',
-            club_name: null,
-          }}
-        />
-        <DogCard
-          dog={{
-            name: 'Белла',
-            breed_name: 'Пудель',
-            owner_name: 'Иванов И. И.',
-            club_name: 'Чёрный плащ',
-          }}
-        />
-        <DogCard
-          dog={{
-            name: 'Тор',
-            breed_name: 'Немецкая овчарка',
-            owner_name: 'Петров П. П.',
-            club_name: 'Белый клык',
-          }}
-        />
+        {dogs.map((dog) => (
+          <DogCard key={dog.id} dog={dog} />
+        ))}
+        {dogs.length === 0 && (
+          <p style={{ gridColumn: '1 / -1', textAlign: 'center', color: '#7f8c8d' }}>
+            Собаки не найдены
+          </p>
+        )}
       </div>
+
+      <AddDogModal
+        isOpen={isAddDogOpen}
+        onClose={() => {
+          setIsAddDogOpen(false);
+          fetchDogs();
+        }}
+      />
     </div>
   );
 };

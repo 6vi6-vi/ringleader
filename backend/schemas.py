@@ -64,18 +64,6 @@ class DogCreate(BaseModel):
     last_vaccination_date: date | None = None
     club_id: int | None = None
 
-
-class DogUpdate(BaseModel):
-    name: str | None = Field(default=None, min_length=1, max_length=100)
-    breed_id: int | None = None
-    age: int | None = Field(default=None, ge=0, le=30)
-    pedigree_number: str | None = Field(default=None, max_length=50)
-    father_name: str | None = Field(default=None, max_length=100)
-    mother_name: str | None = Field(default=None, max_length=100)
-    last_vaccination_date: date | None = None
-    club_id: int | None = None
-
-
 class DogOut(BaseModel):
     id: int
     name: str
@@ -90,9 +78,20 @@ class DogOut(BaseModel):
     owner_name: str = ""
     club_id: int | None
     club_name: str | None = None
+    photo_url: str | None = None  
 
     class Config:
         from_attributes = True
+
+class DogUpdate(BaseModel):
+    name: str | None = Field(default=None, min_length=1, max_length=100)
+    breed_id: int | None = None
+    age: int | None = Field(default=None, ge=0, le=30)
+    pedigree_number: str | None = Field(default=None, max_length=50)
+    father_name: str | None = Field(default=None, max_length=100)
+    mother_name: str | None = Field(default=None, max_length=100)
+    last_vaccination_date: date | None = None
+    club_id: int | None = None
 
 
 #  Порода

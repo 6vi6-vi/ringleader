@@ -1,4 +1,6 @@
-from fastapi import APIRouter, Depends, HTTPException, status
+import os
+import uuid
+from fastapi import APIRouter, Depends, HTTPException, status, UploadFile, File
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select
 from sqlalchemy.orm import joinedload
@@ -21,6 +23,9 @@ users_router = APIRouter(prefix="/api/users", tags=["users"])
 dogs_router = APIRouter(prefix="/api/dogs", tags=["dogs"])
 breeds_router = APIRouter(prefix="/api/breeds", tags=["breeds"])
 clubs_router = APIRouter(prefix="/api/clubs", tags=["clubs"])
+
+UPLOAD_DIR = "uploads/dogs"
+os.makedirs(UPLOAD_DIR, exist_ok=True)
 
 
 #  Регистрация и вход
@@ -160,6 +165,18 @@ async def reset_password(
 
 #  Собаки
 
+def _format_owner_name(full_name: str) -> str:
+    """Форматирует ФИО: Фамилия И. О."""
+    if not full_name:
+        return ""
+    parts = full_name.strip().split()
+    if len(parts) >= 3:
+        return f"{parts[0]} {parts[1][0]}. {parts[2][0]}."
+    elif len(parts) == 2:
+        return f"{parts[0]} {parts[1][0]}."
+    return full_name
+
+
 def _dog_to_out(d: Dog) -> DogOut:
     return DogOut(
         id=d.id,
@@ -172,9 +189,10 @@ def _dog_to_out(d: Dog) -> DogOut:
         mother_name=d.mother_name,
         last_vaccination_date=d.last_vaccination_date,
         owner_id=d.owner_id,
-        owner_name=d.owner.full_name if d.owner else "",
+        owner_name=_format_owner_name(d.owner.full_name) if d.owner else "",
         club_id=d.club_id,
         club_name=d.club.name if d.club else None,
+        photo_url=d.photo_url,
     )
 
 
@@ -183,6 +201,7 @@ async def get_all_dogs(
     breed_id: int | None = None,
     owner_id: int | None = None,
     club_id: int | None = None,
+    name: str | None = None,
     db: AsyncSession = Depends(get_db),
 ):
     query = select(Dog).options(joinedload(Dog.breed), joinedload(Dog.owner), joinedload(Dog.club))
@@ -192,6 +211,8 @@ async def get_all_dogs(
         query = query.where(Dog.owner_id == owner_id)
     if club_id:
         query = query.where(Dog.club_id == club_id)
+    if name:
+        query = query.where(Dog.name.ilike(f"%{name}%"))
     result = await db.execute(query)
     dogs = result.unique().scalars().all()
     return [_dog_to_out(d) for d in dogs]
@@ -274,6 +295,32 @@ async def update_dog(
     await db.refresh(dog)
     return _dog_to_out(dog)
 
+@dogs_router.post("/{dog_id}/photo")
+async def upload_dog_photo(
+    dog_id: int,
+    file: UploadFile = File(...),
+    current_user: User = Depends(get_current_user),
+    db: AsyncSession = Depends(get_db),
+):
+    result = await db.execute(select(Dog).where(Dog.id == dog_id))
+    dog = result.scalar_one_or_none()
+    if not dog:
+        raise HTTPException(status_code=404, detail="Собака не найдена")
+    if current_user.role != UserRole.ADMIN and dog.owner_id != current_user.id:
+        raise HTTPException(status_code=403, detail="Доступ запрещён")
+
+    ext = file.filename.split(".")[-1] if "." in (file.filename or "") else "jpg"
+    filename = f"{uuid.uuid4()}.{ext}"
+    filepath = os.path.join(UPLOAD_DIR, filename)
+
+    with open(filepath, "wb") as f:
+        f.write(await file.read())
+
+    photo_url = f"/uploads/dogs/{filename}"
+    dog.photo_url = photo_url 
+    await db.commit()
+
+    return {"photo_url": photo_url}
 
 @dogs_router.delete("/{dog_id}", status_code=status.HTTP_204_NO_CONTENT)
 async def delete_dog(

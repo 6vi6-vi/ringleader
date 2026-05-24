@@ -79,7 +79,8 @@ class Dog(Base):
     last_vaccination_date: Mapped[date | None] = mapped_column(Date, nullable=True)
     owner_id: Mapped[int] = mapped_column(Integer, ForeignKey("users.id"), nullable=False)
     club_id: Mapped[int | None] = mapped_column(Integer, ForeignKey("clubs.id"), nullable=True)
-
+    photo_url: Mapped[str | None] = mapped_column(String(300), nullable=True)
+    
     owner: Mapped["User"] = relationship(back_populates="dogs", foreign_keys=[owner_id])
     breed: Mapped["Breed"] = relationship(back_populates="dogs")
     club: Mapped["Club | None"] = relationship(back_populates="dogs")
