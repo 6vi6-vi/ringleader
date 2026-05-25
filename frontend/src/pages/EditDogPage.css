@@ -1,8 +1,8 @@
 /* ═══════════════════════════════════════════
-   СТРАНИЦА ДОБАВЛЕНИЯ СОБАКИ
+   СТРАНИЦА РЕДАКТИРОВАНИЯ СОБАКИ
    ═══════════════════════════════════════════ */
 
-.add-dog-page {
+.edit-dog-page {
   background-color: #fae5bc;
   display: flex;
   flex-direction: column;
@@ -12,8 +12,16 @@
   width: 100%;
 }
 
+.edit-dog-loading {
+  color: #7f8c8d;
+  font-family: 'Balsamiq Sans', sans-serif;
+  font-size: 20px;
+  text-align: center;
+  margin-top: 100px;
+}
+
 /* ── Герой ── */
-.add-dog-hero {
+.edit-dog-hero {
   background-color: #fdf7da;
   border-radius: 43px;
   padding: 120px 100px;
@@ -22,7 +30,7 @@
   width: 100%;
 }
 
-.add-dog-hero-title {
+.edit-dog-hero-title {
   color: #2a3f6d;
   font-family: 'Balsamiq Sans', sans-serif;
   font-size: 48px;
@@ -34,7 +42,7 @@
   z-index: 1;
 }
 
-.add-dog-hero-paws {
+.edit-dog-hero-paws {
   object-fit: cover;
   position: absolute;
   top: 33px;
@@ -42,24 +50,24 @@
   width: 61px;
 }
 
-.add-dog-hero-paws--left { left: 31px; }
-.add-dog-hero-paws--right { right: 31px; }
+.edit-dog-hero-paws--left { left: 31px; }
+.edit-dog-hero-paws--right { right: 31px; }
 
 /* ── Форма ── */
-.add-dog-form {
+.edit-dog-form {
   background-color: #fdf7da;
   border-radius: 43px;
   padding: 40px 60px;
   width: 100%;
 }
 
-.add-dog-columns {
+.edit-dog-columns {
   display: flex;
   gap: 60px;
 }
 
-/* ── Левая колонка: фото ── */
-.add-dog-photo-section {
+/* ── Фото ── */
+.edit-dog-photo-section {
   align-items: center;
   display: flex;
   flex-direction: column;
@@ -68,15 +76,14 @@
   width: 200px;
 }
 
-.add-dog-photo {
+.edit-dog-photo {
   border-radius: 15px;
   height: 200px;
   object-fit: cover;
   width: 200px;
-  margin-top: 60px;
 }
 
-.add-dog-photo-button {
+.edit-dog-photo-button {
   background-color: #b9c1d4;
   border: none;
   border-radius: 11px;
@@ -92,23 +99,19 @@
   transition: transform 0.2s;
 }
 
-.add-dog-photo-button:hover {
-  transform: translateY(-2px);
-}
+.edit-dog-photo-button:hover { transform: translateY(-2px); }
 
-/* ── Правая колонка: поля ── */
-.add-dog-fields {
+/* ── Поля ── */
+.edit-dog-fields {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 16px 30px;
   flex: 1;
 }
 
-.add-dog-field {
-  position: relative;
-}
+.edit-dog-field { position: relative; }
 
-.add-dog-label {
+.edit-dog-label {
   color: #2a3f6d;
   display: block;
   font-family: 'Balsamiq Sans', sans-serif;
@@ -119,7 +122,7 @@
   margin-bottom: 6px;
 }
 
-.add-dog-input {
+.edit-dog-input {
   background-color: #fdf7da;
   border: 2px solid #e0dcc8;
   border-radius: 5px;
@@ -133,12 +136,12 @@
   width: 100%;
 }
 
-.add-dog-input::placeholder { color: #bbc099; }
-.add-dog-input:focus { outline: none; border-color: #a36b3d; }
-.add-dog-input[type="date"] { color-scheme: light; }
+.edit-dog-input::placeholder { color: #bbc099; }
+.edit-dog-input:focus { outline: none; border-color: #a36b3d; }
+.edit-dog-input[type="date"] { color-scheme: light; }
 
 /* ── Селект ── */
-.add-dog-select {
+.edit-dog-select {
   align-items: center;
   background-color: #fdf7da;
   border: 2px solid #e0dcc8;
@@ -152,9 +155,9 @@
   width: 100%;
 }
 
-.add-dog-select--open { border-radius: 5px 5px 0 0; border-color: #a36b3d; }
+.edit-dog-select--open { border-radius: 5px 5px 0 0; border-color: #a36b3d; }
 
-.add-dog-select-value {
+.edit-dog-select-value {
   color: #2a3f6d;
   font-size: 18px;
   font-weight: 400;
@@ -166,18 +169,18 @@
   white-space: nowrap;
 }
 
-.add-dog-select-placeholder { color: #bbc099; }
+.edit-dog-select-placeholder { color: #bbc099; }
 
-.add-dog-select-arrow {
+.edit-dog-select-arrow {
   height: 21px;
   margin-left: auto;
   transition: transform 0.2s;
   width: 21px;
 }
 
-.add-dog-select--open .add-dog-select-arrow { transform: rotate(180deg); }
+.edit-dog-select--open .edit-dog-select-arrow { transform: rotate(180deg); }
 
-.add-dog-select-search {
+.edit-dog-select-search {
   background: none;
   border: none;
   color: #2a3f6d;
@@ -191,9 +194,9 @@
   width: 100%;
 }
 
-.add-dog-select-search::placeholder { color: #bbc099; }
+.edit-dog-select-search::placeholder { color: #bbc099; }
 
-.add-dog-dropdown {
+.edit-dog-dropdown {
   background-color: #fdf7da;
   border: 2px solid #a36b3d;
   border-top: none;
@@ -211,7 +214,7 @@
   z-index: 10;
 }
 
-.add-dog-dropdown-option {
+.edit-dog-dropdown-option {
   color: #2a3f6d;
   cursor: pointer;
   font-family: 'Balsamiq Sans', sans-serif;
@@ -223,24 +226,24 @@
   transition: background-color 0.2s;
 }
 
-.add-dog-dropdown-option:hover { background-color: #fbe6bc; }
-.add-dog-dropdown-option--active { background-color: #fbe6bc; font-weight: 700; }
-.add-dog-dropdown-option--empty { color: #bbc099; cursor: default; font-style: italic; }
-.add-dog-dropdown-option--empty:hover { background-color: transparent; }
+.edit-dog-dropdown-option:hover { background-color: #fbe6bc; }
+.edit-dog-dropdown-option--active { background-color: #fbe6bc; font-weight: 700; }
+.edit-dog-dropdown-option--empty { color: #bbc099; cursor: default; font-style: italic; }
+.edit-dog-dropdown-option--empty:hover { background-color: transparent; }
 
 /* ── Ошибка / Успех ── */
-.add-dog-error { color: #c0392b; font-family: 'Balsamiq Sans', sans-serif; font-size: 16px; margin: 20px 0 0; text-align: center; }
-.add-dog-success { color: #27ae60; font-family: 'Balsamiq Sans', sans-serif; font-size: 16px; margin: 20px 0 0; text-align: center; }
+.edit-dog-error { color: #c0392b; font-family: 'Balsamiq Sans', sans-serif; font-size: 16px; margin: 20px 0 0; text-align: center; }
+.edit-dog-success { color: #27ae60; font-family: 'Balsamiq Sans', sans-serif; font-size: 16px; margin: 20px 0 0; text-align: center; }
 
 /* ── Кнопки ── */
-.add-dog-buttons {
+.edit-dog-buttons {
   display: flex;
   gap: 20px;
   justify-content: center;
   margin-top: 30px;
 }
 
-.add-dog-submit {
+.edit-dog-submit {
   background-color: #b9c1d4;
   border: none;
   border-radius: 11px;
@@ -256,9 +259,9 @@
   transition: transform 0.2s;
 }
 
-.add-dog-submit:hover { transform: translateY(-2px); }
+.edit-dog-submit:hover { transform: translateY(-2px); }
 
-.add-dog-cancel {
+.edit-dog-cancel {
   background-color: transparent;
   border: 2px solid #8b4513;
   border-radius: 11px;
@@ -274,4 +277,4 @@
   transition: transform 0.2s;
 }
 
-.add-dog-cancel:hover { transform: translateY(-2px); }
+.edit-dog-cancel:hover { transform: translateY(-2px); }

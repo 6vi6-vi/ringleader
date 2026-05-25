@@ -6,7 +6,12 @@
   gap: 12px;
   min-width: 0;
   padding: 22px 30px 30px;
+  transition: transform 0.2s;
   width: 100%;
+}
+
+.dog-card:hover {
+  transform: translateY(-4px);
 }
 
 .dog-card-name {
