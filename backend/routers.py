@@ -6,7 +6,7 @@ from sqlalchemy import select
 from sqlalchemy.orm import joinedload
 
 from database import get_db
-from models import User, UserRole, Dog, Breed, Club
+from models import User, UserRole, Dog, Breed, Club, Exhibition
 from schemas import (
     UserRegister, UserLogin, TokenResponse, UserOut, UserUpdate, UserBlock,
     DogCreate, DogUpdate, DogOut,
@@ -23,6 +23,7 @@ users_router = APIRouter(prefix="/api/users", tags=["users"])
 dogs_router = APIRouter(prefix="/api/dogs", tags=["dogs"])
 breeds_router = APIRouter(prefix="/api/breeds", tags=["breeds"])
 clubs_router = APIRouter(prefix="/api/clubs", tags=["clubs"])
+exhibitions_router = APIRouter(prefix="/api/exhibitions", tags=["exhibitions"])
 
 UPLOAD_DIR = "uploads/dogs"
 os.makedirs(UPLOAD_DIR, exist_ok=True)
@@ -398,6 +399,8 @@ async def delete_breed(
     await db.commit()
 
 
+# Клубы
+
 @clubs_router.get("")
 async def get_all_clubs(db: AsyncSession = Depends(get_db)):
     result = await db.execute(select(Club).order_by(Club.name))
@@ -405,4 +408,34 @@ async def get_all_clubs(db: AsyncSession = Depends(get_db)):
     return [
         {"id": c.id, "name": c.name, "description": c.description}
         for c in clubs
+    ]
+
+
+# Выставки
+
+@exhibitions_router.get("")
+async def get_all_exhibitions(
+    status: str | None = None,
+    db: AsyncSession = Depends(get_db),
+):
+    query = select(Exhibition).options(joinedload(Exhibition.organizer))
+    if status:
+        try:
+            exhibition_status = ExhibitionStatus[status.upper()]
+            query = query.where(Exhibition.status == exhibition_status)
+        except KeyError:
+            pass  # игнорируем неверный статус
+    query = query.order_by(Exhibition.date.desc())
+    result = await db.execute(query)
+    exhibitions = result.unique().scalars().all()
+    return [
+        {
+            "id": e.id,
+            "name": e.name,
+            "date": str(e.date),
+            "address": e.address,
+            "status": e.status.value,
+            "organizer_name": e.organizer.full_name if e.organizer else None,
+        }
+        for e in exhibitions
     ]

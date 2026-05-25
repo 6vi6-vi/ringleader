@@ -4,10 +4,18 @@ import pawsPatternLeft from '../images/left.png';
 import pawsPatternRight from '../images/right.png';
 import './ClubsPage.css';
 import ClubCard from '../components/ClubCard';
+import useAuthStore from '../store/authStore';
+import LoginModal from '../components/LoginModal';
+import RegisterModal from '../components/RegisterModal';
 
 const ClubsPage = () => {
+  const { isAuthenticated } = useAuthStore();
+
   const [clubs, setClubs] = useState([]);
   const [searchName, setSearchName] = useState('');
+
+  const [isLoginOpen, setIsLoginOpen] = useState(false);
+  const [isRegisterOpen, setIsRegisterOpen] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -24,6 +32,14 @@ const ClubsPage = () => {
   const filteredClubs = clubs.filter((club) =>
     club.name.toLowerCase().includes(searchName.toLowerCase())
   );
+
+  const handleActionClick = () => {
+    if (isAuthenticated) {
+      // здесь будет открытие модалки подачи заявки на клуб
+    } else {
+      setIsLoginOpen(true);
+    }
+  };
 
   return (
     <div className="clubs-page">
@@ -57,7 +73,7 @@ const ClubsPage = () => {
           </div>
         </div>
 
-        <button className="clubs-register-button">
+        <button className="clubs-register-button" onClick={handleActionClick}>
           Подать заявку на создание клуба
         </button>
       </div>
@@ -106,6 +122,24 @@ const ClubsPage = () => {
           }}
         />
       </div>
+
+      <LoginModal
+        isOpen={isLoginOpen}
+        onClose={() => setIsLoginOpen(false)}
+        onSwitchToRegister={() => {
+          setIsLoginOpen(false);
+          setIsRegisterOpen(true);
+        }}
+      />
+
+      <RegisterModal
+        isOpen={isRegisterOpen}
+        onClose={() => setIsRegisterOpen(false)}
+        onSwitchToLogin={() => {
+          setIsRegisterOpen(false);
+          setIsLoginOpen(true);
+        }}
+      />
     </div>
   );
 };

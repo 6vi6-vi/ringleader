@@ -1,23 +1,31 @@
 import { useState, useEffect, useRef } from 'react';
 import client from '../api/client';
+import useAuthStore from '../store/authStore';
 import pawsPatternLeft from '../images/left.png';
 import pawsPatternRight from '../images/right.png';
 import arrowDown from '../images/arrow-down.png';
 import './ExpertsPage.css';
 import ExpertCard from '../components/ExpertCard';
+import LoginModal from '../components/LoginModal';
+import RegisterModal from '../components/RegisterModal';
 
 const ExpertsPage = () => {
+  const { isAuthenticated } = useAuthStore();
+
   const [breeds, setBreeds] = useState([]);
   const [clubs, setClubs] = useState([]);
 
   const [selectedBreed, setSelectedBreed] = useState(null);
   const [selectedClub, setSelectedClub] = useState(null);
+  const [nameSearch, setNameSearch] = useState('');
 
   const [breedSearch, setBreedSearch] = useState('');
   const [clubSearch, setClubSearch] = useState('');
 
   const [isBreedOpen, setIsBreedOpen] = useState(false);
   const [isClubOpen, setIsClubOpen] = useState(false);
+  const [isLoginOpen, setIsLoginOpen] = useState(false);
+  const [isRegisterOpen, setIsRegisterOpen] = useState(false);
 
   const breedRef = useRef(null);
   const clubRef = useRef(null);
@@ -89,19 +97,19 @@ const ExpertsPage = () => {
     }
   };
 
+  const handleActionClick = () => {
+    if (isAuthenticated) {
+      // Здесь будет открытие модалки подачи заявки на эксперта
+    } else {
+      setIsLoginOpen(true);
+    }
+  };
+
   return (
     <div className="experts-page">
       <section className="experts-hero">
-        <img
-          className="experts-hero-paws experts-hero-paws--left"
-          src={pawsPatternLeft}
-          alt=""
-        />
-        <img
-          className="experts-hero-paws experts-hero-paws--right"
-          src={pawsPatternRight}
-          alt=""
-        />
+        <img className="experts-hero-paws experts-hero-paws--left" src={pawsPatternLeft} alt="" />
+        <img className="experts-hero-paws experts-hero-paws--right" src={pawsPatternRight} alt="" />
         <h1 className="experts-hero-title">ЭКСПЕРТЫ</h1>
       </section>
 
@@ -114,10 +122,12 @@ const ExpertsPage = () => {
                 className="experts-filter-input"
                 type="text"
                 placeholder="Введите ФИО"
+                value={nameSearch}
+                onChange={(e) => setNameSearch(e.target.value)}
               />
             </div>
           </div>
-          
+
           <div className="experts-filter" ref={breedRef}>
             <label className="experts-filter-label">Специализация</label>
             <button
@@ -143,23 +153,23 @@ const ExpertsPage = () => {
             </button>
             {isBreedOpen && (
               <ul className="experts-filter-dropdown">
+                <li
+                  className={`experts-filter-option ${!selectedBreed ? 'experts-filter-option--active' : ''}`}
+                  onClick={() => { setSelectedBreed(null); setIsBreedOpen(false); setBreedSearch(''); }}
+                >
+                  Все породы
+                </li>
                 {filteredBreeds.map((breed) => (
                   <li
                     key={breed.id}
                     className={`experts-filter-option ${selectedBreed?.id === breed.id ? 'experts-filter-option--active' : ''}`}
-                    onClick={() => {
-                      setSelectedBreed(breed);
-                      setIsBreedOpen(false);
-                      setBreedSearch('');
-                    }}
+                    onClick={() => { setSelectedBreed(breed); setIsBreedOpen(false); setBreedSearch(''); }}
                   >
                     {breed.name}
                   </li>
                 ))}
                 {filteredBreeds.length === 0 && (
-                  <li className="experts-filter-option experts-filter-option--empty">
-                    Ничего не найдено
-                  </li>
+                  <li className="experts-filter-option experts-filter-option--empty">Ничего не найдено</li>
                 )}
               </ul>
             )}
@@ -190,94 +200,56 @@ const ExpertsPage = () => {
             </button>
             {isClubOpen && (
               <ul className="experts-filter-dropdown">
+                <li
+                  className={`experts-filter-option ${!selectedClub ? 'experts-filter-option--active' : ''}`}
+                  onClick={() => { setSelectedClub(null); setIsClubOpen(false); setClubSearch(''); }}
+                >
+                  Все клубы
+                </li>
                 {filteredClubs.map((club) => (
                   <li
                     key={club.id}
                     className={`experts-filter-option ${selectedClub?.id === club.id ? 'experts-filter-option--active' : ''}`}
-                    onClick={() => {
-                      setSelectedClub(club);
-                      setIsClubOpen(false);
-                      setClubSearch('');
-                    }}
+                    onClick={() => { setSelectedClub(club); setIsClubOpen(false); setClubSearch(''); }}
                   >
                     {club.name}
                   </li>
                 ))}
                 {filteredClubs.length === 0 && (
-                  <li className="experts-filter-option experts-filter-option--empty">
-                    Ничего не найдено
-                  </li>
+                  <li className="experts-filter-option experts-filter-option--empty">Ничего не найдено</li>
                 )}
               </ul>
             )}
           </div>
-
-          
         </div>
 
-        <button className="experts-register-button">
+        <button className="experts-register-button" onClick={handleActionClick}>
           Подать заявку на статус эксперта
         </button>
       </div>
 
       <div className="experts-grid">
-        <ExpertCard
-          expert={{
-            full_name: 'Кириллов Андрей Сергеевич',
-            specialization: 'Немецкая овчарка, Ротвейлер',
-            club_name: 'Чёрный плащ',
-          }}
-        />
-        <ExpertCard
-          expert={{
-            full_name: 'Власова Мария Дмитриевна',
-            specialization: 'Лабрадор, Золотистый ретривер',
-            club_name: 'Белый клык',
-          }}
-        />
-        <ExpertCard
-          expert={{
-            full_name: 'Соколов Павел Николаевич',
-            specialization: 'Такса, Бассет-хаунд',
-            club_name: 'Золотой ринг',
-          }}
-        />
-        <ExpertCard
-          expert={{
-            full_name: 'Григорьева Елена Викторовна',
-            specialization: 'Сибирский хаски, Самоед',
-            club_name: 'Чёрный плащ',
-          }}
-        />
-        <ExpertCard
-          expert={{
-            full_name: 'Алексеев Дмитрий Игоревич',
-            specialization: 'Пудель, Йоркширский терьер',
-            club_name: null,
-          }}
-        />
-        <ExpertCard
-          expert={{
-            full_name: 'Морозова Ольга Станиславовна',
-            specialization: 'Английский бульдог, Мопс',
-            club_name: 'Золотой ринг',
-          }}
-        />
-        <ExpertCard
-          expert={{
-            full_name: 'Никонов Владимир Петрович',
-            specialization: 'Немецкая овчарка, Колли',
-            club_name: 'Чёрный плащ',
-          }}
-        />
-        <ExpertCard
-          expert={{
-            full_name: 'Смирнова Татьяна Александровна',
-            specialization: 'Лабрадор, Такса',
-            club_name: 'Белый клык',
-          }}
-        />
+        <ExpertCard expert={{ full_name: 'Кириллов Андрей Сергеевич', specialization: 'Немецкая овчарка, Ротвейлер', club_name: 'Чёрный плащ' }} />
+        <ExpertCard expert={{ full_name: 'Власова Мария Дмитриевна', specialization: 'Лабрадор, Золотистый ретривер', club_name: 'Белый клык' }} />
+        <ExpertCard expert={{ full_name: 'Соколов Павел Николаевич', specialization: 'Такса, Бассет-хаунд', club_name: 'Золотой ринг' }} />
+        <ExpertCard expert={{ full_name: 'Григорьева Елена Викторовна', specialization: 'Сибирский хаски, Самоед', club_name: 'Чёрный плащ' }} />
+        <ExpertCard expert={{ full_name: 'Алексеев Дмитрий Игоревич', specialization: 'Пудель, Йоркширский терьер', club_name: null }} />
+        <ExpertCard expert={{ full_name: 'Морозова Ольга Станиславовна', specialization: 'Английский бульдог, Мопс', club_name: 'Золотой ринг' }} />
+        <ExpertCard expert={{ full_name: 'Никонов Владимир Петрович', specialization: 'Немецкая овчарка, Колли', club_name: 'Чёрный плащ' }} />
+        <ExpertCard expert={{ full_name: 'Смирнова Татьяна Александровна', specialization: 'Лабрадор, Такса', club_name: 'Белый клык' }} />
       </div>
+
+      <LoginModal
+        isOpen={isLoginOpen}
+        onClose={() => setIsLoginOpen(false)}
+        onSwitchToRegister={() => { setIsLoginOpen(false); setIsRegisterOpen(true); }}
+      />
+
+      <RegisterModal
+        isOpen={isRegisterOpen}
+        onClose={() => setIsRegisterOpen(false)}
+        onSwitchToLogin={() => { setIsRegisterOpen(false); setIsLoginOpen(true); }}
+      />
     </div>
   );
 };

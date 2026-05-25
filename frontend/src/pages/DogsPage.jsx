@@ -1,14 +1,18 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
-import { Link } from 'react-router-dom';
 import client from '../api/client';
+import useAuthStore from '../store/authStore';
 import pawsPatternLeft from '../images/left.png';
 import pawsPatternRight from '../images/right.png';
 import arrowDown from '../images/arrow-down.png';
 import './DogsPage.css';
 import DogCard from '../components/DogCard';
 import AddDogModal from '../components/AddDogModal';
+import LoginModal from '../components/LoginModal';
+import RegisterModal from '../components/RegisterModal';
 
 const DogsPage = () => {
+  const { isAuthenticated } = useAuthStore();
+
   const [dogs, setDogs] = useState([]);
   const [breeds, setBreeds] = useState([]);
   const [clubs, setClubs] = useState([]);
@@ -23,6 +27,8 @@ const DogsPage = () => {
   const [isBreedOpen, setIsBreedOpen] = useState(false);
   const [isClubOpen, setIsClubOpen] = useState(false);
   const [isAddDogOpen, setIsAddDogOpen] = useState(false);
+  const [isLoginOpen, setIsLoginOpen] = useState(false);
+  const [isRegisterOpen, setIsRegisterOpen] = useState(false);
 
   const breedRef = useRef(null);
   const clubRef = useRef(null);
@@ -43,7 +49,6 @@ const DogsPage = () => {
     }
   }, [selectedBreed, selectedClub, nameSearch]);
 
-  // Загрузка пород и клубов
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -64,7 +69,6 @@ const DogsPage = () => {
     fetchDogs();
   }, [fetchDogs]);
 
-  // Закрытие при клике вне
   useEffect(() => {
     const handleClickOutside = (e) => {
       if (breedRef.current && !breedRef.current.contains(e.target)) {
@@ -78,20 +82,14 @@ const DogsPage = () => {
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
-  // Фокус на инпут при открытии
   useEffect(() => {
-    if (isBreedOpen && breedInputRef.current) {
-      breedInputRef.current.focus();
-    }
+    if (isBreedOpen && breedInputRef.current) breedInputRef.current.focus();
   }, [isBreedOpen]);
 
   useEffect(() => {
-    if (isClubOpen && clubInputRef.current) {
-      clubInputRef.current.focus();
-    }
+    if (isClubOpen && clubInputRef.current) clubInputRef.current.focus();
   }, [isClubOpen]);
 
-  // Фильтрация с учётом поиска
   const filteredBreeds = breeds.filter((breed) =>
     breed.name.toLowerCase().includes(breedSearch.toLowerCase())
   );
@@ -100,7 +98,6 @@ const DogsPage = () => {
     club.name.toLowerCase().includes(clubSearch.toLowerCase())
   );
 
-  // Сброс поиска при закрытии
   const handleBreedToggle = () => {
     if (isBreedOpen) {
       setIsBreedOpen(false);
@@ -121,27 +118,24 @@ const DogsPage = () => {
     }
   };
 
+  const handleRegisterClick = () => {
+    if (isAuthenticated) {
+      setIsAddDogOpen(true);
+    } else {
+      setIsLoginOpen(true);
+    }
+  };
+
   return (
     <div className="dogs-page">
-      {/* ── Герой ── */}
       <section className="dogs-hero">
-        <img
-          className="dogs-hero-paws dogs-hero-paws--left"
-          src={pawsPatternLeft}
-          alt=""
-        />
-        <img
-          className="dogs-hero-paws dogs-hero-paws--right"
-          src={pawsPatternRight}
-          alt=""
-        />
+        <img className="dogs-hero-paws dogs-hero-paws--left" src={pawsPatternLeft} alt="" />
+        <img className="dogs-hero-paws dogs-hero-paws--right" src={pawsPatternRight} alt="" />
         <h1 className="dogs-hero-title">СОБАКИ</h1>
       </section>
 
-      {/* ── Панель фильтров ── */}
       <div className="dogs-toolbar">
         <div className="dogs-filters">
-          {/* Фильтр по породе */}
           <div className="dogs-filter" ref={breedRef}>
             <label className="dogs-filter-label">Порода</label>
             <button
@@ -169,11 +163,7 @@ const DogsPage = () => {
               <ul className="dogs-filter-dropdown">
                 <li
                   className={`dogs-filter-option ${!selectedBreed ? 'dogs-filter-option--active' : ''}`}
-                  onClick={() => {
-                    setSelectedBreed(null);
-                    setIsBreedOpen(false);
-                    setBreedSearch('');
-                  }}
+                  onClick={() => { setSelectedBreed(null); setIsBreedOpen(false); setBreedSearch(''); }}
                 >
                   Все породы
                 </li>
@@ -181,25 +171,18 @@ const DogsPage = () => {
                   <li
                     key={breed.id}
                     className={`dogs-filter-option ${selectedBreed?.id === breed.id ? 'dogs-filter-option--active' : ''}`}
-                    onClick={() => {
-                      setSelectedBreed(breed);
-                      setIsBreedOpen(false);
-                      setBreedSearch('');
-                    }}
+                    onClick={() => { setSelectedBreed(breed); setIsBreedOpen(false); setBreedSearch(''); }}
                   >
                     {breed.name}
                   </li>
                 ))}
                 {filteredBreeds.length === 0 && (
-                  <li className="dogs-filter-option dogs-filter-option--empty">
-                    Ничего не найдено
-                  </li>
+                  <li className="dogs-filter-option dogs-filter-option--empty">Ничего не найдено</li>
                 )}
               </ul>
             )}
           </div>
 
-          {/* Фильтр по клубу */}
           <div className="dogs-filter" ref={clubRef}>
             <label className="dogs-filter-label">Клуб</label>
             <button
@@ -227,11 +210,7 @@ const DogsPage = () => {
               <ul className="dogs-filter-dropdown">
                 <li
                   className={`dogs-filter-option ${!selectedClub ? 'dogs-filter-option--active' : ''}`}
-                  onClick={() => {
-                    setSelectedClub(null);
-                    setIsClubOpen(false);
-                    setClubSearch('');
-                  }}
+                  onClick={() => { setSelectedClub(null); setIsClubOpen(false); setClubSearch(''); }}
                 >
                   Все клубы
                 </li>
@@ -239,25 +218,18 @@ const DogsPage = () => {
                   <li
                     key={club.id}
                     className={`dogs-filter-option ${selectedClub?.id === club.id ? 'dogs-filter-option--active' : ''}`}
-                    onClick={() => {
-                      setSelectedClub(club);
-                      setIsClubOpen(false);
-                      setClubSearch('');
-                    }}
+                    onClick={() => { setSelectedClub(club); setIsClubOpen(false); setClubSearch(''); }}
                   >
                     {club.name}
                   </li>
                 ))}
                 {filteredClubs.length === 0 && (
-                  <li className="dogs-filter-option dogs-filter-option--empty">
-                    Ничего не найдено
-                  </li>
+                  <li className="dogs-filter-option dogs-filter-option--empty">Ничего не найдено</li>
                 )}
               </ul>
             )}
           </div>
 
-          {/* Фильтр по кличке */}
           <div className="dogs-filter">
             <label className="dogs-filter-label">Кличка</label>
             <div className="dogs-filter-select">
@@ -272,12 +244,11 @@ const DogsPage = () => {
           </div>
         </div>
 
-        <button className="dogs-register-button" onClick={() => setIsAddDogOpen(true)}>
+        <button className="dogs-register-button" onClick={handleRegisterClick}>
           Зарегистрировать собаку
         </button>
       </div>
 
-      {/* ── Сетка карточек собак ── */}
       <div className="dogs-grid">
         {dogs.map((dog) => (
           <DogCard key={dog.id} dog={dog} />
@@ -294,6 +265,24 @@ const DogsPage = () => {
         onClose={() => {
           setIsAddDogOpen(false);
           fetchDogs();
+        }}
+      />
+
+      <LoginModal
+        isOpen={isLoginOpen}
+        onClose={() => setIsLoginOpen(false)}
+        onSwitchToRegister={() => {
+          setIsLoginOpen(false);
+          setIsRegisterOpen(true);
+        }}
+      />
+
+      <RegisterModal
+        isOpen={isRegisterOpen}
+        onClose={() => setIsRegisterOpen(false)}
+        onSwitchToLogin={() => {
+          setIsRegisterOpen(false);
+          setIsLoginOpen(true);
         }}
       />
     </div>

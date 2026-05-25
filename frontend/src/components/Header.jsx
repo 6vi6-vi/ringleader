@@ -94,12 +94,6 @@ const Header = () => {
             >
               ЭКСПЕРТЫ
             </Link>
-            <Link
-              to="/results"
-              className={`header-nav-item ${isActive('/results') ? 'header-nav-item--active' : ''}`}
-            >
-              РЕЗУЛЬТАТЫ
-            </Link>
           </nav>
 
           <div className="header-auth">

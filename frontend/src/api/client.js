@@ -20,9 +20,12 @@ client.interceptors.response.use(
   (response) => response,
   (error) => {
     if (error.response?.status === 401) {
-      const authStore = useAuthStore.getState();
-      authStore.logout();
-      window.location.href = '/';
+      const token = localStorage.getItem('token');
+      if (token) {
+        const authStore = useAuthStore.getState();
+        authStore.logout();
+        window.location.href = '/';
+      }
     }
     return Promise.reject(error);
   }

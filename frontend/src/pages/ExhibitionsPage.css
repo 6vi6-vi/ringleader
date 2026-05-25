@@ -1,0 +1,169 @@
+/* ═══════════════════════════════════════════
+   СТРАНИЦА ВЫСТАВОК
+   ═══════════════════════════════════════════ */
+
+.exhibitions-page {
+  background-color: #fae5bc;
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  min-height: 100vh;
+  padding: 50px 130px 60px;
+  width: 100%;
+}
+
+/* ── Герой ── */
+.exhibitions-hero {
+  background-color: #fdf7da;
+  border-radius: 43px;
+  padding: 120px 100px;
+  position: relative;
+  text-align: center;
+  width: 100%;
+}
+
+.exhibitions-hero-title {
+  color: #2a3f6d;
+  font-family: 'Balsamiq Sans', sans-serif;
+  font-size: 48px;
+  font-weight: 700;
+  letter-spacing: 0;
+  line-height: normal;
+  margin: 0;
+  position: relative;
+  z-index: 1;
+}
+
+.exhibitions-hero-paws {
+  object-fit: cover;
+  position: absolute;
+  top: 33px;
+  height: 238px;
+  width: 61px;
+}
+
+.exhibitions-hero-paws--left { left: 31px; }
+.exhibitions-hero-paws--right { right: 31px; }
+
+/* ── Переключатель вкладок ── */
+.exhibitions-tabs {
+  display: flex;
+  gap: 0;
+}
+
+.exhibitions-tab {
+  background-color: #fdf7da;
+  border: none;
+  color: #a36b3d;
+  cursor: pointer;
+  font-family: 'Balsamiq Sans', sans-serif;
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: 0;
+  line-height: normal;
+  padding: 12px 32px;
+  transition: background-color 0.2s, color 0.2s;
+}
+
+.exhibitions-tab:first-child {
+  border-radius: 12px 0 0 12px;
+}
+
+.exhibitions-tab:last-child {
+  border-radius: 0 12px 12px 0;
+}
+
+.exhibitions-tab--active {
+  background-color: #a36b3d;
+  color: #fdf7da;
+}
+
+/* ── Сетка карточек ── */
+.exhibitions-grid {
+  display: grid;
+  gap: 24px;
+  grid-template-columns: repeat(2, 1fr);
+  width: 100%;
+}
+
+.exhibition-card {
+  background-color: #fdf7da;
+  border-radius: 19px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 24px 30px;
+  width: 100%;
+}
+
+.exhibition-card-header {
+  align-items: center;
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.exhibition-card-title {
+  color: #2a3f6d;
+  font-family: 'Balsamiq Sans', sans-serif;
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: 0;
+  line-height: normal;
+  margin: 0;
+}
+
+.exhibition-card-info {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.exhibition-card-row {
+  color: transparent;
+  font-family: 'Balsamiq Sans', sans-serif;
+  font-size: 18px;
+  font-weight: 400;
+  letter-spacing: 0;
+  line-height: 1.5;
+  margin: 0;
+  overflow-wrap: break-word;
+  word-break: break-word;
+}
+
+.exhibition-card-label {
+  color: #2a3f6d;
+  font-weight: 700;
+}
+
+.exhibition-card-value {
+  color: #a36b3d;
+}
+
+.exhibition-card-button {
+  align-self: flex-end;
+  background-color: #b9c1d4;
+  border: none;
+  border-radius: 11px;
+  color: #2a3f6d;
+  cursor: pointer;
+  font-family: 'Balsamiq Sans', sans-serif;
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: 0;
+  line-height: normal;
+  padding: 10px 24px;
+  transition:  transform 0.2s;
+}
+
+.exhibition-card-button:hover {
+  transform: translateY(-2px);
+}
+
+.exhibitions-empty {
+  color: #7f8c8d;
+  font-family: 'Balsamiq Sans', sans-serif;
+  font-size: 18px;
+  grid-column: 1 / -1;
+  text-align: center;
+}
