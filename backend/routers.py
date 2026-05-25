@@ -166,18 +166,6 @@ async def reset_password(
 
 #  Собаки
 
-def _format_owner_name(full_name: str) -> str:
-    """Форматирует ФИО: Фамилия И. О."""
-    if not full_name:
-        return ""
-    parts = full_name.strip().split()
-    if len(parts) >= 3:
-        return f"{parts[0]} {parts[1][0]}. {parts[2][0]}."
-    elif len(parts) == 2:
-        return f"{parts[0]} {parts[1][0]}."
-    return full_name
-
-
 def _dog_to_out(d: Dog) -> DogOut:
     return DogOut(
         id=d.id,
@@ -190,7 +178,7 @@ def _dog_to_out(d: Dog) -> DogOut:
         mother_name=d.mother_name,
         last_vaccination_date=d.last_vaccination_date,
         owner_id=d.owner_id,
-        owner_name=_format_owner_name(d.owner.full_name) if d.owner else "",
+        owner_name=d.owner.full_name if d.owner else "",
         club_id=d.club_id,
         club_name=d.club.name if d.club else None,
         photo_url=d.photo_url,
@@ -337,6 +325,15 @@ async def delete_dog(
     if current_user.role != UserRole.ADMIN and dog.owner_id != current_user.id:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Доступ запрещён")
 
+    # Проверить, участвовала ли собака в выставках
+    from models import Result
+    res = await db.execute(select(Result).where(Result.dog_id == dog_id))
+    if res.scalar_one_or_none():
+        raise HTTPException(
+            status_code=status.HTTP_409_CONFLICT,
+            detail="Нельзя удалить собаку, у которой есть результаты выступлений",
+        )
+
     await db.delete(dog)
     await db.commit()
 
@@ -438,4 +435,26 @@ async def get_all_exhibitions(
             "organizer_name": e.organizer.full_name if e.organizer else None,
         }
         for e in exhibitions
+    ]
+
+@dogs_router.get("/{dog_id}/exhibitions")
+async def get_dog_exhibitions(dog_id: int, db: AsyncSession = Depends(get_db)):
+    query = (
+        select(Result, Exhibition, Ring)
+        .join(Ring, Result.ring_id == Ring.id)
+        .join(Exhibition, Ring.exhibition_id == Exhibition.id)
+        .where(Result.dog_id == dog_id)
+    )
+    result = await db.execute(query)
+    rows = result.all()
+
+    return [
+        {
+            "id": exhibition.id,
+            "name": exhibition.name,
+            "date": str(exhibition.date),
+            "address": exhibition.address,
+            "place": res.place,
+        }
+        for res, exhibition, ring in rows
     ]

@@ -1,0 +1,249 @@
+/* ═══════════════════════════════════════════
+   СТРАНИЦА СОБАКИ
+   ═══════════════════════════════════════════ */
+
+.dog-detail-page {
+  background-color: #fae5bc;
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  min-height: 100vh;
+  padding: 50px 130px 60px;
+  width: 100%;
+}
+
+/* ── Герой ── */
+.dog-detail-hero {
+  background-color: #fdf7da;
+  border-radius: 43px;
+  padding: 120px 100px;
+  position: relative;
+  text-align: center;
+  width: 100%;
+}
+
+.dog-detail-hero-title {
+  color: #2a3f6d;
+  font-family: 'Balsamiq Sans', sans-serif;
+  font-size: 48px;
+  font-weight: 700;
+  letter-spacing: 0;
+  line-height: normal;
+  margin: 0;
+  position: relative;
+  z-index: 1;
+}
+
+.dog-detail-hero-paws {
+  object-fit: cover;
+  position: absolute;
+  top: 33px;
+  height: 238px;
+  width: 61px;
+}
+
+.dog-detail-hero-paws--left { left: 31px; }
+.dog-detail-hero-paws--right { right: 31px; }
+
+.dog-detail-loading {
+  color: #7f8c8d;
+  font-family: 'Balsamiq Sans', sans-serif;
+  font-size: 20px;
+  text-align: center;
+  margin-top: 100px;
+}
+
+/* ── Секция ── */
+.dog-detail-section {
+  background-color: #fdf7da;
+  border-radius: 43px;
+  padding: 40px 60px;
+  width: 100%;
+}
+
+.dog-detail-section-title {
+  color: #2a3f6d;
+  font-family: 'Balsamiq Sans', sans-serif;
+  font-size: 24px;
+  font-weight: 700;
+  letter-spacing: 0;
+  line-height: normal;
+  margin: 0 0 30px;
+}
+
+/* ── Карточка собаки ── */
+.dog-detail-card {
+  display: flex;
+  gap: 50px;
+}
+
+.dog-detail-photo-section {
+  flex-shrink: 0;
+}
+
+.dog-detail-photo {
+  border-radius: 20px;
+  height: 250px;
+  object-fit: cover;
+  width: 250px;
+}
+
+.dog-detail-info {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px 40px;
+  flex: 1;
+}
+
+.dog-detail-row {
+  display: flex;
+  gap: 8px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #e0dcc8;
+}
+
+.dog-detail-row:last-child,
+.dog-detail-row:nth-last-child(2):nth-child(odd) {
+  border-bottom: none;
+}
+
+.dog-detail-row--full {
+  grid-column: 1 / -1;
+}
+
+.dog-detail-label {
+  color: #2a3f6d;
+  font-family: 'Balsamiq Sans', sans-serif;
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: 0;
+  line-height: normal;
+  min-width: auto;
+  white-space: nowrap;
+}
+
+.dog-detail-value {
+  color: #a36b3d;
+  font-family: 'Balsamiq Sans', sans-serif;
+  font-size: 18px;
+  font-weight: 400;
+  letter-spacing: 0;
+  line-height: normal;
+}
+
+/* ── Выставки ── */
+.dog-detail-exhibitions {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.dog-detail-exhibition-card {
+  align-items: center;
+  background-color: #fbe6bc;
+  border-radius: 12px;
+  display: flex;
+  justify-content: space-between;
+  padding: 16px 24px;
+}
+
+.dog-detail-exhibition-name {
+  color: #2a3f6d;
+  font-family: 'Balsamiq Sans', sans-serif;
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: 0;
+  line-height: normal;
+  margin: 0 0 4px;
+}
+
+.dog-detail-exhibition-meta {
+  color: #a36b3d;
+  font-family: 'Balsamiq Sans', sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+  letter-spacing: 0;
+  line-height: normal;
+  margin: 0;
+}
+
+.dog-detail-medal {
+  border-radius: 12px;
+  font-family: 'Balsamiq Sans', sans-serif;
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: 0;
+  line-height: normal;
+  padding: 8px 18px;
+  white-space: nowrap;
+}
+
+.dog-detail-medal--place-1 { background-color: #fff8e1; color: #d4a017; }
+.dog-detail-medal--place-2 { background-color: #f0f0f0; color: #808080; }
+.dog-detail-medal--place-3 { background-color: #fbe6bc; color: #8b4513; }
+
+.dog-detail-empty {
+  color: #7f8c8d;
+  font-family: 'Balsamiq Sans', sans-serif;
+  font-size: 18px;
+}
+
+/* ── Заголовок секции с кнопками ── */
+.dog-detail-section-header {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 30px;
+}
+
+.dog-detail-section-header .dog-detail-section-title {
+  margin: 0;
+}
+
+.dog-detail-actions {
+  display: flex;
+  gap: 12px;
+}
+
+.dog-detail-edit-btn {
+  background-color: #b9c1d4;
+  border: none;
+  border-radius: 11px;
+  color: #2a3f6d;
+  cursor: pointer;
+  font-family: 'Balsamiq Sans', sans-serif;
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: 0;
+  line-height: normal;
+  padding: 10px 24px;
+  transition: transform 0.2s;
+}
+
+.dog-detail-edit-btn:hover {
+  transform: translateY(-2px);
+}
+
+.dog-detail-delete-btn {
+  background-color: transparent;
+  border: 2px solid #8b4513;
+  border-radius: 11px;
+  color: #8b4513;
+  cursor: pointer;
+  font-family: 'Balsamiq Sans', sans-serif;
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: 0;
+  line-height: normal;
+  padding: 8px 24px;
+  transition: transform 0.2s;
+}
+
+.dog-detail-delete-btn:hover {
+  transform: translateY(-2px);
+}
+
+.dog-detail-delete-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}

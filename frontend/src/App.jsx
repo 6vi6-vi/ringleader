@@ -7,6 +7,7 @@ import DogsPage from './pages/DogsPage';
 import ExpertsPage from './pages/ExpertsPage';
 import ClubsPage from './pages/ClubsPage';
 import AddDogPage from './pages/AddDogPage';
+import DogDetailPage from './pages/DogDetailPage';
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
           <Route path="/experts" element={<ExpertsPage />} />
           <Route path="/clubs" element={<ClubsPage />} />
           <Route path="/dogs/register" element={<AddDogPage />} />
+          <Route path="/dogs/:id" element={<DogDetailPage />} />
         </Routes>
       </main>
       <Footer />

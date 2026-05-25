@@ -1,9 +1,12 @@
+import { useNavigate } from 'react-router-dom';
 import dogPlaceholder from '../images/dog-placeholder.png';
 import './DogCard.css';
 
 const DogCard = ({ dog }) => {
+  const navigate = useNavigate();
+
   return (
-    <div className="dog-card">
+    <div className="dog-card" onClick={() => navigate(`/dogs/${dog.id}`)} style={{ cursor: 'pointer' }}>
       <h3 className="dog-card-name">{dog.name}</h3>
       <div className="dog-card-body">
         <img
@@ -18,7 +21,7 @@ const DogCard = ({ dog }) => {
           </p>
           <p className="dog-card-row">
             <span className="dog-card-label">Владелец: </span>
-            <span className="dog-card-value">{dog.owner_name}</span>
+            <span className="dog-card-value">{dog.owner_short_name || dog.owner_name}</span>
           </p>
           <p className="dog-card-row">
             <span className="dog-card-label">Клуб: </span>

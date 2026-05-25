@@ -259,10 +259,10 @@
 .add-dog-submit:hover { transform: translateY(-2px); }
 
 .add-dog-cancel {
-  background-color: #fdf7da;
-  border: 2px solid #fdf7da;
+  background-color: transparent;
+  border: 2px solid #8b4513;
   border-radius: 11px;
-  color: #a7ac88;
+  color: #8b4513;
   cursor: pointer;
   font-family: 'Balsamiq Sans', sans-serif;
   font-size: 22px;
