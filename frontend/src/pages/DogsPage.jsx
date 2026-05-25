@@ -1,18 +1,13 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
+import { Link } from 'react-router-dom';
 import client from '../api/client';
-import useAuthStore from '../store/authStore';
 import pawsPatternLeft from '../images/left.png';
 import pawsPatternRight from '../images/right.png';
 import arrowDown from '../images/arrow-down.png';
 import './DogsPage.css';
 import DogCard from '../components/DogCard';
-import AddDogModal from '../components/AddDogModal';
-import LoginModal from '../components/LoginModal';
-import RegisterModal from '../components/RegisterModal';
 
 const DogsPage = () => {
-  const { isAuthenticated } = useAuthStore();
-
   const [dogs, setDogs] = useState([]);
   const [breeds, setBreeds] = useState([]);
   const [clubs, setClubs] = useState([]);
@@ -26,9 +21,6 @@ const DogsPage = () => {
 
   const [isBreedOpen, setIsBreedOpen] = useState(false);
   const [isClubOpen, setIsClubOpen] = useState(false);
-  const [isAddDogOpen, setIsAddDogOpen] = useState(false);
-  const [isLoginOpen, setIsLoginOpen] = useState(false);
-  const [isRegisterOpen, setIsRegisterOpen] = useState(false);
 
   const breedRef = useRef(null);
   const clubRef = useRef(null);
@@ -115,14 +107,6 @@ const DogsPage = () => {
     } else {
       setIsClubOpen(true);
       setIsBreedOpen(false);
-    }
-  };
-
-  const handleRegisterClick = () => {
-    if (isAuthenticated) {
-      setIsAddDogOpen(true);
-    } else {
-      setIsLoginOpen(true);
     }
   };
 
@@ -244,9 +228,9 @@ const DogsPage = () => {
           </div>
         </div>
 
-        <button className="dogs-register-button" onClick={handleRegisterClick}>
+        <Link to="/dogs/register" className="dogs-register-button">
           Зарегистрировать собаку
-        </button>
+        </Link>
       </div>
 
       <div className="dogs-grid">
@@ -259,32 +243,6 @@ const DogsPage = () => {
           </p>
         )}
       </div>
-
-      <AddDogModal
-        isOpen={isAddDogOpen}
-        onClose={() => {
-          setIsAddDogOpen(false);
-          fetchDogs();
-        }}
-      />
-
-      <LoginModal
-        isOpen={isLoginOpen}
-        onClose={() => setIsLoginOpen(false)}
-        onSwitchToRegister={() => {
-          setIsLoginOpen(false);
-          setIsRegisterOpen(true);
-        }}
-      />
-
-      <RegisterModal
-        isOpen={isRegisterOpen}
-        onClose={() => setIsRegisterOpen(false)}
-        onSwitchToLogin={() => {
-          setIsRegisterOpen(false);
-          setIsLoginOpen(true);
-        }}
-      />
     </div>
   );
 };

@@ -6,6 +6,7 @@ import ExhibitionsPage from './pages/ExhibitionsPage';
 import DogsPage from './pages/DogsPage';
 import ExpertsPage from './pages/ExpertsPage';
 import ClubsPage from './pages/ClubsPage';
+import AddDogPage from './pages/AddDogPage';
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
           <Route path="/dogs" element={<DogsPage />} />
           <Route path="/experts" element={<ExpertsPage />} />
           <Route path="/clubs" element={<ClubsPage />} />
+          <Route path="/dogs/register" element={<AddDogPage />} />
         </Routes>
       </main>
       <Footer />
