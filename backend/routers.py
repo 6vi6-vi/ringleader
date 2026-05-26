@@ -665,6 +665,7 @@ async def get_exhibition_results(exhibition_id: int, db: AsyncSession = Depends(
             "id": r.id,
             "dog_id": r.dog_id,
             "dog_name": r.dog.name,
+            "dog_photo_url": r.dog.photo_url,
             "breed_name": r.dog.breed.name if r.dog.breed else "",
             "owner_name": r.dog.owner.full_name if r.dog.owner else "",
             "place": r.place,

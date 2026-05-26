@@ -1,3 +1,7 @@
+/* ═══════════════════════════════════════════
+   СТРАНИЦА ВЫСТАВКИ
+   ═══════════════════════════════════════════ */
+
 .exhibition-detail-page {
   background-color: #fae5bc;
   display: flex;
@@ -16,6 +20,7 @@
   margin-top: 100px;
 }
 
+/* ── Герой ── */
 .exhibition-detail-hero {
   background-color: #fdf7da;
   border-radius: 43px;
@@ -104,9 +109,9 @@
 
 .exhibition-detail-delete-btn {
   background: none;
-  border: 2px solid #8b4513;
+  border: 2px solid #c0392b;
   border-radius: 11px;
-  color: #8b4513;
+  color: #c0392b;
   cursor: pointer;
   font-family: 'Balsamiq Sans', sans-serif;
   font-size: 18px;
@@ -129,6 +134,10 @@
   gap: 12px;
   padding-bottom: 10px;
   border-bottom: 1px solid #e0dcc8;
+}
+
+.exhibition-detail-row:last-child {
+  border-bottom: none;
 }
 
 .exhibition-detail-info-label {
@@ -201,9 +210,9 @@
 
 .exhibition-detail-cancel-btn {
   background: none;
-  border: 2px solid #8b4513;
+  border: 2px solid #b9c1d4;
   border-radius: 11px;
-  color: #8b4513;
+  color: #2a3f6d;
   cursor: pointer;
   font-family: 'Balsamiq Sans', sans-serif;
   font-size: 20px;
@@ -214,8 +223,19 @@
 
 .exhibition-detail-cancel-btn:hover { transform: translateY(-2px); }
 
-.exhibition-detail-error { color: #c0392b; font-family: 'Balsamiq Sans', sans-serif; font-size: 14px; margin: 0; }
-.exhibition-detail-success { color: #27ae60; font-family: 'Balsamiq Sans', sans-serif; font-size: 14px; margin: 0; }
+.exhibition-detail-error {
+  color: #c0392b;
+  font-family: 'Balsamiq Sans', sans-serif;
+  font-size: 14px;
+  margin: 0;
+}
+
+.exhibition-detail-success {
+  color: #27ae60;
+  font-family: 'Balsamiq Sans', sans-serif;
+  font-size: 14px;
+  margin: 0;
+}
 
 /* ── Участники ── */
 .exhibition-detail-participants {
@@ -271,4 +291,60 @@
   color: #7f8c8d;
   font-family: 'Balsamiq Sans', sans-serif;
   font-size: 18px;
+}
+
+/* ── Результаты ── */
+.exhibition-results-breeds {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.exhibition-results-breed-group {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.exhibition-results-breed-title {
+  color: #2a3f6d;
+  font-family: 'Balsamiq Sans', sans-serif;
+  font-size: 22px;
+  font-weight: 700;
+  margin: 0;
+  text-align: center;
+}
+
+.exhibition-results-cards {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center;
+}
+
+.exhibition-results-card-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.exhibition-results-medal {
+  font-family: 'Balsamiq Sans', sans-serif;
+  font-size: 18px;
+  font-weight: 700;
+  text-align: center;
+}
+
+.exhibition-results-medal--place-1 { color: #d4a017; }
+.exhibition-results-medal--place-2 { color: #808080; }
+.exhibition-results-medal--place-3 { color: #8b4513; }
+
+/* Карточки в результатах крупнее */
+.exhibition-results-card-wrapper .exhibition-participant-card {
+  width: 200px;
+}
+
+.exhibition-results-card-wrapper .exhibition-participant-photo {
+  height: 150px;
 }

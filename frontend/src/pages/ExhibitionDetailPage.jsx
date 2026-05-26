@@ -14,12 +14,12 @@ const ExhibitionDetailPage = () => {
   const isAdmin = role === 'Admin';
 
   const [exhibition, setExhibition] = useState(null);
+  const [exhibitionResults, setExhibitionResults] = useState([]);
   const [loading, setLoading] = useState(true);
   const [editing, setEditing] = useState(false);
   const [form, setForm] = useState({ name: '', date: '', address: '', ringsCount: 1 });
   const [editError, setEditError] = useState('');
   const [editSuccess, setEditSuccess] = useState('');
-  const [showFixResults, setShowFixResults] = useState(false);
 
   useEffect(() => {
     fetchExhibition();
@@ -35,6 +35,11 @@ const ExhibitionDetailPage = () => {
         address: res.data.address || '',
         ringsCount: res.data.rings?.length || 1,
       });
+
+      try {
+        const resultsRes = await client.get(`/results/exhibition/${id}`);
+        setExhibitionResults(resultsRes.data);
+      } catch (err) {}
     } catch (err) {
       console.error('Ошибка загрузки:', err);
     } finally {
@@ -70,6 +75,7 @@ const ExhibitionDetailPage = () => {
         }
       }
 
+      setEditSuccess('Изменения сохранены');
       setEditing(false);
       fetchExhibition();
     } catch (err) {
@@ -92,17 +98,17 @@ const ExhibitionDetailPage = () => {
     return new Date(dateStr).toLocaleDateString('ru-RU', { day: 'numeric', month: 'long', year: 'numeric' });
   };
 
-  if (loading) return <div className="exhibition-detail-page"><p className="exhibition-detail-loading">Загрузка...</p></div>;
-  if (!exhibition) return <div className="exhibition-detail-page"><p className="exhibition-detail-loading">Выставка не найдена</p></div>;
-
   const isTodayOrPast = (dateStr) => {
     if (!dateStr) return false;
-  const exDate = new Date(dateStr);
-  const today = new Date();
-  today.setHours(0, 0, 0, 0);
-  exDate.setHours(0, 0, 0, 0); // ← добавить обнуление времени
-  return exDate <= today;
+    const exDate = new Date(dateStr);
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    exDate.setHours(0, 0, 0, 0);
+    return exDate <= today;
   };
+
+  if (loading) return <div className="exhibition-detail-page"><p className="exhibition-detail-loading">Загрузка...</p></div>;
+  if (!exhibition) return <div className="exhibition-detail-page"><p className="exhibition-detail-loading">Выставка не найдена</p></div>;
 
   return (
     <div className="exhibition-detail-page">
@@ -192,7 +198,7 @@ const ExhibitionDetailPage = () => {
       {/* ── Участники ── */}
       <section className="exhibition-detail-section">
         <div className="exhibition-detail-section-header">
-          <h2 className="exhibition-detail-section-title">УЧАСТНИКИ</h2>
+          <h2 className="exhibition-detail-section-title">УЧАСТНИКИ ({exhibition.participants?.length || 0})</h2>
           {isAdmin && exhibition.participants?.length > 0 && isTodayOrPast(exhibition.date) && (
             <button
               className="exhibition-detail-edit-btn"
@@ -225,6 +231,52 @@ const ExhibitionDetailPage = () => {
           <p className="exhibition-detail-empty">Пока нет одобренных участников</p>
         )}
       </section>
+
+      {/* ── Результаты ── */}
+      {exhibitionResults.filter((r) => r.place).length > 0 && (
+        <section className="exhibition-detail-section">
+          <h2 className="exhibition-detail-section-title">РЕЗУЛЬТАТЫ ВЫСТАВКИ</h2>
+          <div className="exhibition-results-breeds">
+            {Object.entries(
+              exhibitionResults
+                .filter((r) => r.place)
+                .reduce((acc, r) => {
+                  const breed = r.breed_name || 'Без породы';
+                  if (!acc[breed]) acc[breed] = [];
+                  acc[breed].push(r);
+                  return acc;
+                }, {})
+            ).map(([breed, results]) => (
+              <div key={breed} className="exhibition-results-breed-group">
+                <h3 className="exhibition-results-breed-title">{breed}</h3>
+                <div className="exhibition-results-cards">
+                  {results
+                    .sort((a, b) => a.place - b.place)
+                    .map((r) => (
+                      <div key={r.id} className="exhibition-results-card-wrapper">
+                        <span className={`exhibition-results-medal exhibition-results-medal--place-${r.place}`}>
+                          {r.place} место
+                        </span>
+                        <div
+                          className="exhibition-participant-card"
+                          onClick={() => navigate(`/dogs/${r.dog_id}`)}
+                        >
+                          <img
+                            className="exhibition-participant-photo"
+                            src={r.dog_photo_url || dogPlaceholder}
+                            alt={r.dog_name}
+                          />
+                          <span className="exhibition-participant-name">{r.dog_name}</span>
+                          <span className="exhibition-participant-owner">{r.owner_name}</span>
+                        </div>
+                      </div>
+                    ))}
+                </div>
+              </div>
+            ))}
+          </div>
+        </section>
+      )}
     </div>
   );
 };
