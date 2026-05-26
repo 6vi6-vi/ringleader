@@ -221,33 +221,47 @@
 .exhibition-detail-participants {
   display: flex;
   flex-wrap: wrap;
-  gap: 16px;
+  gap: 20px;
+  margin-top: 12px;
 }
 
-.exhibition-detail-participant-card {
+.exhibition-participant-card {
   background-color: #fbe6bc;
   border-radius: 12px;
+  cursor: pointer;
   display: flex;
   flex-direction: column;
-  gap: 4px;
-  padding: 14px 20px;
-  width: 200px;
+  gap: 5px;
+  padding: 16px;
+  transition: transform 0.2s;
+  width: 160px;
 }
 
-.exhibition-detail-participant-name {
+.exhibition-participant-card:hover {
+  transform: translateY(-2px);
+}
+
+.exhibition-participant-photo {
+  border-radius: 8px;
+  height: 120px;
+  object-fit: cover;
+  width: 100%;
+}
+
+.exhibition-participant-name {
   color: #2a3f6d;
   font-family: 'Balsamiq Sans', sans-serif;
   font-size: 18px;
   font-weight: 700;
 }
 
-.exhibition-detail-participant-breed {
+.exhibition-participant-breed {
   color: #a36b3d;
   font-family: 'Balsamiq Sans', sans-serif;
   font-size: 14px;
 }
 
-.exhibition-detail-participant-owner {
+.exhibition-participant-owner {
   color: #7f8c8d;
   font-family: 'Balsamiq Sans', sans-serif;
   font-size: 14px;

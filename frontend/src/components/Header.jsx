@@ -94,6 +94,11 @@ const Header = () => {
             >
               ЭКСПЕРТЫ
             </Link>
+            {isAuthenticated && (
+              <Link to="/requests" className={`header-nav-item ${isActive('/requests') ? 'header-nav-item--active' : ''}`}>
+                ЗАЯВКИ
+              </Link>
+            )}
           </nav>
 
           <div className="header-auth">

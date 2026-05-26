@@ -1,0 +1,178 @@
+.requests-page {
+  background-color: #fae5bc;
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  min-height: 100vh;
+  padding: 50px 130px 60px;
+  width: 100%;
+}
+
+.requests-loading {
+  color: #7f8c8d;
+  font-family: 'Balsamiq Sans', sans-serif;
+  font-size: 20px;
+  text-align: center;
+  margin-top: 100px;
+}
+
+.requests-hero {
+  background-color: #fdf7da;
+  border-radius: 43px;
+  padding: 120px 100px;
+  position: relative;
+  text-align: center;
+  width: 100%;
+}
+
+.requests-hero-title {
+  color: #2a3f6d;
+  font-family: 'Balsamiq Sans', sans-serif;
+  font-size: 48px;
+  font-weight: 700;
+  margin: 0;
+  position: relative;
+  z-index: 1;
+}
+
+.requests-hero-paws {
+  object-fit: cover;
+  position: absolute;
+  top: 33px;
+  height: 238px;
+  width: 61px;
+}
+
+.requests-hero-paws--left { left: 31px; }
+.requests-hero-paws--right { right: 31px; }
+
+/* ── Вкладки ── */
+.requests-tabs {
+  display: flex;
+  gap: 0;
+}
+
+.requests-tab {
+  background-color: #fdf7da;
+  border: none;
+  color: #a36b3d;
+  cursor: pointer;
+  font-family: 'Balsamiq Sans', sans-serif;
+  font-size: 18px;
+  font-weight: 700;
+  padding: 12px 28px;
+  transition: background-color 0.2s;
+}
+
+.requests-tab:first-child { border-radius: 12px 0 0 12px; }
+.requests-tab:last-child { border-radius: 0 12px 12px 0; }
+.requests-tab--active { background-color: #a36b3d; color: #fdf7da; }
+
+/* ── Сетка карточек ── */
+.requests-grid {
+  display: grid;
+  gap: 24px;
+  grid-template-columns: repeat(2, 1fr);
+  width: 100%;
+}
+
+.request-card {
+  background-color: #fdf7da;
+  border-radius: 19px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 24px 30px;
+  width: 100%;
+}
+
+.request-card-header {
+  align-items: center;
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.request-card-name {
+  color: #2a3f6d;
+  font-family: 'Balsamiq Sans', sans-serif;
+  font-size: 22px;
+  font-weight: 700;
+  margin: 0;
+}
+
+.request-card-info {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.request-card-row {
+  color: transparent;
+  font-family: 'Balsamiq Sans', sans-serif;
+  font-size: 18px;
+  font-weight: 400;
+  margin: 0;
+  overflow-wrap: break-word;
+  word-break: break-word;
+}
+
+.request-card-label { color: #2a3f6d; font-weight: 700; }
+.request-card-value { color: #a36b3d; }
+.request-card-value--reject { color: #c0392b; }
+
+.request-card-actions {
+  display: flex;
+  gap: 10px;
+}
+
+/* ── Кнопки ── */
+.requests-approve-btn {
+  background-color: #b9c1d4;
+  border: none;
+  border-radius: 11px;
+  color: #2a3f6d;
+  cursor: pointer;
+  font-family: 'Balsamiq Sans', sans-serif;
+  font-size: 18px;
+  font-weight: 700;
+  padding: 10px 24px;
+  transition: transform 0.2s;
+}
+
+.requests-approve-btn:hover { transform: translateY(-2px); }
+
+.requests-reject-btn {
+  background: none;
+  border: 2px solid #c0392b;
+  border-radius: 11px;
+  color: #c0392b;
+  cursor: pointer;
+  font-family: 'Balsamiq Sans', sans-serif;
+  font-size: 18px;
+  font-weight: 700;
+  padding: 8px 24px;
+  transition: transform 0.2s;
+}
+
+.requests-reject-btn:hover { transform: translateY(-2px); }
+
+/* ── Бейджи ── */
+.requests-badge {
+  border-radius: 12px;
+  font-family: 'Balsamiq Sans', sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  padding: 5px 14px;
+  white-space: nowrap;
+}
+
+.requests-badge--pending { background-color: #fef5e7; color: #e67e22; }
+.requests-badge--approved { background-color: #eaf7ea; color: #27ae60; }
+.requests-badge--rejected { background-color: #fef0f0; color: #c0392b; }
+
+.requests-empty {
+  color: #7f8c8d;
+  font-family: 'Balsamiq Sans', sans-serif;
+  font-size: 18px;
+}

@@ -12,6 +12,7 @@ import EditDogPage from './pages/EditDogPage';
 import ProfilePage from './pages/ProfilePage';
 import CreateExhibitionPage from './pages/CreateExhibitionPage';
 import ExhibitionDetailPage from './pages/ExhibitionDetailPage';
+import RequestsPage from './pages/RequestsPage';
 
 function App() {
   return (
@@ -30,6 +31,7 @@ function App() {
           <Route path="/profile" element={<ProfilePage />} />
           <Route path="/admin/exhibitions/create" element={<CreateExhibitionPage />} />
           <Route path="/exhibitions/:id" element={<ExhibitionDetailPage />} />
+          <Route path="/requests" element={<RequestsPage />} />
         </Routes>
       </main>
       <Footer />

@@ -5,6 +5,7 @@ import useAuthStore from '../store/authStore';
 import pawsPatternLeft from '../images/left.png';
 import pawsPatternRight from '../images/right.png';
 import './ExhibitionDetailPage.css';
+import dogPlaceholder from '../images/dog-placeholder.png';
 
 const ExhibitionDetailPage = () => {
   const { id } = useParams();
@@ -182,14 +183,23 @@ const ExhibitionDetailPage = () => {
 
       {/* ── Участники ── */}
       <section className="exhibition-detail-section">
-        <h2 className="exhibition-detail-section-title">УЧАСТНИКИ ({exhibition.participants?.length || 0})</h2>
+        <h2 className="exhibition-detail-section-title">УЧАСТНИКИ</h2>
         {exhibition.participants?.length > 0 ? (
           <div className="exhibition-detail-participants">
             {exhibition.participants.map((p) => (
-              <div key={p.id} className="exhibition-detail-participant-card">
-                <span className="exhibition-detail-participant-name">{p.dog_name}</span>
-                <span className="exhibition-detail-participant-breed">{p.breed_name}</span>
-                <span className="exhibition-detail-participant-owner">{p.owner_name}</span>
+              <div
+                key={p.id}
+                className="exhibition-participant-card"
+                onClick={() => navigate(`/dogs/${p.dog_id}`)}
+              >
+                <img
+                  className="exhibition-participant-photo"
+                  src={p.dog_photo_url || dogPlaceholder}
+                  alt={p.dog_name}
+                />
+                <span className="exhibition-participant-name">{p.dog_name}</span>
+                <span className="exhibition-participant-breed">{p.breed_name}</span>
+                <span className="exhibition-participant-owner">{p.owner_name}</span>
               </div>
             ))}
           </div>

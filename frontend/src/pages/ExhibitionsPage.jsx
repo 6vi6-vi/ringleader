@@ -7,12 +7,15 @@ import pawsPatternRight from '../images/right.png';
 import './ExhibitionsPage.css';
 import LoginModal from '../components/LoginModal';
 import RegisterModal from '../components/RegisterModal';
+import ApplyExhibitionModal from '../components/ApplyExhibitionModal';
 
 const ExhibitionsPage = () => {
   const { isAuthenticated, role } = useAuthStore();
   const isAdmin = role === 'Admin';
   const navigate = useNavigate();
 
+  const [applyModalOpen, setApplyModalOpen] = useState(false);
+  const [selectedExhibition, setSelectedExhibition] = useState(null);
   const [exhibitions, setExhibitions] = useState([]);
   const [tab, setTab] = useState('upcoming');
 
@@ -53,9 +56,10 @@ const ExhibitionsPage = () => {
     return date.toLocaleDateString('ru-RU', { day: 'numeric', month: 'long', year: 'numeric' });
   };
 
-  const handleApplyClick = () => {
+  const handleApplyClick = (exhibition) => {
     if (isAuthenticated) {
-      // Открыть модалку подачи заявки
+      setSelectedExhibition(exhibition);
+      setApplyModalOpen(true);
     } else {
       setIsLoginOpen(true);
     }
@@ -165,6 +169,12 @@ const ExhibitionsPage = () => {
         isOpen={isRegisterOpen}
         onClose={() => setIsRegisterOpen(false)}
         onSwitchToLogin={() => { setIsRegisterOpen(false); setIsLoginOpen(true); }}
+      />
+
+      <ApplyExhibitionModal
+        isOpen={applyModalOpen}
+        onClose={() => setApplyModalOpen(false)}
+        exhibition={selectedExhibition}
       />
     </div>
   );

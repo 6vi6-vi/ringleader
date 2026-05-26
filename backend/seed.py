@@ -495,24 +495,6 @@ async def seed():
             result = await db.execute(select(Club).where(Club.name == name))
             if not result.scalar_one_or_none():
                 db.add(Club(name=name, description=desc))
-
-        exhibitions_data = [
-            {"name": "Весенний кубок — 2026", "date": date(2026, 5, 15), "address": "Москва, КВЦ «Сокольники»", "status": ExhibitionStatus.ACTIVE},
-            {"name": "Летний смотр пород", "date": date(2026, 6, 8), "address": "Санкт-Петербург, Экспофорум", "status": ExhibitionStatus.PLANNED},
-            {"name": "Осенний чемпионат", "date": date(2026, 9, 20), "address": "Казань, МВЦ «Казань Экспо»", "status": ExhibitionStatus.PLANNED},
-            {"name": "Зимний турнир — 2025", "date": date(2025, 12, 12), "address": "Москва, ЦВК «Экспоцентр»", "status": ExhibitionStatus.FINISHED},
-        ]
-
-        for ex in exhibitions_data:
-            result = await db.execute(select(Exhibition).where(Exhibition.name == ex["name"]))
-            if not result.scalar_one_or_none():
-                db.add(Exhibition(
-                    name=ex["name"],
-                    date=ex["date"],
-                    address=ex["address"],
-                    status=ex["status"],
-                    organizer_id=1,
-                ))
                 
         await db.commit()
 
