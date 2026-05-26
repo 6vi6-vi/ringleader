@@ -73,7 +73,8 @@ const ProfilePage = () => {
 
       const token = localStorage.getItem('token');
       const role = localStorage.getItem('role');
-      authLogin(token, role, editFullName.trim());
+      const currentAvatarUrl = avatarUrl || localStorage.getItem('avatarUrl');
+      authLogin(token, role, editFullName.trim(), currentAvatarUrl);
 
       setEditSuccess('Данные обновлены');
       setEditing(false);

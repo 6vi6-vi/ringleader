@@ -12,7 +12,7 @@ const useAuthStore = create((set) => ({
     localStorage.setItem('role', role);
     localStorage.setItem('fullName', fullName);
     if (avatarUrl) localStorage.setItem('avatarUrl', avatarUrl);
-    set({ token, role, fullName, avatarUrl, isAuthenticated: true });
+    set({ token, role, fullName, avatarUrl: avatarUrl || null, isAuthenticated: true });
   },
 
   setAvatar: (avatarUrl) => {

@@ -45,8 +45,14 @@
 .exhibitions-hero-paws--left { left: 31px; }
 .exhibitions-hero-paws--right { right: 31px; }
 
-/* ── Переключатель вкладок ── */
+/* ── Переключатель вкладок + кнопка ── */
 .exhibitions-tabs {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.exhibitions-tabs-left {
   display: flex;
   gap: 0;
 }
@@ -69,13 +75,32 @@
   border-radius: 12px 0 0 12px;
 }
 
-.exhibitions-tab:last-child {
+.exhibitions-tabs-left .exhibitions-tab:last-child {
   border-radius: 0 12px 12px 0;
 }
 
 .exhibitions-tab--active {
   background-color: #a36b3d;
   color: #fdf7da;
+}
+
+.exhibitions-add-btn {
+  background-color: #b9c1d4;
+  border: none;
+  border-radius: 11px;
+  color: #2a3f6d;
+  cursor: pointer;
+  font-family: 'Balsamiq Sans', sans-serif;
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: 0;
+  line-height: normal;
+  padding: 12px 24px;
+  transition: transform 0.2s;
+}
+
+.exhibitions-add-btn:hover {
+  transform: translateY(-2px);
 }
 
 /* ── Сетка карточек ── */
@@ -153,7 +178,7 @@
   letter-spacing: 0;
   line-height: normal;
   padding: 10px 24px;
-  transition:  transform 0.2s;
+  transition: transform 0.2s;
 }
 
 .exhibition-card-button:hover {

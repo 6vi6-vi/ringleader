@@ -1,0 +1,232 @@
+/* ═══════════════════════════════════════════
+   СТРАНИЦА СОЗДАНИЯ ВЫСТАВКИ
+   ═══════════════════════════════════════════ */
+
+.create-exhibition-page {
+  background-color: #fae5bc;
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  min-height: 100vh;
+  padding: 50px 130px 60px;
+  width: 100%;
+}
+
+/* ── Герой ── */
+.create-exhibition-hero {
+  background-color: #fdf7da;
+  border-radius: 43px;
+  padding: 120px 100px;
+  position: relative;
+  text-align: center;
+  width: 100%;
+}
+
+.create-exhibition-hero-title {
+  color: #2a3f6d;
+  font-family: 'Balsamiq Sans', sans-serif;
+  font-size: 48px;
+  font-weight: 700;
+  letter-spacing: 0;
+  line-height: normal;
+  margin: 0;
+  position: relative;
+  z-index: 1;
+}
+
+.create-exhibition-hero-paws {
+  object-fit: cover;
+  position: absolute;
+  top: 33px;
+  height: 238px;
+  width: 61px;
+}
+
+.create-exhibition-hero-paws--left { left: 31px; }
+.create-exhibition-hero-paws--right { right: 31px; }
+
+/* ── Форма ── */
+.create-exhibition-form {
+  background-color: #fdf7da;
+  border-radius: 43px;
+  padding: 50px 80px;
+  width: 100%;
+}
+
+.create-exhibition-fields {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.create-exhibition-field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.create-exhibition-label {
+  color: #2a3f6d;
+  font-family: 'Balsamiq Sans', sans-serif;
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: 0;
+  line-height: normal;
+}
+
+.create-exhibition-input {
+  background-color: #fdf7da;
+  border: 2px solid #e0dcc8;
+  border-radius: 8px;
+  color: #2a3f6d;
+  font-family: 'Balsamiq Sans', sans-serif;
+  font-size: 20px;
+  font-weight: 400;
+  letter-spacing: 0;
+  line-height: normal;
+  padding: 14px 18px;
+  width: 100%;
+}
+
+.create-exhibition-input::placeholder { color: #bbc099; }
+.create-exhibition-input:focus { outline: none; border-color: #a36b3d; }
+.create-exhibition-input[type="date"] { color-scheme: light; }
+
+/* ── Ошибка / Успех ── */
+.create-exhibition-error {
+  color: #c0392b;
+  font-family: 'Balsamiq Sans', sans-serif;
+  font-size: 18px;
+  margin: 24px 0 0;
+  text-align: center;
+}
+
+.create-exhibition-success {
+  color: #27ae60;
+  font-family: 'Balsamiq Sans', sans-serif;
+  font-size: 18px;
+  margin: 24px 0 0;
+  text-align: center;
+}
+
+/* ── Кнопки ── */
+.create-exhibition-buttons {
+  display: flex;
+  gap: 24px;
+  justify-content: center;
+  margin-top: 40px;
+}
+
+.create-exhibition-submit {
+  background-color: #b9c1d4;
+  border: none;
+  border-radius: 11px;
+  color: #2a3f6d;
+  cursor: pointer;
+  font-family: 'Balsamiq Sans', sans-serif;
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: 0;
+  line-height: normal;
+  padding: 14px 48px;
+  text-align: center;
+  transition: transform 0.2s;
+}
+
+.create-exhibition-submit:hover { transform: translateY(-2px); }
+
+.create-exhibition-cancel {
+  background-color: transparent;
+  border: 2px solid #b9c1d4;
+  border-radius: 11px;
+  color: #2a3f6d;
+  cursor: pointer;
+  font-family: 'Balsamiq Sans', sans-serif;
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: 0;
+  line-height: normal;
+  padding: 12px 48px;
+  text-align: center;
+  transition: transform 0.2s;
+}
+
+.create-exhibition-cancel:hover { transform: translateY(-2px); }
+
+/* ── Ринги ── */
+.create-exhibition-rings {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.create-exhibition-ring-item {
+  align-items: center;
+  background-color: #fbe6bc;
+  border-radius: 8px;
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 16px;
+}
+
+.create-exhibition-ring-number {
+  color: #2a3f6d;
+  font-family: 'Balsamiq Sans', sans-serif;
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.create-exhibition-ring-remove {
+  background: none;
+  border: none;
+  color: #c0392b;
+  cursor: pointer;
+  font-size: 22px;
+  font-weight: 700;
+  line-height: 1;
+  padding: 0;
+}
+
+.create-exhibition-ring-remove:hover {
+  color: #a93226;
+}
+
+.create-exhibition-ring-add {
+  display: flex;
+  gap: 10px;
+}
+
+.create-exhibition-ring-input {
+  background-color: #fdf7da;
+  border: 2px solid #e0dcc8;
+  border-radius: 8px;
+  color: #2a3f6d;
+  flex: 1;
+  font-family: 'Balsamiq Sans', sans-serif;
+  font-size: 18px;
+  padding: 10px 14px;
+}
+
+.create-exhibition-ring-input:focus {
+  outline: none;
+  border-color: #a36b3d;
+}
+
+.create-exhibition-ring-add-btn {
+  background-color: #b9c1d4;
+  border: none;
+  border-radius: 8px;
+  color: #2a3f6d;
+  cursor: pointer;
+  font-family: 'Balsamiq Sans', sans-serif;
+  font-size: 18px;
+  font-weight: 700;
+  padding: 10px 20px;
+  transition: transform 0.2s;
+}
+
+.create-exhibition-ring-add-btn:hover {
+  transform: translateY(-2px);
+}

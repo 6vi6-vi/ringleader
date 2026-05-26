@@ -1,12 +1,13 @@
 import os
 import uuid
+from datetime import date, datetime, timezone
 from fastapi import APIRouter, Depends, HTTPException, status, UploadFile, File
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy import select
+from sqlalchemy import select, func
 from sqlalchemy.orm import joinedload
 
 from database import get_db
-from models import User, UserRole, Dog, Breed, Club, Exhibition
+from models import User, UserRole, Dog, Breed, Club, Exhibition, ExhibitionStatus, Ring, RingSpecialization, RingExpert, Expert
 from schemas import (
     UserRegister, UserLogin, TokenResponse, UserOut, UserUpdate, UserBlock,
     DogCreate, DogUpdate, DogOut,
@@ -24,6 +25,7 @@ dogs_router = APIRouter(prefix="/api/dogs", tags=["dogs"])
 breeds_router = APIRouter(prefix="/api/breeds", tags=["breeds"])
 clubs_router = APIRouter(prefix="/api/clubs", tags=["clubs"])
 exhibitions_router = APIRouter(prefix="/api/exhibitions", tags=["exhibitions"])
+participation_router = APIRouter(prefix="/api/participation", tags=["participation"])
 
 UPLOAD_DIR = "uploads/dogs"
 os.makedirs(UPLOAD_DIR, exist_ok=True)
@@ -73,7 +75,12 @@ async def login(data: UserLogin, db: AsyncSession = Depends(get_db)):
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Пользователь заблокирован")
 
     access_token = create_access_token(data={"sub": str(user.id)})
-    return TokenResponse(access_token=access_token, role=user.role, full_name=user.full_name)
+    return TokenResponse(
+        access_token=access_token,
+        role=user.role,
+        full_name=user.full_name,
+        avatar_url=user.avatar_url,  
+    )
 
 
 @auth_router.get("/me", response_model=UserOut)
@@ -443,31 +450,34 @@ async def get_all_clubs(db: AsyncSession = Depends(get_db)):
 # Выставки
 
 @exhibitions_router.get("")
-async def get_all_exhibitions(
-    status: str | None = None,
-    db: AsyncSession = Depends(get_db),
-):
-    query = select(Exhibition).options(joinedload(Exhibition.organizer))
-    if status:
-        try:
-            exhibition_status = ExhibitionStatus[status.upper()]
-            query = query.where(Exhibition.status == exhibition_status)
-        except KeyError:
-            pass  # игнорируем неверный статус
-    query = query.order_by(Exhibition.date.desc())
-    result = await db.execute(query)
+async def get_all_exhibitions(db: AsyncSession = Depends(get_db)):
+    result = await db.execute(
+        select(Exhibition)
+        .options(joinedload(Exhibition.organizer))
+        .order_by(Exhibition.date.asc())
+    )
     exhibitions = result.unique().scalars().all()
-    return [
-        {
+
+    data = []
+    for e in exhibitions:
+        count = await db.scalar(
+            select(func.count(ParticipationRequest.id)).where(
+                ParticipationRequest.exhibition_id == e.id,
+                ParticipationRequest.status == RequestStatus.APPROVED,
+            )
+        )
+        data.append({
             "id": e.id,
             "name": e.name,
             "date": str(e.date),
             "address": e.address,
             "status": e.status.value,
             "organizer_name": e.organizer.full_name if e.organizer else None,
-        }
-        for e in exhibitions
-    ]
+            "participants_count": count or 0,
+        })
+
+    return data
+    
 
 @dogs_router.get("/{dog_id}/exhibitions")
 async def get_dog_exhibitions(dog_id: int, db: AsyncSession = Depends(get_db)):
@@ -490,3 +500,203 @@ async def get_dog_exhibitions(dog_id: int, db: AsyncSession = Depends(get_db)):
         }
         for res, exhibition, ring in rows
     ]
+
+@exhibitions_router.post("", status_code=status.HTTP_201_CREATED)
+async def create_exhibition(
+    data: dict,
+    admin: User = Depends(get_admin_user),
+    db: AsyncSession = Depends(get_db),
+):
+    exhibition = Exhibition(
+        name=data["name"],
+        date=date.fromisoformat(data["date"]),
+        address=data.get("address"),
+        status=ExhibitionStatus.PLANNED,
+        organizer_id=admin.id,
+    )
+    db.add(exhibition)
+    await db.commit()
+    await db.refresh(exhibition)
+    return {
+        "id": exhibition.id,
+        "name": exhibition.name,
+        "date": str(exhibition.date),
+        "address": exhibition.address,
+        "status": exhibition.status.value,
+        "organizer_name": admin.full_name,
+    }
+
+@exhibitions_router.get("/{exhibition_id}")
+async def get_exhibition(
+    exhibition_id: int,
+    db: AsyncSession = Depends(get_db),
+):
+    result = await db.execute(
+        select(Exhibition)
+        .options(joinedload(Exhibition.organizer), joinedload(Exhibition.rings))
+        .where(Exhibition.id == exhibition_id)
+    )
+    exhibition = result.unique().scalar_one_or_none()
+    if not exhibition:
+        raise HTTPException(status_code=404, detail="Выставка не найдена")
+
+    # Количество участников (заявок)
+    participants_count = await db.scalar(
+        select(func.count(ParticipationRequest.id)).where(
+            ParticipationRequest.exhibition_id == exhibition_id,
+            ParticipationRequest.status == RequestStatus.APPROVED,
+        )
+    )
+
+    # Список участников
+    participants_result = await db.execute(
+        select(ParticipationRequest, Dog, Breed)
+        .join(Dog, ParticipationRequest.dog_id == Dog.id)
+        .join(Breed, Dog.breed_id == Breed.id)
+        .where(
+            ParticipationRequest.exhibition_id == exhibition_id,
+            ParticipationRequest.status == RequestStatus.APPROVED,
+        )
+    )
+    participants = [
+        {
+            "id": req.id,
+            "dog_id": dog.id,
+            "dog_name": dog.name,
+            "breed_name": breed.name,
+            "owner_name": dog.owner.full_name if dog.owner else None,
+            "club_name": dog.club.name if dog.club else None,
+        }
+        for req, dog, breed in participants_result
+    ]
+
+    return {
+        "id": exhibition.id,
+        "name": exhibition.name,
+        "date": str(exhibition.date),
+        "address": exhibition.address,
+        "status": exhibition.status.value,
+        "organizer_name": exhibition.organizer.full_name if exhibition.organizer else None,
+        "participants_count": participants_count or 0,
+        "rings": [{"id": r.id, "number": r.number} for r in exhibition.rings],
+        "participants": participants,
+    }
+
+
+@exhibitions_router.put("/{exhibition_id}")
+async def update_exhibition(
+    exhibition_id: int,
+    data: dict,
+    admin: User = Depends(get_admin_user),
+    db: AsyncSession = Depends(get_db),
+):
+    result = await db.execute(select(Exhibition).where(Exhibition.id == exhibition_id))
+    exhibition = result.scalar_one_or_none()
+    if not exhibition:
+        raise HTTPException(status_code=404, detail="Выставка не найдена")
+
+    if "name" in data:
+        exhibition.name = data["name"]
+    if "date" in data:
+        exhibition.date = date.fromisoformat(data["date"])
+    if "address" in data:
+        exhibition.address = data["address"]
+    if "status" in data:
+        exhibition.status = ExhibitionStatus(data["status"])
+
+    await db.commit()
+    await db.refresh(exhibition)
+    return {
+        "id": exhibition.id,
+        "name": exhibition.name,
+        "date": str(exhibition.date),
+        "address": exhibition.address,
+        "status": exhibition.status.value,
+    }
+
+
+@exhibitions_router.delete("/{exhibition_id}", status_code=204)
+async def delete_exhibition(
+    exhibition_id: int,
+    admin: User = Depends(get_admin_user),
+    db: AsyncSession = Depends(get_db),
+):
+    result = await db.execute(select(Exhibition).where(Exhibition.id == exhibition_id))
+    exhibition = result.scalar_one_or_none()
+    if not exhibition:
+        raise HTTPException(status_code=404, detail="Выставка не найдена")
+    await db.delete(exhibition)
+    await db.commit()
+
+
+# ── Ринги ──
+
+@exhibitions_router.get("/{exhibition_id}/rings")
+async def get_exhibition_rings(exhibition_id: int, db: AsyncSession = Depends(get_db)):
+    result = await db.execute(
+        select(Ring)
+        .options(joinedload(Ring.specializations).joinedload(RingSpecialization.breed))
+        .where(Ring.exhibition_id == exhibition_id)
+    )
+    rings = result.unique().scalars().all()
+    return [
+        {
+            "id": r.id,
+            "number": r.number,
+            "specializations": [
+                {"breed_id": s.breed_id, "breed_name": s.breed.name, "start_time": s.start_time}
+                for s in r.specializations
+            ],
+        }
+        for r in rings
+    ]
+
+
+@exhibitions_router.post("/{exhibition_id}/rings", status_code=201)
+async def create_ring(
+    exhibition_id: int,
+    data: dict,
+    admin: User = Depends(get_admin_user),
+    db: AsyncSession = Depends(get_db),
+):
+    ring = Ring(
+        exhibition_id=exhibition_id,
+        number=data["number"],
+    )
+    db.add(ring)
+    await db.commit()
+    await db.refresh(ring)
+    return {"id": ring.id, "number": ring.number}
+
+
+@exhibitions_router.put("/{exhibition_id}/rings/{ring_id}")
+async def update_ring(
+    exhibition_id: int,
+    ring_id: int,
+    data: dict,
+    admin: User = Depends(get_admin_user),
+    db: AsyncSession = Depends(get_db),
+):
+    result = await db.execute(select(Ring).where(Ring.id == ring_id, Ring.exhibition_id == exhibition_id))
+    ring = result.scalar_one_or_none()
+    if not ring:
+        raise HTTPException(status_code=404, detail="Ринг не найден")
+    if "number" in data:
+        ring.number = data["number"]
+    await db.commit()
+    return {"id": ring.id, "number": ring.number}
+
+
+@exhibitions_router.delete("/{exhibition_id}/rings/{ring_id}", status_code=204)
+async def delete_ring(
+    exhibition_id: int,
+    ring_id: int,
+    admin: User = Depends(get_admin_user),
+    db: AsyncSession = Depends(get_db),
+):
+    result = await db.execute(select(Ring).where(Ring.id == ring_id, Ring.exhibition_id == exhibition_id))
+    ring = result.scalar_one_or_none()
+    if not ring:
+        raise HTTPException(status_code=404, detail="Ринг не найден")
+    await db.delete(ring)
+    await db.commit()

@@ -1,18 +1,20 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import client from '../api/client';
 import useAuthStore from '../store/authStore';
 import pawsPatternLeft from '../images/left.png';
 import pawsPatternRight from '../images/right.png';
-import arrowDown from '../images/arrow-down.png';
 import './ExhibitionsPage.css';
 import LoginModal from '../components/LoginModal';
 import RegisterModal from '../components/RegisterModal';
 
 const ExhibitionsPage = () => {
-  const { isAuthenticated } = useAuthStore();
+  const { isAuthenticated, role } = useAuthStore();
+  const isAdmin = role === 'Admin';
+  const navigate = useNavigate();
 
   const [exhibitions, setExhibitions] = useState([]);
-  const [tab, setTab] = useState('upcoming'); // upcoming | past
+  const [tab, setTab] = useState('upcoming');
 
   const [isLoginOpen, setIsLoginOpen] = useState(false);
   const [isRegisterOpen, setIsRegisterOpen] = useState(false);
@@ -72,18 +74,28 @@ const ExhibitionsPage = () => {
       </section>
 
       <div className="exhibitions-tabs">
-        <button
-          className={`exhibitions-tab ${tab === 'upcoming' ? 'exhibitions-tab--active' : ''}`}
-          onClick={() => setTab('upcoming')}
-        >
-          Будущие
-        </button>
-        <button
-          className={`exhibitions-tab ${tab === 'past' ? 'exhibitions-tab--active' : ''}`}
-          onClick={() => setTab('past')}
-        >
-          Прошедшие
-        </button>
+        <div className="exhibitions-tabs-left">
+          <button
+            className={`exhibitions-tab ${tab === 'upcoming' ? 'exhibitions-tab--active' : ''}`}
+            onClick={() => setTab('upcoming')}
+          >
+            Будущие
+          </button>
+          <button
+            className={`exhibitions-tab ${tab === 'past' ? 'exhibitions-tab--active' : ''}`}
+            onClick={() => setTab('past')}
+          >
+            Прошедшие
+          </button>
+        </div>
+        {isAdmin && (
+          <button
+            className="exhibitions-add-btn"
+            onClick={() => navigate('/admin/exhibitions/create')}
+          >
+            Добавить выставку
+          </button>
+        )}
       </div>
 
       <div className="exhibitions-grid">

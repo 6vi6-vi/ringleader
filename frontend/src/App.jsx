@@ -10,6 +10,7 @@ import AddDogPage from './pages/AddDogPage';
 import DogDetailPage from './pages/DogDetailPage';
 import EditDogPage from './pages/EditDogPage';
 import ProfilePage from './pages/ProfilePage';
+import CreateExhibitionPage from './pages/CreateExhibitionPage';
 
 function App() {
   return (
@@ -26,6 +27,7 @@ function App() {
           <Route path="/dogs/:id" element={<DogDetailPage />} />
           <Route path="/dogs/:id/edit" element={<EditDogPage />} />
           <Route path="/profile" element={<ProfilePage />} />
+          <Route path="/admin/exhibitions/create" element={<CreateExhibitionPage />} />
         </Routes>
       </main>
       <Footer />

@@ -29,6 +29,7 @@ class TokenResponse(BaseModel):
     token_type: str = "bearer"
     role: UserRole
     full_name: str
+    avatar_url: str | None = None
 
 
 class UserOut(BaseModel):
