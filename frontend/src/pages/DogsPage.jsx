@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import client from '../api/client';
 import pawsPatternLeft from '../images/left.png';
 import pawsPatternRight from '../images/right.png';
@@ -8,6 +8,8 @@ import './DogsPage.css';
 import DogCard from '../components/DogCard';
 
 const DogsPage = () => {
+  const navigate = useNavigate();
+
   const [dogs, setDogs] = useState([]);
   const [breeds, setBreeds] = useState([]);
   const [clubs, setClubs] = useState([]);
@@ -228,9 +230,12 @@ const DogsPage = () => {
           </div>
         </div>
 
-        <Link to="/dogs/register" className="dogs-register-button">
+        <button
+          className="dogs-register-button"
+          onClick={() => navigate('/dogs/register', { state: { from: '/dogs' } })}
+        >
           Зарегистрировать собаку
-        </Link>
+        </button>
       </div>
 
       <div className="dogs-grid">

@@ -1,4 +1,4 @@
-import clubPlaceholder from '../images/avatar.jpg';
+import clubPlaceholder from '../images/avatar.png';
 import './ClubCard.css';
 
 const ClubCard = ({ club }) => {

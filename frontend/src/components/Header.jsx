@@ -2,7 +2,7 @@ import { useState, useRef, useEffect, useCallback } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import useAuthStore from '../store/authStore';
 import logo from '../images/logo.png';
-import avatarPlaceholder from '../images/avatar.jpg';
+import avatarPlaceholder from '../images/avatar.png';
 import bellIcon from '../images/bell.png';
 import './Header.css';
 import LoginModal from './LoginModal';
@@ -13,7 +13,7 @@ const Header = () => {
   const [isLoginOpen, setIsLoginOpen] = useState(false);
   const [isRegisterOpen, setIsRegisterOpen] = useState(false);
 
-  const { isAuthenticated, fullName, logout } = useAuthStore();
+  const { isAuthenticated, fullName, avatarUrl, logout } = useAuthStore();
   const location = useLocation();
 
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
@@ -114,7 +114,7 @@ const Header = () => {
                   </div>
                   <img
                     className="header-auth-avatar"
-                    src={avatarPlaceholder}
+                    src={avatarUrl || avatarPlaceholder}
                     alt="Аватар"
                   />
                 </button>

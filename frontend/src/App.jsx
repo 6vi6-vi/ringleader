@@ -9,6 +9,7 @@ import ClubsPage from './pages/ClubsPage';
 import AddDogPage from './pages/AddDogPage';
 import DogDetailPage from './pages/DogDetailPage';
 import EditDogPage from './pages/EditDogPage';
+import ProfilePage from './pages/ProfilePage';
 
 function App() {
   return (
@@ -24,6 +25,7 @@ function App() {
           <Route path="/dogs/register" element={<AddDogPage />} />
           <Route path="/dogs/:id" element={<DogDetailPage />} />
           <Route path="/dogs/:id/edit" element={<EditDogPage />} />
+          <Route path="/profile" element={<ProfilePage />} />
         </Routes>
       </main>
       <Footer />

@@ -1,6 +1,9 @@
+import { useNavigate } from 'react-router-dom';
 import './UserMenu.css';
 
 const UserMenu = ({ isOpen, onClose, onLogout }) => {
+  const navigate = useNavigate();
+
   if (!isOpen) return null;
 
   return (
@@ -11,7 +14,7 @@ const UserMenu = ({ isOpen, onClose, onLogout }) => {
           className="user-menu-item"
           onClick={() => {
             onClose();
-            // Здесь будет переход в личный кабинет
+            navigate('/profile');
           }}
         >
           Личный кабинет

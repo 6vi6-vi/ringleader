@@ -1,4 +1,4 @@
-import avatarPlaceholder from '../images/avatar.jpg';
+import avatarPlaceholder from '../images/avatar.png';
 import './ExpertCard.css';
 
 const ExpertCard = ({ expert }) => {

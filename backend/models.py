@@ -39,6 +39,7 @@ class User(Base):
     role: Mapped[UserRole] = mapped_column(Enum(UserRole), default=UserRole.USER, nullable=False)
     full_name: Mapped[str] = mapped_column(String(255), nullable=False)
     passport: Mapped[str] = mapped_column(String(50), nullable=False)
+    avatar_url: Mapped[str | None] = mapped_column(String(300), nullable=True)
     is_blocked: Mapped[bool] = mapped_column(default=False)
 
     dogs: Mapped[list["Dog"]] = relationship(back_populates="owner", foreign_keys="Dog.owner_id")

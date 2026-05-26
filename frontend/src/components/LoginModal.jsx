@@ -41,8 +41,8 @@ const LoginModal = ({ isOpen, onClose, onSwitchToRegister }) => {
         password,
       });
 
-      const { access_token, role, full_name } = response.data;
-      authLogin(access_token, role, full_name);
+      const { access_token, role, full_name, avatar_url } = response.data;
+      authLogin(access_token, role, full_name, avatar_url || null);
       onClose();
       navigate('/');
     } catch (err) {

@@ -28,10 +28,13 @@ exhibitions_router = APIRouter(prefix="/api/exhibitions", tags=["exhibitions"])
 UPLOAD_DIR = "uploads/dogs"
 os.makedirs(UPLOAD_DIR, exist_ok=True)
 
+UPLOAD_AVATARS_DIR = "uploads/avatars"
+os.makedirs(UPLOAD_AVATARS_DIR, exist_ok=True)
+
 
 #  Регистрация и вход
 
-@auth_router.post("/register", response_model=UserOut, status_code=status.HTTP_201_CREATED)
+@auth_router.post("/register", status_code=status.HTTP_201_CREATED)
 async def register(data: UserRegister, db: AsyncSession = Depends(get_db)):
     result = await db.execute(select(User).where(User.login == data.login))
     if result.scalar_one_or_none():
@@ -47,7 +50,15 @@ async def register(data: UserRegister, db: AsyncSession = Depends(get_db)):
     db.add(user)
     await db.commit()
     await db.refresh(user)
-    return user
+
+    access_token = create_access_token(data={"sub": str(user.id)})
+    return {
+        "access_token": access_token,
+        "token_type": "bearer",
+        "role": user.role,
+        "full_name": user.full_name,
+        "avatar_url": user.avatar_url,
+    }
 
 
 @auth_router.post("/login", response_model=TokenResponse)
@@ -124,6 +135,27 @@ async def update_user(
     await db.commit()
     await db.refresh(user)
     return user
+
+
+@users_router.post("/me/avatar")
+async def upload_avatar(
+    file: UploadFile = File(...),
+    current_user: User = Depends(get_current_user),
+    db: AsyncSession = Depends(get_db),
+):
+    ext = file.filename.split(".")[-1] if "." in (file.filename or "") else "jpg"
+    filename = f"{uuid.uuid4()}.{ext}"
+    filepath = os.path.join(UPLOAD_AVATARS_DIR, filename)
+
+    with open(filepath, "wb") as f:
+        f.write(await file.read())
+
+    avatar_url = f"/uploads/avatars/{filename}"
+    current_user.avatar_url = avatar_url
+    await db.commit()
+    await db.refresh(current_user)
+
+    return {"avatar_url": avatar_url}
 
 
 @users_router.post("/{user_id}/block", response_model=UserOut)
@@ -277,7 +309,7 @@ async def update_dog(
         dog.mother_name = data.mother_name
     if data.last_vaccination_date is not None:
         dog.last_vaccination_date = data.last_vaccination_date
-    if data.club_id is not None:
+    if "club_id" in data.model_dump(exclude_unset=True):
         dog.club_id = data.club_id
 
     await db.commit()

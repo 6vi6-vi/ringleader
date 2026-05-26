@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import client from '../api/client';
 import useAuthStore from '../store/authStore';
 import pawsPatternLeft from '../images/left.png';
@@ -11,6 +11,9 @@ import './AddDogPage.css';
 const AddDogPage = () => {
   const { isAuthenticated } = useAuthStore();
   const navigate = useNavigate();
+
+  const location = useLocation();
+  const from = location.state?.from || '/dogs';
 
   const [breeds, setBreeds] = useState([]);
   const [clubs, setClubs] = useState([]);
@@ -128,7 +131,7 @@ const AddDogPage = () => {
       }
 
       setSuccess('Собака успешно зарегистрирована!');
-      setTimeout(() => navigate('/dogs'), 800);
+      setTimeout(() => navigate(from), 600);
     } catch (err) {
       setError(err.response?.data?.detail || 'Ошибка при регистрации собаки');
     }
@@ -238,7 +241,7 @@ const AddDogPage = () => {
         {success && <p className="add-dog-success">{success}</p>}
 
         <div className="add-dog-buttons">
-            <button type="button" className="add-dog-cancel" onClick={() => navigate('/dogs')}>
+            <button type="button" className="add-dog-cancel" onClick={() => navigate(from)}>
                 Отмена
             </button>
             <button type="submit" className="add-dog-submit">

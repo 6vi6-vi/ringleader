@@ -37,6 +37,7 @@ class UserOut(BaseModel):
     role: UserRole
     full_name: str
     passport: str
+    avatar_url: str | None = None
     is_blocked: bool
 
     class Config:
