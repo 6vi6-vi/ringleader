@@ -2,8 +2,7 @@
   align-items: center;
   display: flex;
   justify-content: center;
-  margin: 20px auto 0;
-  max-width: 900px;
+  margin-top: -10px;
   width: 100%;
 }
 
@@ -12,7 +11,7 @@
   border: none;
   cursor: pointer;
   flex-shrink: 0;
-  padding: 0;
+  padding: 80px;
   transition: transform 0.2s;
 }
 
@@ -41,13 +40,66 @@
 .winners-carousel-breed {
   color: #2a3f6d;
   font-family: 'Balsamiq Sans', sans-serif;
-  font-size: 25px;
+  font-size: 22px;
   font-weight: 700;
-  margin-bottom: 20px;
+  margin: 0 0 10px;
 }
 
 .winners-carousel-cards {
   display: flex;
-  gap: 50px;
+  gap: 30px;
   justify-content: center;
+}
+
+.winners-carousel-card-wrapper {
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.winners-carousel-medal {
+  font-family: 'Balsamiq Sans', sans-serif;
+  font-size: 18px;
+  font-weight: 700;
+  text-align: center;
+}
+
+.winners-carousel-medal--place-1 { color: #d4a017; }
+.winners-carousel-medal--place-2 { color: #808080; }
+.winners-carousel-medal--place-3 { color: #8b4513; }
+
+.winners-carousel-card {
+  background-color: #fbe6bc;
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  padding: 16px;
+  transition: transform 0.2s;
+  width: 200px;
+}
+
+.winners-carousel-card:hover {
+  transform: translateY(-2px);
+}
+
+.winners-carousel-photo {
+  border-radius: 8px;
+  height: 150px;
+  object-fit: cover;
+  width: 100%;
+}
+
+.winners-carousel-dog-name {
+  color: #2a3f6d;
+  font-family: 'Balsamiq Sans', sans-serif;
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.winners-carousel-dog-owner {
+  color: #7f8c8d;
+  font-family: 'Balsamiq Sans', sans-serif;
+  font-size: 14px;
 }

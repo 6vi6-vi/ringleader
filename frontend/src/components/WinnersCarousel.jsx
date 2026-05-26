@@ -1,75 +1,74 @@
 import { useState } from 'react';
-import WinnerCard from './WinnerCard';
+import { useNavigate } from 'react-router-dom';
 import arrowLeft from '../images/arrow-left.png';
 import arrowRight from '../images/arrow-right.png';
-import photoPlaceholder from '../images/photo-placeholder.jpg';
+import dogPlaceholder from '../images/dog-placeholder.png';
 import './WinnersCarousel.css';
 
-const WinnersCarousel = () => {
+const WinnersCarousel = ({ breedsData }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
+  const navigate = useNavigate();
 
-  const breeds = [
-    {
-      breedName: 'Немецкая овчарка',
-      winners: [
-        { place: 1, name: 'Зефирка', owner: 'Орлова А. К.', photo: photoPlaceholder },
-        { place: 2, name: 'Принц', owner: 'Осипов М. Л.', photo: photoPlaceholder },
-        { place: 3, name: 'Аврора', owner: 'Кузнецов Д. В.', photo: photoPlaceholder },
-      ],
-    },
-    {
-      breedName: 'Лабрадор',
-      winners: [
-        { place: 1, name: 'Дана', owner: 'Федотов А. Т.', photo: photoPlaceholder },
-        { place: 2, name: 'Ларри', owner: 'Амвросов М. Д.', photo: photoPlaceholder },
-        { place: 3, name: 'Стелла', owner: 'Петрова Е. С.', photo: photoPlaceholder },
-      ],
-    },
-    {
-      breedName: 'Такса',
-      winners: [
-        { place: 1, name: 'Чиф', owner: 'Сидорова О. Н.', photo: photoPlaceholder },
-        { place: 2, name: 'Ханна', owner: 'Белов Р. Д.', photo: photoPlaceholder },
-        { place: 3, name: 'Мотя', owner: 'Иванов А. А.', photo: photoPlaceholder },
-      ],
-    },
-  ];
+  if (!breedsData || breedsData.length === 0) return null;
 
   const handlePrev = () => {
-    setCurrentIndex((prev) => (prev === 0 ? breeds.length - 1 : prev - 1));
+    setCurrentIndex((prev) => (prev === 0 ? breedsData.length - 1 : prev - 1));
   };
 
   const handleNext = () => {
-    setCurrentIndex((prev) => (prev === breeds.length - 1 ? 0 : prev + 1));
+    setCurrentIndex((prev) => (prev === breedsData.length - 1 ? 0 : prev + 1));
   };
 
-  const currentBreed = breeds[currentIndex];
+  const currentBreed = breedsData[currentIndex];
 
   return (
     <div className="winners-carousel">
-      <button
-        className="winners-carousel-arrow winners-carousel-arrow--left"
-        onClick={handlePrev}
-      >
-        <img src={arrowLeft} alt="Назад" />
-      </button>
+      {breedsData.length > 1 && (
+        <button
+          className="winners-carousel-arrow winners-carousel-arrow--left"
+          onClick={handlePrev}
+        >
+          <img src={arrowLeft} alt="Назад" />
+        </button>
+      )}
 
       <div className="winners-carousel-content">
         <h3 className="winners-carousel-breed">{currentBreed.breedName}</h3>
 
         <div className="winners-carousel-cards">
-          {currentBreed.winners.map((winner) => (
-            <WinnerCard key={winner.place} {...winner} />
-          ))}
+          {currentBreed.winners
+            .sort((a, b) => a.place - b.place)
+            .map((winner) => (
+              <div
+                key={winner.id}
+                className="winners-carousel-card-wrapper"
+                onClick={() => navigate(`/dogs/${winner.dog_id}`)}
+              >
+                <span className={`winners-carousel-medal winners-carousel-medal--place-${winner.place}`}>
+                  {winner.place} место
+                </span>
+                <div className="winners-carousel-card">
+                  <img
+                    className="winners-carousel-photo"
+                    src={winner.dog_photo_url || dogPlaceholder}
+                    alt={winner.dog_name}
+                  />
+                  <span className="winners-carousel-dog-name">{winner.dog_name}</span>
+                  <span className="winners-carousel-dog-owner">{winner.owner_name}</span>
+                </div>
+              </div>
+            ))}
         </div>
       </div>
 
-      <button
-        className="winners-carousel-arrow winners-carousel-arrow--right"
-        onClick={handleNext}
-      >
-        <img src={arrowRight} alt="Вперёд" />
-      </button>
+      {breedsData.length > 1 && (
+        <button
+          className="winners-carousel-arrow winners-carousel-arrow--right"
+          onClick={handleNext}
+        >
+          <img src={arrowRight} alt="Вперёд" />
+        </button>
+      )}
     </div>
   );
 };
