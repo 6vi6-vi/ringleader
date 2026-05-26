@@ -4,7 +4,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 
 from database import create_tables
-from routers import auth_router, users_router, dogs_router, breeds_router, clubs_router, exhibitions_router, participation_router
+from routers import auth_router, users_router, dogs_router, breeds_router, clubs_router, exhibitions_router, participation_router, results_router
 
 
 @asynccontextmanager
@@ -30,6 +30,7 @@ app.include_router(breeds_router)
 app.include_router(clubs_router)
 app.include_router(exhibitions_router)
 app.include_router(participation_router)
+app.include_router(results_router)
 
 app.mount("/uploads", StaticFiles(directory="uploads"), name="uploads")
 

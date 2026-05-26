@@ -34,21 +34,31 @@ const ExhibitionsPage = () => {
     fetchExhibitions();
   }, []);
 
-  const now = new Date();
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+
+  const todayExhibitions = exhibitions.filter((ex) => {
+    const exDate = new Date(ex.date);
+    exDate.setHours(0, 0, 0, 0);
+    return exDate.getTime() === today.getTime();
+  });
 
   const upcomingExhibitions = exhibitions.filter((ex) => {
     const exDate = new Date(ex.date);
-    exDate.setHours(23, 59, 59, 999);
-    return exDate >= now;
+    exDate.setHours(0, 0, 0, 0);
+    return exDate.getTime() > today.getTime();
   });
 
   const pastExhibitions = exhibitions.filter((ex) => {
     const exDate = new Date(ex.date);
-    exDate.setHours(23, 59, 59, 999);
-    return exDate < now;
+    exDate.setHours(0, 0, 0, 0);
+    return exDate.getTime() < today.getTime();
   });
 
-  const displayedExhibitions = tab === 'upcoming' ? upcomingExhibitions : pastExhibitions;
+  const displayedExhibitions =
+    tab === 'upcoming' ? upcomingExhibitions :
+    tab === 'today' ? todayExhibitions :
+    pastExhibitions;
 
   const formatDate = (dateStr) => {
     if (!dateStr) return '';
@@ -66,7 +76,7 @@ const ExhibitionsPage = () => {
   };
 
   const handleResultsClick = (exhibitionId) => {
-    // Открыть модалку с результатами
+    navigate(`/exhibitions/${exhibitionId}`);
   };
 
   return (
@@ -84,6 +94,12 @@ const ExhibitionsPage = () => {
             onClick={() => setTab('upcoming')}
           >
             Будущие
+          </button>
+          <button
+            className={`exhibitions-tab ${tab === 'today' ? 'exhibitions-tab--active' : ''}`}
+            onClick={() => setTab('today')}
+          >
+            Сегодня
           </button>
           <button
             className={`exhibitions-tab ${tab === 'past' ? 'exhibitions-tab--active' : ''}`}
@@ -128,7 +144,7 @@ const ExhibitionsPage = () => {
                 <span className="exhibition-card-value">{ex.participants_count || 0}</span>
               </p>
             </div>
-            {tab === 'upcoming' && (
+            {tab !== 'past' && (
               <button
                 className="exhibition-card-button"
                 onClick={(e) => {
@@ -154,7 +170,7 @@ const ExhibitionsPage = () => {
         ))}
         {displayedExhibitions.length === 0 && (
           <p className="exhibitions-empty">
-            {tab === 'upcoming' ? 'Нет предстоящих выставок' : 'Нет прошедших выставок'}
+            {tab === 'upcoming' ? 'Нет предстоящих выставок' : tab === 'today' ? 'Нет выставок на сегодня' : 'Нет прошедших выставок'}
           </p>
         )}
       </div>

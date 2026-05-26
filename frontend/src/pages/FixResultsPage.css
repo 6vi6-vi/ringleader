@@ -1,0 +1,264 @@
+/* ═══════════════════════════════════════════
+   СТРАНИЦА ФИКСАЦИИ РЕЗУЛЬТАТОВ
+   ═══════════════════════════════════════════ */
+
+.fix-results-page {
+  background-color: #fae5bc;
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  min-height: 100vh;
+  padding: 50px 130px 60px;
+  width: 100%;
+}
+
+.fix-results-loading {
+  color: #7f8c8d;
+  font-family: 'Balsamiq Sans', sans-serif;
+  font-size: 20px;
+  text-align: center;
+  margin-top: 100px;
+}
+
+/* ── Герой ── */
+.fix-results-hero {
+  background-color: #fdf7da;
+  border-radius: 43px;
+  padding: 120px 100px;
+  position: relative;
+  text-align: center;
+  width: 100%;
+}
+
+.fix-results-hero-title {
+  color: #2a3f6d;
+  font-family: 'Balsamiq Sans', sans-serif;
+  font-size: 48px;
+  font-weight: 700;
+  margin: 0;
+  position: relative;
+  z-index: 1;
+}
+
+.fix-results-hero-paws {
+  object-fit: cover;
+  position: absolute;
+  top: 33px;
+  height: 238px;
+  width: 61px;
+}
+
+.fix-results-hero-paws--left { left: 31px; }
+.fix-results-hero-paws--right { right: 31px; }
+
+/* ── Название выставки ── */
+.fix-results-exhibition-name {
+  color: #a36b3d;
+  font-family: 'Balsamiq Sans', sans-serif;
+  font-size: 22px;
+  margin-bottom: -15px;
+  margin-left: 5px;
+}
+
+.fix-results-exhibition-label {
+  color: #2a3f6d;
+  font-weight: 700;
+}
+
+/* ── Секции по породам ── */
+.fix-results-breeds {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+.fix-results-breed-section {
+  background-color: #fdf7da;
+  border-radius: 43px;
+  padding: 30px 40px;
+}
+
+.fix-results-breed-title {
+  color: #2a3f6d;
+  font-family: 'Balsamiq Sans', sans-serif;
+  font-size: 22px;
+  font-weight: 700;
+  margin: 0 0 20px;
+}
+
+/* ── Сетка карточек собак ── */
+.fix-results-dogs-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.fix-results-dog-card {
+  background-color: #fbe6bc;
+  border-radius: 12px;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 16px;
+  transition: transform 0.2s;
+  width: 180px;
+}
+
+.fix-results-dog-card:hover {
+  transform: translateY(-2px);
+}
+
+.fix-results-dog-photo {
+  border-radius: 8px;
+  height: 130px;
+  object-fit: cover;
+  width: 100%;
+}
+
+.fix-results-dog-name {
+  color: #2a3f6d;
+  font-family: 'Balsamiq Sans', sans-serif;
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.fix-results-dog-owner {
+  color: #a36b3d;
+  font-family: 'Balsamiq Sans', sans-serif;
+  font-size: 14px;
+}
+
+/* ── Кастомный селект места ── */
+.fix-results-place-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+.fix-results-place-select {
+  align-items: center;
+  background-color: #fdf7da;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  display: flex;
+  font-family: 'Balsamiq Sans', sans-serif;
+  font-size: 16px;
+  padding: 8px 10px;
+  width: 100%;
+}
+
+.fix-results-place-select--open {
+  border-radius: 5px 5px 0 0;
+}
+
+.fix-results-place-value {
+  color: #2a3f6d;
+  flex: 1;
+}
+
+.fix-results-place-arrow {
+  height: 16px;
+  margin-left: auto;
+  transition: transform 0.2s;
+  width: 16px;
+}
+
+.fix-results-place-select--open .fix-results-place-arrow {
+  transform: rotate(180deg);
+}
+
+.fix-results-place-dropdown {
+  background-color: #fdf7da;
+  border-radius: 0 0 5px 5px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  left: 0;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  position: absolute;
+  top: 100%;
+  width: 100%;
+  z-index: 10;
+}
+
+.fix-results-place-option {
+  color: #2a3f6d;
+  cursor: pointer;
+  font-family: 'Balsamiq Sans', sans-serif;
+  font-size: 16px;
+  padding: 8px 10px;
+  transition: background-color 0.2s;
+}
+
+.fix-results-place-option:hover {
+  background-color: #fbe6bc;
+}
+
+.fix-results-place-option--active {
+  background-color: #fbe6bc;
+  font-weight: 700;
+}
+
+/* ── Пустое состояние ── */
+.fix-results-empty {
+  color: #7f8c8d;
+  font-family: 'Balsamiq Sans', sans-serif;
+  font-size: 18px;
+}
+
+/* ── Ошибка / Успех ── */
+.fix-results-error {
+  color: #c0392b;
+  font-family: 'Balsamiq Sans', sans-serif;
+  font-size: 16px;
+  margin: 20px 0 0;
+  text-align: center;
+}
+
+.fix-results-success {
+  color: #27ae60;
+  font-family: 'Balsamiq Sans', sans-serif;
+  font-size: 16px;
+  margin: 20px 0 0;
+  text-align: center;
+}
+
+/* ── Кнопки ── */
+.fix-results-buttons {
+  display: flex;
+  gap: 7px;
+  justify-content: center;
+  margin-top: 30px;
+}
+
+.fix-results-submit {
+  background-color: #b9c1d4;
+  border: none;
+  border-radius: 11px;
+  color: #2a3f6d;
+  cursor: pointer;
+  font-family: 'Balsamiq Sans', sans-serif;
+  font-size: 20px;
+  font-weight: 700;
+  padding: 12px 36px;
+  transition: transform 0.2s;
+}
+
+.fix-results-submit:hover { transform: translateY(-2px); }
+
+.fix-results-cancel {
+  background: none;
+  border: 2px solid #b9c1d4;
+  border-radius: 11px;
+  color: #2a3f6d;
+  cursor: pointer;
+  font-family: 'Balsamiq Sans', sans-serif;
+  font-size: 20px;
+  font-weight: 700;
+  padding: 10px 36px;
+  transition: transform 0.2s;
+  margin-right: 20px;
+}
+
+.fix-results-cancel:hover { transform: translateY(-2px); }

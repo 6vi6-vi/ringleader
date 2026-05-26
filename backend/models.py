@@ -111,7 +111,6 @@ class Ring(Base):
     exhibition: Mapped["Exhibition"] = relationship(back_populates="rings")
     specializations: Mapped[list["RingSpecialization"]] = relationship(back_populates="ring")
     experts: Mapped[list["RingExpert"]] = relationship(back_populates="ring")
-    results: Mapped[list["Result"]] = relationship(back_populates="ring")
 
 
 class RingSpecialization(Base):
@@ -163,11 +162,12 @@ class Result(Base):
 
     id: Mapped[int] = mapped_column(Integer, primary_key=True, index=True)
     dog_id: Mapped[int] = mapped_column(Integer, ForeignKey("dogs.id"), nullable=False)
-    ring_id: Mapped[int] = mapped_column(Integer, ForeignKey("rings.id"), nullable=False)
+    exhibition_id: Mapped[int] = mapped_column(Integer, ForeignKey("exhibitions.id"), nullable=False)
     place: Mapped[int | None] = mapped_column(Integer, nullable=True)
 
     dog: Mapped["Dog"] = relationship()
-    ring: Mapped["Ring"] = relationship(back_populates="results")
+    exhibition: Mapped["Exhibition"] = relationship()
+
 
 
 class ClubRequest(Base):

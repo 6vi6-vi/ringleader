@@ -123,12 +123,6 @@ const Header = () => {
                     alt="Аватар"
                   />
                 </button>
-                <button
-                  className="header-auth-notifications"
-                  type="button"
-                >
-                  <img src={bellIcon} alt="Уведомления" />
-                </button>
                 <UserMenu
                   isOpen={isUserMenuOpen}
                   onClose={() => setIsUserMenuOpen(false)}

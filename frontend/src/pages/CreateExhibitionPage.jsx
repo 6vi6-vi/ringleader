@@ -30,6 +30,17 @@ const CreateExhibitionPage = () => {
 
     if (!name.trim()) { setError('Введите название выставки'); return; }
     if (!date) { setError('Выберите дату'); return; }
+
+    // Проверка на прошедшую дату
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    const selectedDate = new Date(date);
+    selectedDate.setHours(0, 0, 0, 0);
+    if (selectedDate < today) {
+      setError('Нельзя создать выставку на прошедшую дату');
+      return;
+    }
+
     if (ringsCount < 1 || ringsCount > 20) { setError('Количество рингов: от 1 до 20'); return; }
 
     try {
@@ -91,12 +102,12 @@ const CreateExhibitionPage = () => {
               onChange={(e) => {
                 const val = e.target.value;
                 if (val === '') {
-                    setRingsCount('');
+                  setRingsCount('');
                 } else {
-                    const num = parseInt(val);
-                    if (!isNaN(num)) setRingsCount(num);
+                  const num = parseInt(val);
+                  if (!isNaN(num)) setRingsCount(num);
                 }
-            }}
+              }}
               required
             />
           </div>

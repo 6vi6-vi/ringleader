@@ -13,6 +13,7 @@ import ProfilePage from './pages/ProfilePage';
 import CreateExhibitionPage from './pages/CreateExhibitionPage';
 import ExhibitionDetailPage from './pages/ExhibitionDetailPage';
 import RequestsPage from './pages/RequestsPage';
+import FixResultsPage from './pages/FixResultsPage';
 
 function App() {
   return (
@@ -32,6 +33,7 @@ function App() {
           <Route path="/admin/exhibitions/create" element={<CreateExhibitionPage />} />
           <Route path="/exhibitions/:id" element={<ExhibitionDetailPage />} />
           <Route path="/requests" element={<RequestsPage />} />
+          <Route path="/exhibitions/:id/fix-results" element={<FixResultsPage />} />
         </Routes>
       </main>
       <Footer />

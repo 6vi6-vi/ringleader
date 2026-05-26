@@ -4,8 +4,8 @@ import client from '../api/client';
 import useAuthStore from '../store/authStore';
 import pawsPatternLeft from '../images/left.png';
 import pawsPatternRight from '../images/right.png';
-import './ExhibitionDetailPage.css';
 import dogPlaceholder from '../images/dog-placeholder.png';
+import './ExhibitionDetailPage.css';
 
 const ExhibitionDetailPage = () => {
   const { id } = useParams();
@@ -19,6 +19,7 @@ const ExhibitionDetailPage = () => {
   const [form, setForm] = useState({ name: '', date: '', address: '', ringsCount: 1 });
   const [editError, setEditError] = useState('');
   const [editSuccess, setEditSuccess] = useState('');
+  const [showFixResults, setShowFixResults] = useState(false);
 
   useEffect(() => {
     fetchExhibition();
@@ -94,12 +95,21 @@ const ExhibitionDetailPage = () => {
   if (loading) return <div className="exhibition-detail-page"><p className="exhibition-detail-loading">Загрузка...</p></div>;
   if (!exhibition) return <div className="exhibition-detail-page"><p className="exhibition-detail-loading">Выставка не найдена</p></div>;
 
+  const isTodayOrPast = (dateStr) => {
+    if (!dateStr) return false;
+  const exDate = new Date(dateStr);
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  exDate.setHours(0, 0, 0, 0); // ← добавить обнуление времени
+  return exDate <= today;
+  };
+
   return (
     <div className="exhibition-detail-page">
       <section className="exhibition-detail-hero">
         <img className="exhibition-detail-hero-paws exhibition-detail-hero-paws--left" src={pawsPatternLeft} alt="" />
         <img className="exhibition-detail-hero-paws exhibition-detail-hero-paws--right" src={pawsPatternRight} alt="" />
-        <h1 className="exhibition-detail-hero-title">ПРОСМОТР ВЫСТАВКИ</h1>
+        <h1 className="exhibition-detail-hero-title">{exhibition.name}</h1>
       </section>
 
       {/* ── Информация ── */}
@@ -132,9 +142,7 @@ const ExhibitionDetailPage = () => {
               <label className="exhibition-detail-label">Количество рингов</label>
               <input
                 className="exhibition-detail-input"
-                type="number"
-                min="1"
-                max="20"
+                type="number" min="1" max="20"
                 value={form.ringsCount}
                 onChange={(e) => {
                   const val = e.target.value;
@@ -154,8 +162,8 @@ const ExhibitionDetailPage = () => {
         ) : (
           <div className="exhibition-detail-info">
             <div className="exhibition-detail-row">
-                <span className="exhibition-detail-info-label">Название:</span>
-                <span className="exhibition-detail-info-value">{exhibition.name}</span>
+              <span className="exhibition-detail-info-label">Название:</span>
+              <span className="exhibition-detail-info-value">{exhibition.name}</span>
             </div>
             <div className="exhibition-detail-row">
               <span className="exhibition-detail-info-label">Дата:</span>
@@ -183,7 +191,17 @@ const ExhibitionDetailPage = () => {
 
       {/* ── Участники ── */}
       <section className="exhibition-detail-section">
-        <h2 className="exhibition-detail-section-title">УЧАСТНИКИ</h2>
+        <div className="exhibition-detail-section-header">
+          <h2 className="exhibition-detail-section-title">УЧАСТНИКИ</h2>
+          {isAdmin && exhibition.participants?.length > 0 && isTodayOrPast(exhibition.date) && (
+            <button
+              className="exhibition-detail-edit-btn"
+              onClick={() => navigate(`/exhibitions/${id}/fix-results`)}
+            >
+              Зафиксировать результаты
+            </button>
+          )}
+        </div>
         {exhibition.participants?.length > 0 ? (
           <div className="exhibition-detail-participants">
             {exhibition.participants.map((p) => (

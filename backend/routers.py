@@ -32,6 +32,7 @@ breeds_router = APIRouter(prefix="/api/breeds", tags=["breeds"])
 clubs_router = APIRouter(prefix="/api/clubs", tags=["clubs"])
 exhibitions_router = APIRouter(prefix="/api/exhibitions", tags=["exhibitions"])
 participation_router = APIRouter(prefix="/api/participation", tags=["participation"])
+results_router = APIRouter(prefix="/api/results", tags=["results"])
 
 UPLOAD_DIR = "uploads/dogs"
 os.makedirs(UPLOAD_DIR, exist_ok=True)
@@ -642,3 +643,61 @@ async def reject_request(request_id: int, data: dict, admin: User = Depends(get_
     request.reject_reason = data.get("reason", "")
     await db.commit()
     return {"message": "Заявка отклонена"}
+
+
+# ══════════════════════════════════════════════
+#  RESULTS
+# ══════════════════════════════════════════════
+
+@results_router.get("/exhibition/{exhibition_id}")
+async def get_exhibition_results(exhibition_id: int, db: AsyncSession = Depends(get_db)):
+    result = await db.execute(
+        select(Result)
+        .where(Result.exhibition_id == exhibition_id)
+        .options(
+            joinedload(Result.dog).joinedload(Dog.breed),
+            joinedload(Result.dog).joinedload(Dog.owner),
+        )
+    )
+    results = result.unique().scalars().all()
+    return [
+        {
+            "id": r.id,
+            "dog_id": r.dog_id,
+            "dog_name": r.dog.name,
+            "breed_name": r.dog.breed.name if r.dog.breed else "",
+            "owner_name": r.dog.owner.full_name if r.dog.owner else "",
+            "place": r.place,
+        }
+        for r in results
+    ]
+
+
+@results_router.post("", status_code=201)
+async def create_result(
+    data: dict,
+    admin: User = Depends(get_admin_user),
+    db: AsyncSession = Depends(get_db),
+):
+    dog_id = data.get("dog_id")
+    exhibition_id = data.get("exhibition_id")
+    place = data.get("place")
+
+    if not dog_id or not exhibition_id:
+        raise HTTPException(status_code=400, detail="Укажите собаку и выставку")
+
+    existing = await db.execute(
+        select(Result).where(
+            Result.dog_id == dog_id,
+            Result.exhibition_id == exhibition_id,
+        )
+    )
+    existing_result = existing.scalar_one_or_none()
+
+    if existing_result:
+        existing_result.place = place
+    else:
+        db.add(Result(dog_id=dog_id, exhibition_id=exhibition_id, place=place))
+
+    await db.commit()
+    return {"message": "Результат сохранён"}
