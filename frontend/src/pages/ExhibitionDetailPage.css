@@ -1,0 +1,260 @@
+.exhibition-detail-page {
+  background-color: #fae5bc;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  min-height: 100vh;
+  padding: 50px 130px 60px;
+  width: 100%;
+}
+
+.exhibition-detail-loading {
+  color: #7f8c8d;
+  font-family: 'Balsamiq Sans', sans-serif;
+  font-size: 20px;
+  text-align: center;
+  margin-top: 100px;
+}
+
+.exhibition-detail-hero {
+  background-color: #fdf7da;
+  border-radius: 43px;
+  padding: 120px 100px;
+  position: relative;
+  text-align: center;
+  width: 100%;
+}
+
+.exhibition-detail-hero-title {
+  color: #2a3f6d;
+  font-family: 'Balsamiq Sans', sans-serif;
+  font-size: 48px;
+  font-weight: 700;
+  margin: 0;
+  position: relative;
+  z-index: 1;
+}
+
+.exhibition-detail-hero-paws {
+  object-fit: cover;
+  position: absolute;
+  top: 33px;
+  height: 238px;
+  width: 61px;
+}
+
+.exhibition-detail-hero-paws--left { left: 31px; }
+.exhibition-detail-hero-paws--right { right: 31px; }
+
+.exhibition-detail-back {
+  align-self: flex-start;
+  background: none;
+  border: none;
+  color: #a36b3d;
+  cursor: pointer;
+  font-family: 'Balsamiq Sans', sans-serif;
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.exhibition-detail-back:hover { color: #2a3f6d; }
+
+/* ── Секция ── */
+.exhibition-detail-section {
+  background-color: #fdf7da;
+  border-radius: 43px;
+  padding: 40px 60px;
+}
+
+.exhibition-detail-section-header {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 30px;
+}
+
+.exhibition-detail-section-title {
+  color: #2a3f6d;
+  font-family: 'Balsamiq Sans', sans-serif;
+  font-size: 24px;
+  font-weight: 700;
+  margin: 0;
+}
+
+/* ── Кнопки действий ── */
+.exhibition-detail-actions {
+  display: flex;
+  gap: 12px;
+}
+
+.exhibition-detail-edit-btn {
+  background-color: #b9c1d4;
+  border: none;
+  border-radius: 11px;
+  color: #2a3f6d;
+  cursor: pointer;
+  font-family: 'Balsamiq Sans', sans-serif;
+  font-size: 18px;
+  font-weight: 700;
+  padding: 10px 24px;
+  transition: transform 0.2s;
+}
+
+.exhibition-detail-edit-btn:hover { transform: translateY(-2px); }
+
+.exhibition-detail-delete-btn {
+  background: none;
+  border: 2px solid #8b4513;
+  border-radius: 11px;
+  color: #8b4513;
+  cursor: pointer;
+  font-family: 'Balsamiq Sans', sans-serif;
+  font-size: 18px;
+  font-weight: 700;
+  padding: 8px 24px;
+  transition: transform 0.2s;
+}
+
+.exhibition-detail-delete-btn:hover { transform: translateY(-2px); }
+
+/* ── Инфо-строки ── */
+.exhibition-detail-info {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.exhibition-detail-row {
+  display: flex;
+  gap: 12px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #e0dcc8;
+}
+
+.exhibition-detail-info-label {
+  color: #2a3f6d;
+  font-family: 'Balsamiq Sans', sans-serif;
+  font-size: 20px;
+  font-weight: 700;
+  min-width: 180px;
+}
+
+.exhibition-detail-info-value {
+  color: #a36b3d;
+  font-family: 'Balsamiq Sans', sans-serif;
+  font-size: 20px;
+}
+
+/* ── Форма редактирования ── */
+.exhibition-detail-edit-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.exhibition-detail-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.exhibition-detail-label {
+  color: #2a3f6d;
+  font-family: 'Balsamiq Sans', sans-serif;
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.exhibition-detail-input {
+  background-color: #fdf7da;
+  border: 2px solid #e0dcc8;
+  border-radius: 5px;
+  color: #2a3f6d;
+  font-family: 'Balsamiq Sans', sans-serif;
+  font-size: 18px;
+  padding: 10px 14px;
+  width: 100%;
+}
+
+.exhibition-detail-input:focus { outline: none; border-color: #a36b3d; }
+
+.exhibition-detail-buttons {
+  display: flex;
+  gap: 16px;
+  margin-top: 10px;
+}
+
+.exhibition-detail-save-btn {
+  background-color: #b9c1d4;
+  border: none;
+  border-radius: 11px;
+  color: #2a3f6d;
+  cursor: pointer;
+  font-family: 'Balsamiq Sans', sans-serif;
+  font-size: 20px;
+  font-weight: 700;
+  padding: 10px 30px;
+  transition: transform 0.2s;
+}
+
+.exhibition-detail-save-btn:hover { transform: translateY(-2px); }
+
+.exhibition-detail-cancel-btn {
+  background: none;
+  border: 2px solid #8b4513;
+  border-radius: 11px;
+  color: #8b4513;
+  cursor: pointer;
+  font-family: 'Balsamiq Sans', sans-serif;
+  font-size: 20px;
+  font-weight: 700;
+  padding: 8px 30px;
+  transition: transform 0.2s;
+}
+
+.exhibition-detail-cancel-btn:hover { transform: translateY(-2px); }
+
+.exhibition-detail-error { color: #c0392b; font-family: 'Balsamiq Sans', sans-serif; font-size: 14px; margin: 0; }
+.exhibition-detail-success { color: #27ae60; font-family: 'Balsamiq Sans', sans-serif; font-size: 14px; margin: 0; }
+
+/* ── Участники ── */
+.exhibition-detail-participants {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.exhibition-detail-participant-card {
+  background-color: #fbe6bc;
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 14px 20px;
+  width: 200px;
+}
+
+.exhibition-detail-participant-name {
+  color: #2a3f6d;
+  font-family: 'Balsamiq Sans', sans-serif;
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.exhibition-detail-participant-breed {
+  color: #a36b3d;
+  font-family: 'Balsamiq Sans', sans-serif;
+  font-size: 14px;
+}
+
+.exhibition-detail-participant-owner {
+  color: #7f8c8d;
+  font-family: 'Balsamiq Sans', sans-serif;
+  font-size: 14px;
+}
+
+.exhibition-detail-empty {
+  color: #7f8c8d;
+  font-family: 'Balsamiq Sans', sans-serif;
+  font-size: 18px;
+}

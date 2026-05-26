@@ -105,7 +105,7 @@ class Ring(Base):
     __tablename__ = "rings"
 
     id: Mapped[int] = mapped_column(Integer, primary_key=True, index=True)
-    exhibition_id: Mapped[int] = mapped_column(Integer, ForeignKey("exhibitions.id"), nullable=False)
+    exhibition_id: Mapped[int] = mapped_column(Integer, ForeignKey("exhibitions.id", ondelete="CASCADE"), nullable=False)
     number: Mapped[str] = mapped_column(String(50), nullable=False)
 
     exhibition: Mapped["Exhibition"] = relationship(back_populates="rings")

@@ -13,8 +13,7 @@ const CreateExhibitionPage = () => {
   const [name, setName] = useState('');
   const [date, setDate] = useState('');
   const [address, setAddress] = useState('');
-  const [rings, setRings] = useState([]);
-  const [newRingNumber, setNewRingNumber] = useState('');
+  const [ringsCount, setRingsCount] = useState(1);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
 
@@ -24,16 +23,6 @@ const CreateExhibitionPage = () => {
     }
   }, [isAuthenticated, role, navigate]);
 
-  const addRing = () => {
-    if (!newRingNumber.trim()) return;
-    setRings([...rings, { number: newRingNumber.trim() }]);
-    setNewRingNumber('');
-  };
-
-  const removeRing = (index) => {
-    setRings(rings.filter((_, i) => i !== index));
-  };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
@@ -41,9 +30,9 @@ const CreateExhibitionPage = () => {
 
     if (!name.trim()) { setError('Введите название выставки'); return; }
     if (!date) { setError('Выберите дату'); return; }
+    if (ringsCount < 1 || ringsCount > 20) { setError('Количество рингов: от 1 до 20'); return; }
 
     try {
-      // Создать выставку
       const res = await client.post('/exhibitions', {
         name: name.trim(),
         date,
@@ -52,10 +41,9 @@ const CreateExhibitionPage = () => {
 
       const exhibitionId = res.data.id;
 
-      // Создать ринги
-      for (const ring of rings) {
+      for (let i = 1; i <= ringsCount; i++) {
         await client.post(`/exhibitions/${exhibitionId}/rings`, {
-          number: ring.number,
+          number: `Ринг №${i}`,
         });
       }
 
@@ -91,32 +79,26 @@ const CreateExhibitionPage = () => {
             <input id="exAddress" className="create-exhibition-input" type="text" placeholder="Введите адрес (необязательно)" value={address} onChange={(e) => setAddress(e.target.value)} />
           </div>
 
-          {/* Ринги */}
           <div className="create-exhibition-field">
-            <label className="create-exhibition-label">Ринги</label>
-            <div className="create-exhibition-rings">
-              {rings.map((ring, i) => (
-                <div key={i} className="create-exhibition-ring-item">
-                  <span className="create-exhibition-ring-number">{ring.number}</span>
-                  <button type="button" className="create-exhibition-ring-remove" onClick={() => removeRing(i)}>
-                    &times;
-                  </button>
-                </div>
-              ))}
-              <div className="create-exhibition-ring-add">
-                <input
-                  className="create-exhibition-ring-input"
-                  type="text"
-                  placeholder="Номер ринга (например: Ринг №1)"
-                  value={newRingNumber}
-                  onChange={(e) => setNewRingNumber(e.target.value)}
-                  onKeyDown={(e) => { if (e.key === 'Enter') { e.preventDefault(); addRing(); } }}
-                />
-                <button type="button" className="create-exhibition-ring-add-btn" onClick={addRing}>
-                  Добавить
-                </button>
-              </div>
-            </div>
+            <label className="create-exhibition-label" htmlFor="exRings">Количество рингов</label>
+            <input
+              id="exRings"
+              className="create-exhibition-input"
+              type="number"
+              min="1"
+              max="20"
+              value={ringsCount}
+              onChange={(e) => {
+                const val = e.target.value;
+                if (val === '') {
+                    setRingsCount('');
+                } else {
+                    const num = parseInt(val);
+                    if (!isNaN(num)) setRingsCount(num);
+                }
+            }}
+              required
+            />
           </div>
         </div>
 

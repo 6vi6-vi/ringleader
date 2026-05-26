@@ -100,7 +100,11 @@ const ExhibitionsPage = () => {
 
       <div className="exhibitions-grid">
         {displayedExhibitions.map((ex) => (
-          <div key={ex.id} className="exhibition-card">
+          <div
+            key={ex.id}
+            className="exhibition-card"
+            onClick={() => navigate(`/exhibitions/${ex.id}`)}
+          >
             <div className="exhibition-card-header">
               <h3 className="exhibition-card-title">{ex.name}</h3>
             </div>
@@ -115,14 +119,30 @@ const ExhibitionsPage = () => {
                   <span className="exhibition-card-value">{ex.address}</span>
                 </p>
               )}
+              <p className="exhibition-card-row">
+                <span className="exhibition-card-label">Участников: </span>
+                <span className="exhibition-card-value">{ex.participants_count || 0}</span>
+              </p>
             </div>
             {tab === 'upcoming' && (
-              <button className="exhibition-card-button" onClick={handleApplyClick}>
+              <button
+                className="exhibition-card-button"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handleApplyClick(ex);
+                }}
+              >
                 Подать заявку
               </button>
             )}
             {tab === 'past' && (
-              <button className="exhibition-card-button" onClick={() => handleResultsClick(ex.id)}>
+              <button
+                className="exhibition-card-button"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handleResultsClick(ex.id);
+                }}
+              >
                 Посмотреть результаты
               </button>
             )}

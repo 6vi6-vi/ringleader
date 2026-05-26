@@ -7,7 +7,7 @@ from sqlalchemy import select, func
 from sqlalchemy.orm import joinedload
 
 from database import get_db
-from models import User, UserRole, Dog, Breed, Club, Exhibition, ExhibitionStatus, Ring, RingSpecialization, RingExpert, Expert
+from models import User, UserRole, Dog, Breed, Club, Exhibition, ExhibitionStatus, Ring, RingSpecialization, RingExpert, Expert, ParticipationRequest, RequestStatus
 from schemas import (
     UserRegister, UserLogin, TokenResponse, UserOut, UserUpdate, UserBlock,
     DogCreate, DogUpdate, DogOut,
@@ -477,7 +477,7 @@ async def get_all_exhibitions(db: AsyncSession = Depends(get_db)):
         })
 
     return data
-    
+
 
 @dogs_router.get("/{dog_id}/exhibitions")
 async def get_dog_exhibitions(dog_id: int, db: AsyncSession = Depends(get_db)):
@@ -625,6 +625,12 @@ async def delete_exhibition(
     exhibition = result.scalar_one_or_none()
     if not exhibition:
         raise HTTPException(status_code=404, detail="Выставка не найдена")
+
+    # Удалить ринги вручную
+    rings = await db.execute(select(Ring).where(Ring.exhibition_id == exhibition_id))
+    for ring in rings.scalars().all():
+        await db.delete(ring)
+
     await db.delete(exhibition)
     await db.commit()
 
