@@ -17,10 +17,6 @@ const ClubCard = ({ club }) => {
             <span className="club-card-value">{club.city || 'Не указан'}</span>
           </p>
           <p className="club-card-row">
-            <span className="club-card-label">Описание: </span>
-            <span className="club-card-value">{club.description || 'Нет описания'}</span>
-          </p>
-          <p className="club-card-row">
             <span className="club-card-label">Председатель: </span>
             <span className="club-card-value">
               {club.chairman_name || 'Не назначен'}

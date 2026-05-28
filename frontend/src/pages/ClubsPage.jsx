@@ -1,8 +1,9 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import client from '../api/client';
 import pawsPatternLeft from '../images/left.png';
 import pawsPatternRight from '../images/right.png';
+import arrowDown from '../images/arrow-down.png';
 import './ClubsPage.css';
 import ClubCard from '../components/ClubCard';
 import useAuthStore from '../store/authStore';
@@ -16,6 +17,10 @@ const ClubsPage = () => {
 
   const [clubs, setClubs] = useState([]);
   const [searchName, setSearchName] = useState('');
+  const [searchCity, setSearchCity] = useState('');
+  const [citySearch, setCitySearch] = useState('');
+  const [isCityOpen, setIsCityOpen] = useState(false);
+  const cityRef = useRef(null);
 
   const [isLoginOpen, setIsLoginOpen] = useState(false);
   const [isRegisterOpen, setIsRegisterOpen] = useState(false);
@@ -32,9 +37,31 @@ const ClubsPage = () => {
     fetchData();
   }, []);
 
-  const filteredClubs = clubs.filter((club) =>
-    club.name.toLowerCase().includes(searchName.toLowerCase())
-  );
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      if (cityRef.current && !cityRef.current.contains(e.target)) {
+        setIsCityOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
+  const cities = useMemo(() => {
+    const unique = [...new Set(clubs.map((c) => c.city).filter(Boolean))];
+    return unique.sort();
+  }, [clubs]);
+
+  const filteredCities = useMemo(() => {
+    if (!citySearch.trim()) return cities;
+    return cities.filter((c) => c.toLowerCase().includes(citySearch.toLowerCase()));
+  }, [cities, citySearch]);
+
+  const filteredClubs = clubs.filter((club) => {
+    const matchName = club.name.toLowerCase().includes(searchName.toLowerCase());
+    const matchCity = !searchCity || club.city === searchCity;
+    return matchName && matchCity;
+  });
 
   return (
     <div className="clubs-page">
@@ -57,6 +84,53 @@ const ClubsPage = () => {
                 onChange={(e) => setSearchName(e.target.value)}
               />
             </div>
+          </div>
+
+          <div className="clubs-filter" ref={cityRef}>
+            <label className="clubs-filter-label">Город</label>
+            <button
+              type="button"
+              className={`clubs-filter-select clubs-filter-select--clickable ${isCityOpen ? 'clubs-filter-select--open' : ''}`}
+              onClick={() => setIsCityOpen(!isCityOpen)}
+            >
+              {isCityOpen ? (
+                <input
+                  className="clubs-filter-search"
+                  type="text"
+                  placeholder="Поиск города..."
+                  value={citySearch}
+                  onChange={(e) => setCitySearch(e.target.value)}
+                  onClick={(e) => e.stopPropagation()}
+                />
+              ) : (
+                <span className="clubs-filter-value">
+                  {searchCity || 'Все города'}
+                </span>
+              )}
+              <img className="clubs-filter-arrow" src={arrowDown} alt="" />
+            </button>
+            {isCityOpen && (
+              <ul className="clubs-filter-dropdown">
+                <li
+                  className={`clubs-filter-option ${!searchCity ? 'clubs-filter-option--active' : ''}`}
+                  onClick={() => { setSearchCity(''); setCitySearch(''); setIsCityOpen(false); }}
+                >
+                  Все города
+                </li>
+                {filteredCities.map((city) => (
+                  <li
+                    key={city}
+                    className={`clubs-filter-option ${searchCity === city ? 'clubs-filter-option--active' : ''}`}
+                    onClick={() => { setSearchCity(city); setCitySearch(''); setIsCityOpen(false); }}
+                  >
+                    {city}
+                  </li>
+                ))}
+                {citySearch.trim() && filteredCities.length === 0 && (
+                  <li className="clubs-filter-option clubs-filter-option--empty">Ничего не найдено</li>
+                )}
+              </ul>
+            )}
           </div>
         </div>
 
