@@ -494,6 +494,35 @@ async def upload_club_logo(
     await db.commit()
     return {"logo_url": club.logo_url}
 
+
+@clubs_router.put("/{club_id}")
+async def update_club(
+    club_id: int,
+    data: dict,
+    admin: User = Depends(get_admin_user),
+    db: AsyncSession = Depends(get_db),
+):
+    result = await db.execute(select(Club).where(Club.id == club_id))
+    club = result.scalar_one_or_none()
+    if not club:
+        raise HTTPException(status_code=404, detail="Клуб не найден")
+
+    if "name" in data:
+        existing = await db.execute(select(Club).where(Club.name == data["name"], Club.id != club_id))
+        if existing.scalar_one_or_none():
+            raise HTTPException(status_code=409, detail="Клуб с таким названием уже существует")
+        club.name = data["name"]
+    if "city" in data:
+        club.city = data["city"]
+    if "chairman_name" in data:
+        club.chairman_name = data["chairman_name"]
+    if "description" in data:
+        club.description = data["description"]
+
+    await db.commit()
+    return {"id": club.id, "name": club.name, "city": club.city, "chairman_name": club.chairman_name, "description": club.description}
+
+
 # ══════════════════════════════════════════════
 #  EXHIBITIONS
 # ══════════════════════════════════════════════

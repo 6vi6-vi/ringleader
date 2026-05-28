@@ -15,6 +15,7 @@ import ExhibitionDetailPage from './pages/ExhibitionDetailPage';
 import RequestsPage from './pages/RequestsPage';
 import FixResultsPage from './pages/FixResultsPage';
 import CreateClubPage from './pages/CreateClubPage';
+import ClubDetailPage from './pages/ClubDetailPage';
 
 function App() {
   return (
@@ -36,6 +37,7 @@ function App() {
           <Route path="/requests" element={<RequestsPage />} />
           <Route path="/exhibitions/:id/fix-results" element={<FixResultsPage />} />
           <Route path="/admin/clubs/create" element={<CreateClubPage />} />
+          <Route path="/clubs/:id" element={<ClubDetailPage />} />
         </Routes>
       </main>
       <Footer />

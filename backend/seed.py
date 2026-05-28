@@ -7,7 +7,7 @@ from datetime import date
 
 
 async def seed():
-    await drop_tables()
+    #await drop_tables()
 
     await create_tables()
 

@@ -1,9 +1,12 @@
+import { useNavigate } from 'react-router-dom';
 import clubPlaceholder from '../images/club-placeholder.png';
 import './ClubCard.css';
 
 const ClubCard = ({ club }) => {
+  const navigate = useNavigate();
+
   return (
-    <div className="club-card">
+    <div className="club-card" onClick={() => navigate(`/clubs/${club.id}`)} style={{ cursor: 'pointer' }}>
       <h3 className="club-card-name">{club.name}</h3>
       <div className="club-card-body">
         <img
