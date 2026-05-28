@@ -7,7 +7,7 @@ from datetime import date
 
 
 async def seed():
-    #await drop_tables()
+    await drop_tables()
 
     await create_tables()
 
@@ -23,19 +23,6 @@ async def seed():
                 passport="1234 567890",
             )
             db.add(admin)
-
-        # Пользователи
-        for i in range(1, 4):
-            result = await db.execute(select(User).where(User.login == f"user{i}"))
-            if not result.scalar_one_or_none():
-                user = User(
-                    login=f"user{i}",
-                    password_hash=hash_password("password"),
-                    role=UserRole.USER,
-                    full_name=f"Пользователь {i}",
-                    passport=f"{1000 + i} {200000 + i:06d}",
-                )
-                db.add(user)
 
         await db.flush()
 
@@ -484,17 +471,6 @@ async def seed():
             result = await db.execute(select(Breed).where(Breed.name == name))
             if not result.scalar_one_or_none():
                 db.add(Breed(name=name))
-
-        # Клубы
-        clubs_data = [
-            ("Чёрный плащ", "Клуб служебных и охранных пород"),
-            ("Белый клык", "Клуб охотничьих пород"),
-            ("Золотой ринг", "Объединённый клуб декоративных пород"),
-        ]
-        for name, desc in clubs_data:
-            result = await db.execute(select(Club).where(Club.name == name))
-            if not result.scalar_one_or_none():
-                db.add(Club(name=name, description=desc))
                 
         await db.commit()
 

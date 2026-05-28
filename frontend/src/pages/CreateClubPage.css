@@ -1,0 +1,207 @@
+/* ═══════════════════════════════════════════
+   СТРАНИЦА СОЗДАНИЯ КЛУБА
+   ═══════════════════════════════════════════ */
+
+.create-club-page {
+  background-color: #fae5bc;
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  min-height: 100vh;
+  padding: 30px 130px 60px;
+  width: 100%;
+}
+
+/* ── Герой ── */
+.create-club-hero {
+  background-color: #fdf7da;
+  border-radius: 43px;
+  padding: 120px 100px;
+  position: relative;
+  text-align: center;
+  width: 100%;
+}
+
+.create-club-hero-title {
+  color: #2a3f6d;
+  font-family: 'Balsamiq Sans', sans-serif;
+  font-size: 48px;
+  font-weight: 700;
+  letter-spacing: 0;
+  line-height: normal;
+  margin: 0;
+  position: relative;
+  z-index: 1;
+}
+
+.create-club-hero-paws {
+  object-fit: cover;
+  position: absolute;
+  top: 33px;
+  height: 238px;
+  width: 61px;
+}
+
+.create-club-hero-paws--left { left: 31px; }
+.create-club-hero-paws--right { right: 31px; }
+
+/* ── Форма ── */
+.create-club-form {
+  background-color: #fdf7da;
+  border-radius: 43px;
+  padding: 40px 60px;
+  width: 100%;
+}
+
+.create-club-columns {
+  align-items: flex-start;
+  display: flex;
+  gap: 60px;
+}
+
+/* ── Левая колонка: логотип ── */
+.create-club-photo-section {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  flex-shrink: 0;
+  width: 200px;
+}
+
+.create-club-photo {
+  border-radius: 15px;
+  height: 180px;
+  object-fit: cover;
+  width: 180px;
+  margin-top: 5px;
+}
+
+.create-club-photo-button {
+  background-color: #b9c1d4;
+  border: none;
+  border-radius: 11px;
+  color: #2a3f6d;
+  cursor: pointer;
+  font-family: 'Balsamiq Sans', sans-serif;
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: 0;
+  line-height: normal;
+  padding: 10px 20px;
+  text-align: center;
+  transition: transform 0.2s;
+}
+
+.create-club-photo-button:hover {
+  transform: translateY(-2px);
+}
+
+/* ── Правая колонка: поля ── */
+.create-club-fields {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px 30px;
+  flex: 1;
+}
+
+.create-club-field {
+  position: relative;
+}
+
+.create-club-field--full {
+  grid-column: 1 / -1;
+}
+
+.create-club-label {
+  color: #2a3f6d;
+  display: block;
+  font-family: 'Balsamiq Sans', sans-serif;
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: 0;
+  line-height: normal;
+  margin-bottom: 6px;
+}
+
+.create-club-input {
+  background-color: #fdf7da;
+  border: 2px solid #e0dcc8;
+  border-radius: 5px;
+  color: #2a3f6d;
+  font-family: 'Balsamiq Sans', sans-serif;
+  font-size: 18px;
+  font-weight: 400;
+  letter-spacing: 0;
+  line-height: normal;
+  padding: 10px 14px;
+  width: 100%;
+}
+
+.create-club-input::placeholder { color: #bbc099; }
+.create-club-input:focus { outline: none; border-color: #a36b3d; }
+
+.create-club-textarea {
+  resize: vertical;
+}
+
+/* ── Ошибка / Успех ── */
+.create-club-error {
+  color: #c0392b;
+  font-family: 'Balsamiq Sans', sans-serif;
+  font-size: 16px;
+  margin: 20px 0 0;
+  text-align: center;
+}
+
+.create-club-success {
+  color: #27ae60;
+  font-family: 'Balsamiq Sans', sans-serif;
+  font-size: 16px;
+  margin: 20px 0 0;
+  text-align: center;
+}
+
+/* ── Кнопки ── */
+.create-club-buttons {
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+  margin-top: 30px;
+}
+
+.create-club-submit {
+  background-color: #b9c1d4;
+  border: none;
+  border-radius: 11px;
+  color: #2a3f6d;
+  cursor: pointer;
+  font-family: 'Balsamiq Sans', sans-serif;
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: 0;
+  line-height: normal;
+  padding: 12px 40px;
+  text-align: center;
+  transition: transform 0.2s;
+}
+
+.create-club-submit:hover { transform: translateY(-2px); }
+
+.create-club-cancel {
+  background-color: transparent;
+  border: 2px solid #b9c1d4;
+  border-radius: 11px;
+  color: #2a3f6d;
+  cursor: pointer;
+  font-family: 'Balsamiq Sans', sans-serif;
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: 0;
+  line-height: normal;
+  padding: 10px 40px;
+  text-align: center;
+  transition: transform 0.2s;
+}
+
+.create-club-cancel:hover { transform: translateY(-2px); }

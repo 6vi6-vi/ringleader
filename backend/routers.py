@@ -40,6 +40,9 @@ os.makedirs(UPLOAD_DIR, exist_ok=True)
 UPLOAD_AVATARS_DIR = "uploads/avatars"
 os.makedirs(UPLOAD_AVATARS_DIR, exist_ok=True)
 
+UPLOAD_CLUBS_DIR = "uploads/clubs"
+os.makedirs(UPLOAD_CLUBS_DIR, exist_ok=True)
+
 
 # ══════════════════════════════════════════════
 #  AUTH
@@ -445,8 +448,51 @@ async def delete_breed(breed_id: int, admin: User = Depends(get_admin_user), db:
 @clubs_router.get("")
 async def get_all_clubs(db: AsyncSession = Depends(get_db)):
     result = await db.execute(select(Club).order_by(Club.name))
-    return [{"id": c.id, "name": c.name, "description": c.description} for c in result.scalars().all()]
+    return [
+        {"id": c.id, "name": c.name, "city": c.city, "description": c.description, "chairman_name": c.chairman_name, "logo_url": c.logo_url}
+        for c in result.scalars().all()
+    ]
 
+@clubs_router.post("", status_code=201)
+async def create_club(data: dict, admin: User = Depends(get_admin_user), db: AsyncSession = Depends(get_db)):
+    existing = await db.execute(select(Club).where(Club.name == data["name"]))
+    if existing.scalar_one_or_none():
+        raise HTTPException(status_code=409, detail="Клуб с таким названием уже существует")
+
+    club = Club(
+        name=data["name"],
+        city=data.get("city"),
+        description=data.get("description"),
+        chairman_name=data.get("chairman_name"),
+    )
+    db.add(club)
+    await db.commit()
+    await db.refresh(club)
+    return {"id": club.id, "name": club.name, "city": club.city, "description": club.description, "chairman_name": club.chairman_name}
+
+
+@clubs_router.post("/{club_id}/logo")
+async def upload_club_logo(
+    club_id: int,
+    file: UploadFile = File(...),
+    admin: User = Depends(get_admin_user),
+    db: AsyncSession = Depends(get_db),
+):
+    result = await db.execute(select(Club).where(Club.id == club_id))
+    club = result.scalar_one_or_none()
+    if not club:
+        raise HTTPException(status_code=404, detail="Клуб не найден")
+
+    ext = file.filename.split(".")[-1] if "." in (file.filename or "") else "jpg"
+    filename = f"{uuid.uuid4()}.{ext}"
+    filepath = os.path.join(UPLOAD_CLUBS_DIR, filename)
+
+    with open(filepath, "wb") as f:
+        f.write(await file.read())
+
+    club.logo_url = f"/uploads/clubs/{filename}"
+    await db.commit()
+    return {"logo_url": club.logo_url}
 
 # ══════════════════════════════════════════════
 #  EXHIBITIONS

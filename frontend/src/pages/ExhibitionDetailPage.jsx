@@ -115,7 +115,7 @@ const ExhibitionDetailPage = () => {
       <section className="exhibition-detail-hero">
         <img className="exhibition-detail-hero-paws exhibition-detail-hero-paws--left" src={pawsPatternLeft} alt="" />
         <img className="exhibition-detail-hero-paws exhibition-detail-hero-paws--right" src={pawsPatternRight} alt="" />
-        <h1 className="exhibition-detail-hero-title">{exhibition.name}</h1>
+        <h1 className="exhibition-detail-hero-title">ПРОСМОТР ВЫСТАВКИ</h1>
       </section>
 
       {/* ── Информация ── */}
@@ -198,7 +198,7 @@ const ExhibitionDetailPage = () => {
       {/* ── Участники ── */}
       <section className="exhibition-detail-section">
         <div className="exhibition-detail-section-header">
-          <h2 className="exhibition-detail-section-title">УЧАСТНИКИ ({exhibition.participants?.length || 0})</h2>
+          <h2 className="exhibition-detail-section-title">УЧАСТНИКИ</h2>
           {isAdmin && exhibition.participants?.length > 0 && isTodayOrPast(exhibition.date) && (
             <button
               className="exhibition-detail-edit-btn"

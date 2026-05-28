@@ -14,7 +14,7 @@
   overflow: hidden;
   position: absolute;
   top: calc(100% + 18px);
-  right: 42px;
+  right: 0;
   width: 180px;
   z-index: 151;
 }

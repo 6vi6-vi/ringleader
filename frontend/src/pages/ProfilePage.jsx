@@ -76,7 +76,6 @@ const ProfilePage = () => {
       const currentAvatarUrl = avatarUrl || localStorage.getItem('avatarUrl');
       authLogin(token, role, editFullName.trim(), currentAvatarUrl);
 
-      setEditSuccess('Данные обновлены');
       setEditing(false);
     } catch (err) {
       setEditError(err.response?.data?.detail || 'Ошибка при обновлении данных');

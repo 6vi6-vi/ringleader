@@ -12,7 +12,6 @@ class UserRole(str, enum.Enum):
     GUEST = "Guest"
     USER = "User"
     EXPERT = "Expert"
-    CHAIRMAN = "Chairman"
     ADMIN = "Admin"
 
 
@@ -59,10 +58,11 @@ class Club(Base):
 
     id: Mapped[int] = mapped_column(Integer, primary_key=True, index=True)
     name: Mapped[str] = mapped_column(String(150), unique=True, nullable=False)
+    city: Mapped[str | None] = mapped_column(String(100), nullable=True)
     description: Mapped[str | None] = mapped_column(String(500), nullable=True)
-    chairman_id: Mapped[int | None] = mapped_column(Integer, ForeignKey("users.id"), nullable=True)
+    chairman_name: Mapped[str | None] = mapped_column(String(255), nullable=True)
+    logo_url: Mapped[str | None] = mapped_column(String(300), nullable=True)
 
-    chairman: Mapped["User | None"] = relationship(foreign_keys=[chairman_id])
     dogs: Mapped[list["Dog"]] = relationship(back_populates="club")
     experts: Mapped[list["Expert"]] = relationship(back_populates="club")
 

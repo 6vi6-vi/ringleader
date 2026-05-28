@@ -1,4 +1,5 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import client from '../api/client';
 import pawsPatternLeft from '../images/left.png';
 import pawsPatternRight from '../images/right.png';
@@ -9,7 +10,9 @@ import LoginModal from '../components/LoginModal';
 import RegisterModal from '../components/RegisterModal';
 
 const ClubsPage = () => {
-  const { isAuthenticated } = useAuthStore();
+  const { isAuthenticated, role } = useAuthStore();
+  const isAdmin = role === 'Admin';
+  const navigate = useNavigate();
 
   const [clubs, setClubs] = useState([]);
   const [searchName, setSearchName] = useState('');
@@ -33,27 +36,11 @@ const ClubsPage = () => {
     club.name.toLowerCase().includes(searchName.toLowerCase())
   );
 
-  const handleActionClick = () => {
-    if (isAuthenticated) {
-      // здесь будет открытие модалки подачи заявки на клуб
-    } else {
-      setIsLoginOpen(true);
-    }
-  };
-
   return (
     <div className="clubs-page">
       <section className="clubs-hero">
-        <img
-          className="clubs-hero-paws clubs-hero-paws--left"
-          src={pawsPatternLeft}
-          alt=""
-        />
-        <img
-          className="clubs-hero-paws clubs-hero-paws--right"
-          src={pawsPatternRight}
-          alt=""
-        />
+        <img className="clubs-hero-paws clubs-hero-paws--left" src={pawsPatternLeft} alt="" />
+        <img className="clubs-hero-paws clubs-hero-paws--right" src={pawsPatternRight} alt="" />
         <h1 className="clubs-hero-title">КЛУБЫ</h1>
       </section>
 
@@ -73,72 +60,32 @@ const ClubsPage = () => {
           </div>
         </div>
 
-        <button className="clubs-register-button" onClick={handleActionClick}>
-          Подать заявку на создание клуба
-        </button>
+        {isAdmin && (
+          <button className="clubs-register-button" onClick={() => navigate('/admin/clubs/create')}>
+            Добавить клуб
+          </button>
+        )}
       </div>
 
       <div className="clubs-grid">
-        <ClubCard
-          club={{
-            name: 'Чёрный плащ',
-            description: 'Клуб служебных и охранных пород',
-            chairman_name: 'Кириллов А. С.',
-          }}
-        />
-        <ClubCard
-          club={{
-            name: 'Белый клык',
-            description: 'Клуб охотничьих пород',
-            chairman_name: 'Петров П. П.',
-          }}
-        />
-        <ClubCard
-          club={{
-            name: 'Золотой ринг',
-            description: 'Объединённый клуб декоративных пород',
-            chairman_name: 'Сидорова А. В.',
-          }}
-        />
-        <ClubCard
-          club={{
-            name: 'Малахит',
-            description: 'Клуб спортивных и пастушьих пород',
-            chairman_name: 'Медведева О. Д.',
-          }}
-        />
-        <ClubCard
-          club={{
-            name: 'Северный ветер',
-            description: 'Клуб северных ездовых пород',
-            chairman_name: 'Кузнецов Д. М.',
-          }}
-        />
-        <ClubCard
-          club={{
-            name: 'Янтарный гребень',
-            description: 'Клуб терьеров и норных пород',
-            chairman_name: null,
-          }}
-        />
+        {filteredClubs.map((club) => (
+          <ClubCard key={club.id} club={club} />
+        ))}
+        {filteredClubs.length === 0 && (
+          <p className="clubs-empty">Клубы не найдены</p>
+        )}
       </div>
 
       <LoginModal
         isOpen={isLoginOpen}
         onClose={() => setIsLoginOpen(false)}
-        onSwitchToRegister={() => {
-          setIsLoginOpen(false);
-          setIsRegisterOpen(true);
-        }}
+        onSwitchToRegister={() => { setIsLoginOpen(false); setIsRegisterOpen(true); }}
       />
 
       <RegisterModal
         isOpen={isRegisterOpen}
         onClose={() => setIsRegisterOpen(false)}
-        onSwitchToLogin={() => {
-          setIsRegisterOpen(false);
-          setIsLoginOpen(true);
-        }}
+        onSwitchToLogin={() => { setIsRegisterOpen(false); setIsLoginOpen(true); }}
       />
     </div>
   );
