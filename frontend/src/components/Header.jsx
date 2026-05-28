@@ -19,7 +19,7 @@ const Header = () => {
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
   const userMenuRef = useRef(null);
 
-  const handleLogoClick = (e) => {
+  const handleHomeClick = (e) => {
     if (location.pathname === '/') {
       e.preventDefault();
       window.scrollTo({ top: 0, behavior: 'instant' });
@@ -64,12 +64,19 @@ const Header = () => {
           <Link
             to="/"
             className="header-logo"
-            onClick={handleLogoClick}
+            onClick={handleHomeClick}
           >
             <img src={logo} alt="Ringleader" className="header-logo-image" />
           </Link>
 
           <nav className="header-nav">
+            <Link
+              to="/"
+              className={`header-nav-item ${isActive('/') ? 'header-nav-item--active' : ''}`}
+              onClick={handleHomeClick}
+            >
+              ГЛАВНАЯ
+            </Link>
             <Link
               to="/exhibitions"
               className={`header-nav-item ${isActive('/exhibitions') ? 'header-nav-item--active' : ''}`}

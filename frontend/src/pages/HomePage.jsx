@@ -118,6 +118,13 @@ const HomePage = () => {
               winners,
             }))}
           />
+
+          <Link
+            to={`/exhibitions/${latestExhibition.id}`}
+            className="latest-results-button"
+          >
+            Подробнее
+          </Link>
         </section>
       )}
     </div>

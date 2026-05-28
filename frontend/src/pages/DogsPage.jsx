@@ -1,13 +1,17 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import client from '../api/client';
+import useAuthStore from '../store/authStore';
 import pawsPatternLeft from '../images/left.png';
 import pawsPatternRight from '../images/right.png';
 import arrowDown from '../images/arrow-down.png';
 import './DogsPage.css';
 import DogCard from '../components/DogCard';
+import LoginModal from '../components/LoginModal';
+import RegisterModal from '../components/RegisterModal';
 
 const DogsPage = () => {
+  const { isAuthenticated } = useAuthStore();
   const navigate = useNavigate();
 
   const [dogs, setDogs] = useState([]);
@@ -29,11 +33,18 @@ const DogsPage = () => {
   const breedInputRef = useRef(null);
   const clubInputRef = useRef(null);
 
+  const [isLoginOpen, setIsLoginOpen] = useState(false);
+  const [isRegisterOpen, setIsRegisterOpen] = useState(false);
+
   const fetchDogs = useCallback(async () => {
     try {
       const params = {};
       if (selectedBreed) params.breed_id = selectedBreed.id;
-      if (selectedClub) params.club_id = selectedClub.id;
+      if (selectedClub === 'none') {
+        params.club_id = 'null'; 
+      } else if (selectedClub) {
+        params.club_id = selectedClub.id;
+      }
       if (nameSearch.trim()) params.name = nameSearch.trim();
 
       const dogsRes = await client.get('/dogs', { params });
@@ -112,6 +123,14 @@ const DogsPage = () => {
     }
   };
 
+  const handleRegisterClick = () => {
+    if (isAuthenticated) {
+      navigate('/dogs/register', { state: { from: '/dogs' } });
+    } else {
+      setIsLoginOpen(true);
+    }
+  };
+
   return (
     <div className="dogs-page">
       <section className="dogs-hero">
@@ -187,7 +206,11 @@ const DogsPage = () => {
                 />
               ) : (
                 <span className="dogs-filter-value">
-                  {selectedClub ? selectedClub.name : 'Все клубы'}
+                  {selectedClub === null
+                    ? 'Все клубы'
+                    : selectedClub === 'none'
+                    ? 'Без клуба'
+                    : selectedClub.name}
                 </span>
               )}
               <img className="dogs-filter-arrow" src={arrowDown} alt="" />
@@ -195,10 +218,16 @@ const DogsPage = () => {
             {isClubOpen && (
               <ul className="dogs-filter-dropdown">
                 <li
-                  className={`dogs-filter-option ${!selectedClub ? 'dogs-filter-option--active' : ''}`}
+                  className={`dogs-filter-option ${selectedClub === null ? 'dogs-filter-option--active' : ''}`}
                   onClick={() => { setSelectedClub(null); setIsClubOpen(false); setClubSearch(''); }}
                 >
                   Все клубы
+                </li>
+                <li
+                  className={`dogs-filter-option ${selectedClub === 'none' ? 'dogs-filter-option--active' : ''}`}
+                  onClick={() => { setSelectedClub('none'); setIsClubOpen(false); setClubSearch(''); }}
+                >
+                  Без клуба
                 </li>
                 {filteredClubs.map((club) => (
                   <li
@@ -230,10 +259,7 @@ const DogsPage = () => {
           </div>
         </div>
 
-        <button
-          className="dogs-register-button"
-          onClick={() => navigate('/dogs/register', { state: { from: '/dogs' } })}
-        >
+        <button className="dogs-register-button" onClick={handleRegisterClick}>
           Зарегистрировать собаку
         </button>
       </div>
@@ -248,6 +274,24 @@ const DogsPage = () => {
           </p>
         )}
       </div>
+
+      <LoginModal
+        isOpen={isLoginOpen}
+        onClose={() => setIsLoginOpen(false)}
+        onSwitchToRegister={() => {
+          setIsLoginOpen(false);
+          setIsRegisterOpen(true);
+        }}
+      />
+
+      <RegisterModal
+        isOpen={isRegisterOpen}
+        onClose={() => setIsRegisterOpen(false)}
+        onSwitchToLogin={() => {
+          setIsRegisterOpen(false);
+          setIsLoginOpen(true);
+        }}
+      />
     </div>
   );
 };

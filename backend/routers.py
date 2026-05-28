@@ -240,17 +240,25 @@ def _dog_to_out(d: Dog) -> DogOut:
 async def get_all_dogs(
     breed_id: int | None = None,
     owner_id: int | None = None,
-    club_id: int | None = None,
+    club_id: str | None = None, 
     name: str | None = None,
     db: AsyncSession = Depends(get_db),
 ):
     query = select(Dog).options(joinedload(Dog.breed), joinedload(Dog.owner), joinedload(Dog.club))
-    if breed_id: query = query.where(Dog.breed_id == breed_id)
-    if owner_id: query = query.where(Dog.owner_id == owner_id)
-    if club_id: query = query.where(Dog.club_id == club_id)
-    if name: query = query.where(Dog.name.ilike(f"%{name}%"))
+    if breed_id:
+        query = query.where(Dog.breed_id == breed_id)
+    if owner_id:
+        query = query.where(Dog.owner_id == owner_id)
+    if club_id is not None:
+        if club_id == 'null':
+            query = query.where(Dog.club_id == None)
+        else:
+            query = query.where(Dog.club_id == int(club_id))
+    if name:
+        query = query.where(Dog.name.ilike(f"%{name}%"))
     result = await db.execute(query)
-    return [_dog_to_out(d) for d in result.unique().scalars().all()]
+    dogs = result.unique().scalars().all()
+    return [_dog_to_out(d) for d in dogs]
 
 
 @dogs_router.get("/{dog_id}", response_model=DogOut)
@@ -332,6 +340,40 @@ async def upload_dog_photo(
     dog.photo_url = f"/uploads/dogs/{filename}"
     await db.commit()
     return {"photo_url": dog.photo_url}
+
+
+@dogs_router.get("/{dog_id}/exhibitions")
+async def get_dog_exhibitions(dog_id: int, db: AsyncSession = Depends(get_db)):
+    # Заявки (одобренные)
+    requests_result = await db.execute(
+        select(ParticipationRequest, Exhibition)
+        .join(Exhibition, ParticipationRequest.exhibition_id == Exhibition.id)
+        .where(
+            ParticipationRequest.dog_id == dog_id,
+            ParticipationRequest.status == RequestStatus.APPROVED,
+        )
+    )
+    requests_rows = requests_result.all()
+
+    # Результаты (медали)
+    results_result = await db.execute(
+        select(Result, Exhibition)
+        .join(Exhibition, Result.exhibition_id == Exhibition.id)
+        .where(Result.dog_id == dog_id)
+    )
+    results_rows = results_result.all()
+
+    data = {}
+    for req, ex in requests_rows:
+        if ex.id not in data:
+            data[ex.id] = {"id": ex.id, "name": ex.name, "date": str(ex.date), "address": ex.address, "place": None}
+    for res, ex in results_rows:
+        if ex.id in data:
+            data[ex.id]["place"] = res.place
+        else:
+            data[ex.id] = {"id": ex.id, "name": ex.name, "date": str(ex.date), "address": ex.address, "place": res.place}
+
+    return sorted(data.values(), key=lambda x: x["date"], reverse=True)
 
 
 @dogs_router.delete("/{dog_id}", status_code=status.HTTP_204_NO_CONTENT)

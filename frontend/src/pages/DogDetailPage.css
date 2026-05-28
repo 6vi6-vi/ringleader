@@ -8,7 +8,7 @@
   flex-direction: column;
   gap: 32px;
   min-height: 100vh;
-  padding: 50px 130px 60px;
+  padding: 30px 130px 60px;
   width: 100%;
 }
 
@@ -68,13 +68,14 @@
   font-weight: 700;
   letter-spacing: 0;
   line-height: normal;
-  margin: 0 0 30px;
+  margin: 0 0 20px;
 }
 
 /* ── Карточка собаки ── */
 .dog-detail-card {
   display: flex;
-  gap: 50px;
+  gap: 40px;
+  margin-top: -10px;
 }
 
 .dog-detail-photo-section {
@@ -96,6 +97,7 @@
 }
 
 .dog-detail-row {
+  align-items: center;
   display: flex;
   gap: 8px;
   padding-bottom: 10px;
@@ -133,18 +135,25 @@
 
 /* ── Выставки ── */
 .dog-detail-exhibitions {
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
   gap: 16px;
+  width: 100%;
 }
 
 .dog-detail-exhibition-card {
   align-items: center;
   background-color: #fbe6bc;
   border-radius: 12px;
+  cursor: pointer;
   display: flex;
   justify-content: space-between;
   padding: 16px 24px;
+  transition: transform 0.2s;
+}
+
+.dog-detail-exhibition-card:hover {
+  transform: translateY(-2px);
 }
 
 .dog-detail-exhibition-name {
@@ -180,7 +189,7 @@
 
 .dog-detail-medal--place-1 { background-color: #fff8e1; color: #d4a017; }
 .dog-detail-medal--place-2 { background-color: #f0f0f0; color: #808080; }
-.dog-detail-medal--place-3 { background-color: #fbe6bc; color: #8b4513; }
+.dog-detail-medal--place-3 { background-color: #f9d0af; color: #8b4513; }
 
 .dog-detail-empty {
   color: #7f8c8d;

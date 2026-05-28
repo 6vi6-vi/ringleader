@@ -25,12 +25,14 @@ const DogDetailPage = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const [dogRes, userRes] = await Promise.all([
+        const [dogRes, userRes, exhibitionsRes] = await Promise.all([
           client.get(`/dogs/${id}`),
           isAuthenticated ? client.get('/auth/me') : Promise.resolve(null),
+          client.get(`/dogs/${id}/exhibitions`).catch(() => ({ data: [] })),
         ]);
         setDog(dogRes.data);
         if (userRes) setCurrentUser(userRes.data);
+        setExhibitions(exhibitionsRes.data || []);
       } catch (err) {
         console.error('Ошибка загрузки данных:', err);
       } finally {
@@ -179,11 +181,11 @@ const DogDetailPage = () => {
         {exhibitions.length > 0 ? (
           <div className="dog-detail-exhibitions">
             {exhibitions.map((ex) => (
-              <div key={ex.id} className="dog-detail-exhibition-card">
+              <div key={ex.id} className="dog-detail-exhibition-card" onClick={() => navigate(`/exhibitions/${ex.id}`)}>
                 <div className="dog-detail-exhibition-info">
                   <h3 className="dog-detail-exhibition-name">{ex.name}</h3>
                   <p className="dog-detail-exhibition-meta">
-                    {formatDate(ex.date)} &middot; {ex.address}
+                    {formatDate(ex.date)} — {ex.address}
                   </p>
                 </div>
                 {ex.place && (

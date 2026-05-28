@@ -155,17 +155,6 @@ const ExhibitionsPage = () => {
                 Подать заявку
               </button>
             )}
-            {tab === 'past' && (
-              <button
-                className="exhibition-card-button"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  handleResultsClick(ex.id);
-                }}
-              >
-                Посмотреть результаты
-              </button>
-            )}
           </div>
         ))}
         {displayedExhibitions.length === 0 && (
