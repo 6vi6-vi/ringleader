@@ -4,7 +4,6 @@ import Footer from './components/Footer';
 import HomePage from './pages/HomePage';
 import ExhibitionsPage from './pages/ExhibitionsPage';
 import DogsPage from './pages/DogsPage';
-import ExpertsPage from './pages/ExpertsPage';
 import ClubsPage from './pages/ClubsPage';
 import AddDogPage from './pages/AddDogPage';
 import DogDetailPage from './pages/DogDetailPage';
@@ -26,7 +25,6 @@ function App() {
           <Route path="/" element={<HomePage />} />
           <Route path="/exhibitions" element={<ExhibitionsPage />} />
           <Route path="/dogs" element={<DogsPage />} />
-          <Route path="/experts" element={<ExpertsPage />} />
           <Route path="/clubs" element={<ClubsPage />} />
           <Route path="/dogs/register" element={<AddDogPage />} />
           <Route path="/dogs/:id" element={<DogDetailPage />} />

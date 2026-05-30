@@ -35,7 +35,6 @@ const ExhibitionDetailPage = () => {
         address: res.data.address || '',
         ringsCount: res.data.rings?.length || 1,
       });
-
       try {
         const resultsRes = await client.get(`/results/exhibition/${id}`);
         setExhibitionResults(resultsRes.data);
@@ -51,18 +50,16 @@ const ExhibitionDetailPage = () => {
     e.preventDefault();
     setEditError('');
     setEditSuccess('');
-
     if (!form.name.trim()) { setEditError('Введите название'); return; }
     if (!form.date) { setEditError('Выберите дату'); return; }
+    if (!form.address.trim()) { setError('Введите адрес'); return; }
     if (form.ringsCount < 1 || form.ringsCount > 20) { setEditError('Количество рингов: от 1 до 20'); return; }
-
     try {
       await client.put(`/exhibitions/${id}`, {
         name: form.name.trim(),
         date: form.date,
         address: form.address.trim() || null,
       });
-
       const currentCount = exhibition.rings?.length || 0;
       if (form.ringsCount > currentCount) {
         for (let i = currentCount + 1; i <= form.ringsCount; i++) {
@@ -74,8 +71,6 @@ const ExhibitionDetailPage = () => {
           await client.delete(`/exhibitions/${id}/rings/${ring.id}`);
         }
       }
-
-      setEditSuccess('Изменения сохранены');
       setEditing(false);
       fetchExhibition();
     } catch (err) {
@@ -93,18 +88,30 @@ const ExhibitionDetailPage = () => {
     }
   };
 
+  const handleRemoveParticipant = async (requestId) => {
+    if (!window.confirm('Снять собаку с участия в выставке?')) return;
+    try {
+      await client.post(`/participation/${requestId}/remove`);
+      fetchExhibition();
+    } catch (err) {
+      alert('Ошибка при снятии с участия');
+    }
+  };
+
   const formatDate = (dateStr) => {
     if (!dateStr) return '';
     return new Date(dateStr).toLocaleDateString('ru-RU', { day: 'numeric', month: 'long', year: 'numeric' });
   };
 
-  const isTodayOrPast = (dateStr) => {
+  const isToday = (dateStr) => {
     if (!dateStr) return false;
     const exDate = new Date(dateStr);
     const today = new Date();
-    today.setHours(0, 0, 0, 0);
-    exDate.setHours(0, 0, 0, 0);
-    return exDate <= today;
+    return (
+      exDate.getFullYear() === today.getFullYear() &&
+      exDate.getMonth() === today.getMonth() &&
+      exDate.getDate() === today.getDate()
+    );
   };
 
   if (loading) return <div className="exhibition-detail-page"><p className="exhibition-detail-loading">Загрузка...</p></div>;
@@ -118,6 +125,8 @@ const ExhibitionDetailPage = () => {
         <h1 className="exhibition-detail-hero-title">ПРОСМОТР ВЫСТАВКИ</h1>
       </section>
 
+      <button className="exhibition-detail-back" onClick={() => navigate('/exhibitions')}>&larr; Назад</button>
+
       {/* ── Информация ── */}
       <section className="exhibition-detail-section">
         <div className="exhibition-detail-section-header">
@@ -129,7 +138,6 @@ const ExhibitionDetailPage = () => {
             </div>
           )}
         </div>
-
         {editing ? (
           <form className="exhibition-detail-edit-form" onSubmit={handleUpdate}>
             <div className="exhibition-detail-field">
@@ -142,7 +150,7 @@ const ExhibitionDetailPage = () => {
             </div>
             <div className="exhibition-detail-field">
               <label className="exhibition-detail-label">Адрес</label>
-              <input className="exhibition-detail-input" type="text" value={form.address} onChange={(e) => setForm({ ...form, address: e.target.value })} />
+              <input className="exhibition-detail-input" type="text" value={form.address} onChange={(e) => setForm({ ...form, address: e.target.value })} required />
             </div>
             <div className="exhibition-detail-field">
               <label className="exhibition-detail-label">Количество рингов</label>
@@ -198,12 +206,9 @@ const ExhibitionDetailPage = () => {
       {/* ── Участники ── */}
       <section className="exhibition-detail-section">
         <div className="exhibition-detail-section-header">
-          <h2 className="exhibition-detail-section-title">УЧАСТНИКИ</h2>
-          {isAdmin && exhibition.participants?.length > 0 && isTodayOrPast(exhibition.date) && (
-            <button
-              className="exhibition-detail-edit-btn"
-              onClick={() => navigate(`/exhibitions/${id}/fix-results`)}
-            >
+          <h2 className="exhibition-detail-section-title">УЧАСТНИКИ ({exhibition.participants?.length || 0})</h2>
+          {isAdmin && exhibition.participants?.length > 0 && isToday(exhibition.date) && (
+            <button className="exhibition-detail-edit-btn" onClick={() => navigate(`/exhibitions/${id}/fix-results`)}>
               Зафиксировать результаты
             </button>
           )}
@@ -216,6 +221,18 @@ const ExhibitionDetailPage = () => {
                 className="exhibition-participant-card"
                 onClick={() => navigate(`/dogs/${p.dog_id}`)}
               >
+                {isAdmin && isToday(exhibition.date) && (
+                  <button
+                    className="exhibition-participant-remove-btn"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleRemoveParticipant(p.id);
+                    }}
+                    title="Снять с участия"
+                  >
+                    &times;
+                  </button>
+                )}
                 <img
                   className="exhibition-participant-photo"
                   src={p.dog_photo_url || dogPlaceholder}
@@ -235,7 +252,7 @@ const ExhibitionDetailPage = () => {
       {/* ── Результаты ── */}
       {exhibitionResults.filter((r) => r.place).length > 0 && (
         <section className="exhibition-detail-section">
-          <h2 className="exhibition-detail-section-title">РЕЗУЛЬТАТЫ ВЫСТАВКИ</h2>
+          <h2 className="exhibition-detail-section-title">РЕЗУЛЬТАТЫ</h2>
           <div className="exhibition-results-breeds">
             {Object.entries(
               exhibitionResults
@@ -257,10 +274,7 @@ const ExhibitionDetailPage = () => {
                         <span className={`exhibition-results-medal exhibition-results-medal--place-${r.place}`}>
                           {r.place} место
                         </span>
-                        <div
-                          className="exhibition-participant-card"
-                          onClick={() => navigate(`/dogs/${r.dog_id}`)}
-                        >
+                        <div className="exhibition-participant-card" onClick={() => navigate(`/dogs/${r.dog_id}`)}>
                           <img
                             className="exhibition-participant-photo"
                             src={r.dog_photo_url || dogPlaceholder}

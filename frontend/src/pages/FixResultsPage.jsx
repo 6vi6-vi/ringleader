@@ -80,7 +80,7 @@ const FixResultsPage = () => {
         });
       }
       setSuccess('Результаты сохранены!');
-      setTimeout(() => navigate(`/exhibitions/${id}`), 1000);
+      setTimeout(() => navigate(`/exhibitions/${id}`), 500);
     } catch (err) {
       setError('Ошибка при сохранении результатов');
     }

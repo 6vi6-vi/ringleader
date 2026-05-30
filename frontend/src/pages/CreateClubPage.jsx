@@ -68,7 +68,7 @@ const CreateClubPage = () => {
       }
 
       setSuccess('Клуб создан!');
-      setTimeout(() => navigate('/clubs'), 800);
+      setTimeout(() => navigate('/clubs'), 500);
     } catch (err) {
       if (err.response?.status === 409) {
         setError('Клуб с таким названием уже существует');

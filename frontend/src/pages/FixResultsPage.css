@@ -124,7 +124,7 @@
 }
 
 .fix-results-dog-owner {
-  color: #a36b3d;
+  color: #7f8c8d;
   font-family: 'Balsamiq Sans', sans-serif;
   font-size: 14px;
 }
@@ -220,7 +220,7 @@
   color: #27ae60;
   font-family: 'Balsamiq Sans', sans-serif;
   font-size: 16px;
-  margin: 20px 0 0;
+  margin: 20px 0 -10px;
   text-align: center;
 }
 

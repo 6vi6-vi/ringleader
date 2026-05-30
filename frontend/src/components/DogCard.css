@@ -5,13 +5,17 @@
   flex-direction: column;
   gap: 12px;
   min-width: 0;
-  padding: 22px 30px 30px;
+  padding: 20px 30px 20px;
   transition: transform 0.2s;
   width: 100%;
 }
 
 .dog-card:hover {
   transform: translateY(-4px);
+}
+
+.dog-card--owner {
+  border: 4px solid #a36b3d;
 }
 
 .dog-card-name {
@@ -29,7 +33,7 @@
 }
 
 .dog-card-body {
-  align-items: center;
+  align-items: flex-start;
   display: flex;
   gap: 17px;
 }

@@ -55,9 +55,11 @@
   font-family: 'Balsamiq Sans', sans-serif;
   font-size: 20px;
   font-weight: 700;
+  margin: -15px 0;
+  transition: transform 0.2s;
 }
 
-.club-detail-back:hover { color: #2a3f6d; }
+.club-detail-back:hover { transform: translateX(-2px); }
 
 /* ── Секция ── */
 .club-detail-section {

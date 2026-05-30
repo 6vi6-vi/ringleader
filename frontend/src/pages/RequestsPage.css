@@ -119,7 +119,6 @@
 
 .request-card-label { color: #2a3f6d; font-weight: 700; }
 .request-card-value { color: #a36b3d; }
-.request-card-value--reject { color: #c0392b; }
 
 .request-card-actions {
   display: flex;
@@ -144,9 +143,9 @@
 
 .requests-reject-btn {
   background: none;
-  border: 2px solid #c0392b;
+  border: 2px solid #b9c1d4;
   border-radius: 11px;
-  color: #c0392b;
+  color: #2a3f6d;
   cursor: pointer;
   font-family: 'Balsamiq Sans', sans-serif;
   font-size: 18px;
@@ -167,12 +166,15 @@
   white-space: nowrap;
 }
 
-.requests-badge--pending { background-color: #fef5e7; color: #e67e22; }
-.requests-badge--approved { background-color: #eaf7ea; color: #27ae60; }
-.requests-badge--rejected { background-color: #fef0f0; color: #c0392b; }
+.requests-badge--pending { background-color: #ffe7ce; color: #e67e22; }
+.requests-badge--approved { background-color: #defdde; color: #27ae60; }
+.requests-badge--rejected { background-color: #ffdddd; color: #c0392b; }
 
 .requests-empty {
   color: #7f8c8d;
   font-family: 'Balsamiq Sans', sans-serif;
   font-size: 18px;
+  grid-column: 1 / -1;
+  text-align: center;
+  margin-top: 15px;
 }

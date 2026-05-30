@@ -47,7 +47,7 @@
   padding: 0;
   position: absolute;
   right: 12px;
-  top: 50%;
+  top: 25%;
   transform: translateY(-50%);
 }
 
@@ -174,11 +174,12 @@
 .apply-modal-no-dogs {
   color: #7f8c8d;
   font-family: 'Balsamiq Sans', sans-serif;
-  font-size: 16px;
+  font-size: 17px;
+  margin-top: -5px;
 }
 
 .apply-modal-no-dogs a {
-  color: #a36b3d;
+  color: #2a3f6d;
   font-weight: 700;
 }
 
@@ -194,7 +195,7 @@
   color: #27ae60;
   font-family: 'Balsamiq Sans', sans-serif;
   font-size: 14px;
-  margin: 0 0 12px;
+  margin: -10px 0 12px;
   text-align: center;
 }
 

@@ -53,6 +53,21 @@
   margin-top: 100px;
 }
 
+.dog-detail-back {
+  align-self: flex-start;
+  background: none;
+  border: none;
+  color: #a36b3d;
+  cursor: pointer;
+  font-family: 'Balsamiq Sans', sans-serif;
+  font-size: 20px;
+  font-weight: 700;
+  margin: -15px 0;
+  transition: transform 0.2s;
+}
+
+.dog-detail-back:hover { transform: translateX(-2px); }
+
 /* ── Секция ── */
 .dog-detail-section {
   background-color: #fdf7da;

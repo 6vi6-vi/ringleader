@@ -144,14 +144,8 @@ const ExhibitionsPage = () => {
                 <span className="exhibition-card-value">{ex.participants_count || 0}</span>
               </p>
             </div>
-            {tab !== 'past' && (
-              <button
-                className="exhibition-card-button"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  handleApplyClick(ex);
-                }}
-              >
+            {tab === 'upcoming' && (
+              <button className="exhibition-card-button" onClick={(e) => { e.stopPropagation(); handleApplyClick(ex); }}>
                 Подать заявку
               </button>
             )}

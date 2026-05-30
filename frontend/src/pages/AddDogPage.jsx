@@ -108,6 +108,17 @@ const AddDogPage = () => {
     if (!breedId) { setError('Выберите породу'); return; }
     if (!age || age < 0 || age > 30) { setError('Укажите возраст (от 0 до 30)'); return; }
 
+    if (lastVaccinationDate) {
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+      const vacDate = new Date(lastVaccinationDate);
+      vacDate.setHours(0, 0, 0, 0);
+      if (vacDate > today) {
+        setError('Дата прививки не может быть в будущем');
+        return;
+      }
+    }
+    
     try {
       const response = await client.post('/dogs', {
         name: name.trim(),
@@ -131,7 +142,7 @@ const AddDogPage = () => {
       }
 
       setSuccess('Собака успешно зарегистрирована!');
-      setTimeout(() => navigate(from), 600);
+      setTimeout(() => navigate(from), 500);
     } catch (err) {
       setError(err.response?.data?.detail || 'Ошибка при регистрации собаки');
     }

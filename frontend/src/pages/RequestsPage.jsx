@@ -13,8 +13,10 @@ const RequestsPage = () => {
 
   const [myRequests, setMyRequests] = useState([]);
   const [allRequests, setAllRequests] = useState([]);
+  const [currentUserId, setCurrentUserId] = useState(null);
   const [loading, setLoading] = useState(true);
   const [tab, setTab] = useState(isAdmin ? 'incoming' : 'my');
+  const [userFilter, setUserFilter] = useState('');
 
   useEffect(() => {
     if (!isAuthenticated) { navigate('/'); return; }
@@ -23,13 +25,16 @@ const RequestsPage = () => {
 
   const fetchData = async () => {
     try {
-      if (isAuthenticated) {
+      if (isAdmin) {
+        const [allRes, userRes] = await Promise.all([
+          client.get('/participation/all'),
+          client.get('/auth/me'),
+        ]);
+        setCurrentUserId(userRes.data.id);
+        setAllRequests(allRes.data.filter((r) => r.owner_id !== userRes.data.id));
+      } else {
         const myRes = await client.get('/participation/my');
         setMyRequests(myRes.data);
-      }
-      if (isAdmin) {
-        const allRes = await client.get('/participation/all');
-        setAllRequests(allRes.data);
       }
     } catch (err) {
       console.error('Ошибка загрузки заявок:', err);
@@ -49,7 +54,7 @@ const RequestsPage = () => {
 
   const handleReject = async (id) => {
     const reason = prompt('Укажите причину отклонения (необязательно):');
-    if (reason === null) return; // нажата отмена
+    if (reason === null) return;
     try {
       await client.post(`/participation/${id}/reject`, { reason: reason || '' });
       fetchData();
@@ -68,6 +73,14 @@ const RequestsPage = () => {
 
   if (loading) return <div className="requests-page"><p className="requests-loading">Загрузка...</p></div>;
 
+  const pendingMy = myRequests.filter((r) => r.status === 'Pending');
+  const approvedMy = myRequests.filter((r) => r.status === 'Approved');
+  const rejectedMy = myRequests.filter((r) => r.status === 'Rejected');
+
+  const displayedMy = userFilter
+    ? myRequests.filter((r) => r.status === userFilter)
+    : myRequests;
+
   return (
     <div className="requests-page">
       <section className="requests-hero">
@@ -76,13 +89,11 @@ const RequestsPage = () => {
         <h1 className="requests-hero-title">ЗАЯВКИ</h1>
       </section>
 
+      {/* Вкладки админа */}
       {isAdmin && (
         <div className="requests-tabs">
           <button className={`requests-tab ${tab === 'incoming' ? 'requests-tab--active' : ''}`} onClick={() => setTab('incoming')}>
             Входящие ({allRequests.filter((r) => r.status === 'Pending').length})
-          </button>
-          <button className={`requests-tab ${tab === 'my' ? 'requests-tab--active' : ''}`} onClick={() => setTab('my')}>
-            Мои ({myRequests.length})
           </button>
           <button className={`requests-tab ${tab === 'processed' ? 'requests-tab--active' : ''}`} onClick={() => setTab('processed')}>
             Обработанные ({allRequests.filter((r) => r.status !== 'Pending').length})
@@ -90,14 +101,36 @@ const RequestsPage = () => {
         </div>
       )}
 
+      {/* Фильтры пользователя */}
+      {!isAdmin && (
+        <div className="requests-tabs">
+          <button className={`requests-tab ${userFilter === 'Pending' ? 'requests-tab--active' : ''}`} onClick={() => setUserFilter('Pending')}>
+            На рассмотрении ({pendingMy.length})
+          </button>
+          <button className={`requests-tab ${userFilter === 'Approved' ? 'requests-tab--active' : ''}`} onClick={() => setUserFilter('Approved')}>
+            Одобренные ({approvedMy.length})
+          </button>
+          <button className={`requests-tab ${userFilter === 'Rejected' ? 'requests-tab--active' : ''}`} onClick={() => setUserFilter('Rejected')}>
+            Отклонённые ({rejectedMy.length})
+          </button>
+        </div>
+      )}
+
+      {/* Входящие (админ) */}
       {tab === 'incoming' && isAdmin && (
         <div className="requests-grid">
           {allRequests.filter((r) => r.status === 'Pending').length > 0 ? (
             allRequests.filter((r) => r.status === 'Pending').map((r) => (
               <div key={r.id} className="request-card">
                 <div className="request-card-header">
-                  <h3 className="request-card-name">{r.dog_name}</h3>
-                  <span className="requests-badge requests-badge--pending">На рассмотрении</span>
+                  <h3
+                    className="request-card-name"
+                    onClick={() => navigate(`/dogs/${r.dog_id}`)}
+                    style={{ cursor: 'pointer', textDecoration: 'underline' }}
+                  >
+                    {r.dog_name}
+                  </h3>
+                  {getStatusBadge(r.status)}
                 </div>
                 <div className="request-card-info">
                   <p className="request-card-row">
@@ -125,13 +158,20 @@ const RequestsPage = () => {
         </div>
       )}
 
+      {/* Обработанные (админ) */}
       {tab === 'processed' && isAdmin && (
         <div className="requests-grid">
           {allRequests.filter((r) => r.status !== 'Pending').length > 0 ? (
             allRequests.filter((r) => r.status !== 'Pending').map((r) => (
               <div key={r.id} className="request-card">
                 <div className="request-card-header">
-                  <h3 className="request-card-name">{r.dog_name}</h3>
+                  <h3
+                    className="request-card-name"
+                    onClick={() => navigate(`/dogs/${r.dog_id}`)}
+                    style={{ cursor: 'pointer', textDecoration: 'underline' }}
+                  >
+                    {r.dog_name}
+                  </h3>
                   {getStatusBadge(r.status)}
                 </div>
                 <div className="request-card-info">
@@ -147,10 +187,10 @@ const RequestsPage = () => {
                     <span className="request-card-label">Владелец: </span>
                     <span className="request-card-value">{r.owner_name}</span>
                   </p>
-                  {r.reject_reason && (
+                  {r.status === 'Rejected' && r.reject_reason && r.reject_reason !== 'Снят администратором' && (
                     <p className="request-card-row">
-                      <span className="request-card-label">Причина отказа: </span>
-                      <span className="request-card-value">{r.reject_reason}</span>
+                      <span className="request-card-label">Причина: </span>
+                      <span className="request-card-value request-card-value--reject">{r.reject_reason}</span>
                     </p>
                   )}
                 </div>
@@ -162,10 +202,11 @@ const RequestsPage = () => {
         </div>
       )}
 
-      {tab === 'my' && (
+      {/* Мои заявки (пользователь) */}
+      {!isAdmin && (
         <div className="requests-grid">
-          {myRequests.length > 0 ? (
-            myRequests.map((r) => (
+          {displayedMy.length > 0 ? (
+            displayedMy.map((r) => (
               <div key={r.id} className="request-card">
                 <div className="request-card-header">
                   <h3 className="request-card-name">{r.dog_name}</h3>
@@ -176,10 +217,10 @@ const RequestsPage = () => {
                     <span className="request-card-label">Выставка: </span>
                     <span className="request-card-value">{r.exhibition_name} ({new Date(r.exhibition_date).toLocaleDateString('ru-RU')})</span>
                   </p>
-                  {r.reject_reason && (
+                  {r.status === 'Rejected' && r.reject_reason && (
                     <p className="request-card-row">
                       <span className="request-card-label">Причина отказа: </span>
-                      <span className="request-card-value">{r.reject_reason}</span>
+                      <span className="request-card-value request-card-value--reject">{r.reject_reason}</span>
                     </p>
                   )}
                 </div>

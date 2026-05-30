@@ -161,6 +161,13 @@
   transform: translateY(-2px);
 }
 
+.upcoming-exhibitions-empty {
+  color: #7f8c8d;
+  font-family: 'Balsamiq Sans', sans-serif;
+  font-size: 18px;
+  margin-top: -5px;
+}
+
 /* ── Победители последней выставки ── */
 .latest-results {
   background-color: #fdf7da;

@@ -121,6 +121,17 @@ const EditDogPage = () => {
     if (!breedId) { setError('Выберите породу'); return; }
     if (!age || age < 0 || age > 30) { setError('Укажите возраст (от 0 до 30)'); return; }
 
+    if (lastVaccinationDate) {
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+      const vacDate = new Date(lastVaccinationDate);
+      vacDate.setHours(0, 0, 0, 0);
+      if (vacDate > today) {
+        setError('Дата прививки не может быть в будущем');
+        return;
+      }
+    }
+
     try {
       await client.put(`/dogs/${id}`, {
         name: name.trim(),
@@ -142,7 +153,7 @@ const EditDogPage = () => {
       }
 
       setSuccess('Данные обновлены!');
-      setTimeout(() => navigate(`/dogs/${id}`), 800);
+      setTimeout(() => navigate(`/dogs/${id}`, { state: { from: 'edit' } }), 500);
     } catch (err) {
       setError(err.response?.data?.detail || 'Ошибка при обновлении данных');
     }
@@ -158,17 +169,14 @@ const EditDogPage = () => {
 
   return (
     <div className="edit-dog-page">
-      {/* ── Герой ── */}
       <section className="edit-dog-hero">
         <img className="edit-dog-hero-paws edit-dog-hero-paws--left" src={pawsPatternLeft} alt="" />
         <img className="edit-dog-hero-paws edit-dog-hero-paws--right" src={pawsPatternRight} alt="" />
         <h1 className="edit-dog-hero-title">РЕДАКТИРОВАНИЕ ПРОФИЛЯ</h1>
       </section>
 
-      {/* ── Форма ── */}
       <form className="edit-dog-form" onSubmit={handleSubmit}>
         <div className="edit-dog-columns">
-          {/* Левая колонка — фото */}
           <div className="edit-dog-photo-section">
             <img
               className="edit-dog-photo"
@@ -181,7 +189,6 @@ const EditDogPage = () => {
             </label>
           </div>
 
-          {/* Правая колонка — поля */}
           <div className="edit-dog-fields">
             <div className="edit-dog-field">
               <label className="edit-dog-label" htmlFor="dogName">Кличка</label>

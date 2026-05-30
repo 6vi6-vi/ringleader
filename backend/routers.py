@@ -9,8 +9,7 @@ from sqlalchemy.orm import joinedload
 from database import get_db
 from models import (
     User, UserRole, Dog, Breed, Club, Exhibition, ExhibitionStatus,
-    Ring, RingSpecialization, RingExpert, Expert,
-    ParticipationRequest, RequestStatus, Result,
+    Ring, RingSpecialization, ParticipationRequest, RequestStatus, Result,
 )
 from schemas import (
     UserRegister, UserLogin, TokenResponse, UserOut, UserUpdate, UserBlock,
@@ -243,7 +242,7 @@ def _dog_to_out(d: Dog) -> DogOut:
 async def get_all_dogs(
     breed_id: int | None = None,
     owner_id: int | None = None,
-    club_id: str | None = None, 
+    club_id: str | None = None,
     name: str | None = None,
     db: AsyncSession = Depends(get_db),
 ):
@@ -347,18 +346,17 @@ async def upload_dog_photo(
 
 @dogs_router.get("/{dog_id}/exhibitions")
 async def get_dog_exhibitions(dog_id: int, db: AsyncSession = Depends(get_db)):
-    # Заявки (одобренные)
     requests_result = await db.execute(
         select(ParticipationRequest, Exhibition)
         .join(Exhibition, ParticipationRequest.exhibition_id == Exhibition.id)
         .where(
             ParticipationRequest.dog_id == dog_id,
             ParticipationRequest.status == RequestStatus.APPROVED,
+            ParticipationRequest.is_removed == False,
         )
     )
     requests_rows = requests_result.all()
 
-    # Результаты (медали)
     results_result = await db.execute(
         select(Result, Exhibition)
         .join(Exhibition, Result.exhibition_id == Exhibition.id)
@@ -391,9 +389,15 @@ async def delete_dog(
     if current_user.role != UserRole.ADMIN and dog.owner_id != current_user.id:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Доступ запрещён")
 
+    # Проверить, есть ли активные (не удалённые) результаты
     res = await db.execute(select(Result).where(Result.dog_id == dog_id))
     if res.scalar_one_or_none():
         raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="Нельзя удалить собаку, у которой есть результаты выступлений")
+
+    # Удалить заявки собаки
+    requests = await db.execute(select(ParticipationRequest).where(ParticipationRequest.dog_id == dog_id))
+    for req in requests.scalars().all():
+        await db.delete(req)
 
     await db.delete(dog)
     await db.commit()
@@ -523,6 +527,20 @@ async def update_club(
     return {"id": club.id, "name": club.name, "city": club.city, "chairman_name": club.chairman_name, "description": club.description}
 
 
+@clubs_router.delete("/{club_id}", status_code=204)
+async def delete_club(
+    club_id: int,
+    admin: User = Depends(get_admin_user),
+    db: AsyncSession = Depends(get_db),
+):
+    result = await db.execute(select(Club).where(Club.id == club_id))
+    club = result.scalar_one_or_none()
+    if not club:
+        raise HTTPException(status_code=404, detail="Клуб не найден")
+    await db.delete(club)
+    await db.commit()
+
+
 # ══════════════════════════════════════════════
 #  EXHIBITIONS
 # ══════════════════════════════════════════════
@@ -539,6 +557,7 @@ async def get_all_exhibitions(db: AsyncSession = Depends(get_db)):
             select(func.count(ParticipationRequest.id)).where(
                 ParticipationRequest.exhibition_id == e.id,
                 ParticipationRequest.status == RequestStatus.APPROVED,
+                ParticipationRequest.is_removed == False,
             )
         )
         data.append({
@@ -562,6 +581,7 @@ async def get_exhibition(exhibition_id: int, db: AsyncSession = Depends(get_db))
         select(func.count(ParticipationRequest.id)).where(
             ParticipationRequest.exhibition_id == exhibition_id,
             ParticipationRequest.status == RequestStatus.APPROVED,
+            ParticipationRequest.is_removed == False,
         )
     )
     participants_result = await db.execute(
@@ -575,6 +595,7 @@ async def get_exhibition(exhibition_id: int, db: AsyncSession = Depends(get_db))
         .where(
             ParticipationRequest.exhibition_id == exhibition_id,
             ParticipationRequest.status == RequestStatus.APPROVED,
+            ParticipationRequest.is_removed == False,
         )
     )
     participants = [
@@ -629,13 +650,30 @@ async def update_exhibition(exhibition_id: int, data: dict, admin: User = Depend
 
 
 @exhibitions_router.delete("/{exhibition_id}", status_code=204)
-async def delete_exhibition(exhibition_id: int, admin: User = Depends(get_admin_user), db: AsyncSession = Depends(get_db)):
+async def delete_exhibition(
+    exhibition_id: int,
+    admin: User = Depends(get_admin_user),
+    db: AsyncSession = Depends(get_db),
+):
     result = await db.execute(select(Exhibition).where(Exhibition.id == exhibition_id))
     exhibition = result.scalar_one_or_none()
-    if not exhibition: raise HTTPException(status_code=404, detail="Выставка не найдена")
+    if not exhibition:
+        raise HTTPException(status_code=404, detail="Выставка не найдена")
+
+    results = await db.execute(select(Result).where(Result.exhibition_id == exhibition_id))
+    for r in results.scalars().all():
+        await db.delete(r)
+
+    requests = await db.execute(
+        select(ParticipationRequest).where(ParticipationRequest.exhibition_id == exhibition_id)
+    )
+    for req in requests.scalars().all():
+        await db.delete(req)
+
     rings = await db.execute(select(Ring).where(Ring.exhibition_id == exhibition_id))
     for ring in rings.scalars().all():
         await db.delete(ring)
+
     await db.delete(exhibition)
     await db.commit()
 
@@ -673,14 +711,18 @@ async def delete_ring(exhibition_id: int, ring_id: int, admin: User = Depends(ge
 # ══════════════════════════════════════════════
 
 @participation_router.post("", status_code=201)
-async def create_participation_request(data: dict, current_user: User = Depends(get_current_user), db: AsyncSession = Depends(get_db)):
+async def create_participation_request(
+    data: dict,
+    current_user: User = Depends(get_current_user),
+    db: AsyncSession = Depends(get_db),
+):
     dog_id = data.get("dog_id")
     exhibition_id = data.get("exhibition_id")
     if not dog_id or not exhibition_id:
         raise HTTPException(status_code=400, detail="Укажите собаку и выставку")
 
     dog = await db.get(Dog, dog_id)
-    if not dog or dog.owner_id != current_user.id:
+    if not dog or (current_user.role != UserRole.ADMIN and dog.owner_id != current_user.id):
         raise HTTPException(status_code=403, detail="Это не ваша собака")
 
     existing = await db.execute(
@@ -693,7 +735,9 @@ async def create_participation_request(data: dict, current_user: User = Depends(
     if existing.scalar_one_or_none():
         raise HTTPException(status_code=409, detail="Заявка уже подана")
 
-    request = ParticipationRequest(dog_id=dog_id, exhibition_id=exhibition_id, status=RequestStatus.PENDING)
+    status = RequestStatus.APPROVED if current_user.role == UserRole.ADMIN else RequestStatus.PENDING
+
+    request = ParticipationRequest(dog_id=dog_id, exhibition_id=exhibition_id, status=status)
     db.add(request)
     await db.commit()
     await db.refresh(request)
@@ -701,7 +745,10 @@ async def create_participation_request(data: dict, current_user: User = Depends(
 
 
 @participation_router.get("/all")
-async def get_all_requests(admin: User = Depends(get_admin_user), db: AsyncSession = Depends(get_db)):
+async def get_all_requests(
+    admin: User = Depends(get_admin_user),
+    db: AsyncSession = Depends(get_db),
+):
     result = await db.execute(
         select(ParticipationRequest)
         .options(
@@ -713,18 +760,26 @@ async def get_all_requests(admin: User = Depends(get_admin_user), db: AsyncSessi
     )
     return [
         {
-            "id": r.id, "dog_name": r.dog.name,
+            "id": r.id,
+            "dog_id": r.dog.id,
+            "dog_name": r.dog.name,
             "breed_name": r.dog.breed.name if r.dog.breed else "",
             "owner_name": r.dog.owner.full_name if r.dog.owner else "",
-            "exhibition_name": r.exhibition.name, "exhibition_date": str(r.exhibition.date),
-            "status": r.status.value, "reject_reason": r.reject_reason, "created_at": str(r.created_at),
+            "exhibition_name": r.exhibition.name,
+            "exhibition_date": str(r.exhibition.date),
+            "status": r.status.value,
+            "reject_reason": r.reject_reason,
+            "created_at": str(r.created_at),
         }
         for r in result.unique().scalars().all()
     ]
 
 
 @participation_router.get("/my")
-async def get_my_requests(current_user: User = Depends(get_current_user), db: AsyncSession = Depends(get_db)):
+async def get_my_requests(
+    current_user: User = Depends(get_current_user),
+    db: AsyncSession = Depends(get_db),
+):
     result = await db.execute(
         select(ParticipationRequest)
         .options(joinedload(ParticipationRequest.dog), joinedload(ParticipationRequest.exhibition))
@@ -733,9 +788,13 @@ async def get_my_requests(current_user: User = Depends(get_current_user), db: As
     )
     return [
         {
-            "id": r.id, "dog_name": r.dog.name,
-            "exhibition_name": r.exhibition.name, "exhibition_date": str(r.exhibition.date),
-            "status": r.status.value, "created_at": str(r.created_at),
+            "id": r.id,
+            "dog_name": r.dog.name,
+            "exhibition_name": r.exhibition.name,
+            "exhibition_date": str(r.exhibition.date),
+            "status": r.status.value,
+            "reject_reason": r.reject_reason,
+            "created_at": str(r.created_at),
         }
         for r in result.unique().scalars().all()
     ]
@@ -760,6 +819,34 @@ async def reject_request(request_id: int, data: dict, admin: User = Depends(get_
     request.reject_reason = data.get("reason", "")
     await db.commit()
     return {"message": "Заявка отклонена"}
+
+
+@participation_router.post("/{request_id}/remove")
+async def remove_participation(
+    request_id: int,
+    admin: User = Depends(get_admin_user),
+    db: AsyncSession = Depends(get_db),
+):
+    result = await db.execute(
+        select(ParticipationRequest).where(ParticipationRequest.id == request_id)
+    )
+    request = result.scalar_one_or_none()
+    if not request:
+        raise HTTPException(status_code=404, detail="Заявка не найдена")
+
+    existing_result = await db.execute(
+        select(Result).where(
+            Result.dog_id == request.dog_id,
+            Result.exhibition_id == request.exhibition_id,
+        )
+    )
+    result_record = existing_result.scalar_one_or_none()
+    if result_record:
+        await db.delete(result_record)
+
+    request.is_removed = True
+    await db.commit()
+    return {"message": "Участник снят с выставки"}
 
 
 # ══════════════════════════════════════════════

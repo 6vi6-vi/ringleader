@@ -119,7 +119,7 @@ const ClubDetailPage = () => {
         <h1 className="club-detail-hero-title">ПРОФИЛЬ КЛУБА</h1>
       </section>
 
-      <button className="club-detail-back" onClick={() => navigate('/clubs')}>&larr; Назад к списку</button>
+      <button className="club-detail-back" onClick={() => navigate('/clubs')}>&larr; Назад</button>
 
       {/* ── Информация ── */}
       <section className="club-detail-section">

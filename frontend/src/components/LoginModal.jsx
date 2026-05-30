@@ -44,7 +44,6 @@ const LoginModal = ({ isOpen, onClose, onSwitchToRegister }) => {
       const { access_token, role, full_name, avatar_url } = response.data;
       authLogin(access_token, role, full_name, avatar_url || null);
       onClose();
-      navigate('/');
     } catch (err) {
         if (err.response?.status === 401) {
             setError('Неверный логин или пароль');

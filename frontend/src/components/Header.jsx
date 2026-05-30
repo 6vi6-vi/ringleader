@@ -95,12 +95,6 @@ const Header = () => {
             >
               СОБАКИ
             </Link>
-            <Link
-              to="/experts"
-              className={`header-nav-item ${isActive('/experts') ? 'header-nav-item--active' : ''}`}
-            >
-              ЭКСПЕРТЫ
-            </Link>
             {isAuthenticated && (
               <Link to="/requests" className={`header-nav-item ${isActive('/requests') ? 'header-nav-item--active' : ''}`}>
                 ЗАЯВКИ

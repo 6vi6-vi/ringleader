@@ -99,7 +99,7 @@
   color: #c0392b;
   font-family: 'Balsamiq Sans', sans-serif;
   font-size: 18px;
-  margin: 24px 0 0;
+  margin: 24px 0 -10px;
   text-align: center;
 }
 
@@ -107,7 +107,7 @@
   color: #27ae60;
   font-family: 'Balsamiq Sans', sans-serif;
   font-size: 18px;
-  margin: 24px 0 0;
+  margin: 14px 0 0px;
   text-align: center;
 }
 

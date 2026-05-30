@@ -18,6 +18,7 @@ const DogsPage = () => {
   const [breeds, setBreeds] = useState([]);
   const [clubs, setClubs] = useState([]);
 
+  const [currentUserId, setCurrentUserId] = useState(null);
   const [selectedBreed, setSelectedBreed] = useState(null);
   const [selectedClub, setSelectedClub] = useState(null);
   const [nameSearch, setNameSearch] = useState('');
@@ -94,6 +95,12 @@ const DogsPage = () => {
   useEffect(() => {
     if (isClubOpen && clubInputRef.current) clubInputRef.current.focus();
   }, [isClubOpen]);
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      client.get('/auth/me').then((res) => setCurrentUserId(res.data.id)).catch(() => {});
+    }
+  }, [isAuthenticated]);
 
   const filteredBreeds = breeds.filter((breed) =>
     breed.name.toLowerCase().includes(breedSearch.toLowerCase())
@@ -266,10 +273,14 @@ const DogsPage = () => {
 
       <div className="dogs-grid">
         {dogs.map((dog) => (
-          <DogCard key={dog.id} dog={dog} />
+          <DogCard
+            key={dog.id}
+            dog={dog}
+            isOwner={currentUserId === dog.owner_id}
+          />
         ))}
         {dogs.length === 0 && (
-          <p style={{ gridColumn: '1 / -1', textAlign: 'center', color: '#7f8c8d' }}>
+          <p style={{ gridColumn: '1 / -1', textAlign: 'center', color: '#7f8c8d', fontSize: '18px' }}>
             Собаки не найдены
           </p>
         )}

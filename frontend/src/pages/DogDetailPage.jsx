@@ -1,5 +1,5 @@
-import { useState, useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useState, useEffect, useMemo } from 'react';
+import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import client from '../api/client';
 import useAuthStore from '../store/authStore';
 import pawsPatternLeft from '../images/left.png';
@@ -10,6 +10,7 @@ import './DogDetailPage.css';
 const DogDetailPage = () => {
   const { id } = useParams();
   const navigate = useNavigate();
+  const location = useLocation();
   const { isAuthenticated, role } = useAuthStore();
   const [dog, setDog] = useState(null);
   const [currentUser, setCurrentUser] = useState(null);
@@ -42,6 +43,16 @@ const DogDetailPage = () => {
     fetchData();
   }, [id, isAuthenticated]);
 
+  const pastExhibitions = useMemo(() => {
+    const now = new Date();
+    now.setHours(0, 0, 0, 0);
+    return exhibitions.filter((ex) => {
+      const exDate = new Date(ex.date);
+      exDate.setHours(0, 0, 0, 0);
+      return exDate <= now;
+    });
+  }, [exhibitions]);
+
   const formatDate = (dateStr) => {
     if (!dateStr) return 'Не указано';
     const date = new Date(dateStr);
@@ -60,20 +71,28 @@ const DogDetailPage = () => {
 
   const handleDelete = async () => {
     if (!window.confirm('Вы уверены, что хотите удалить профиль собаки? Это действие нельзя отменить.')) {
-        return;
+      return;
     }
     setIsDeleting(true);
     try {
-        await client.delete(`/dogs/${id}`);
-        navigate('/dogs');
+      await client.delete(`/dogs/${id}`);
+      navigate('/dogs');
     } catch (err) {
-        if (err.response?.status === 409) {
+      if (err.response?.status === 409) {
         alert('Нельзя удалить собаку, которая участвовала в выставках');
-        } else {
+      } else {
         alert('Не удалось удалить собаку');
-        }
+      }
     } finally {
-        setIsDeleting(false);
+      setIsDeleting(false);
+    }
+  };
+
+  const handleBack = () => {
+    if (location.state?.from === 'edit') {
+      navigate(-3);
+    } else {
+      navigate(-1);
     }
   };
 
@@ -95,31 +114,22 @@ const DogDetailPage = () => {
 
   return (
     <div className="dog-detail-page">
-      {/* ── Герой ── */}
       <section className="dog-detail-hero">
         <img className="dog-detail-hero-paws dog-detail-hero-paws--left" src={pawsPatternLeft} alt="" />
         <img className="dog-detail-hero-paws dog-detail-hero-paws--right" src={pawsPatternRight} alt="" />
         <h1 className="dog-detail-hero-title">ПРОФИЛЬ СОБАКИ</h1>
       </section>
 
-      {/* ── Информация о собаке ── */}
+      <button className="dog-detail-back" onClick={handleBack}>&larr; Назад</button>
+
       <section className="dog-detail-section">
         <div className="dog-detail-section-header">
           <h2 className="dog-detail-section-title">ОСНОВНАЯ ИНФОРМАЦИЯ</h2>
           {canEdit && (
             <div className="dog-detail-actions">
-              <button
-                className="dog-detail-edit-btn"
-                onClick={() => navigate(`/dogs/${id}/edit`)}
-              >
-                Редактировать
-              </button>
+              <button className="dog-detail-edit-btn" onClick={() => navigate(`/dogs/${id}/edit`)}>Редактировать</button>
               {canDelete && (
-                <button
-                  className="dog-detail-delete-btn"
-                  onClick={handleDelete}
-                  disabled={isDeleting}
-                >
+                <button className="dog-detail-delete-btn" onClick={handleDelete} disabled={isDeleting}>
                   {isDeleting ? 'Удаление...' : 'Удалить'}
                 </button>
               )}
@@ -128,11 +138,7 @@ const DogDetailPage = () => {
         </div>
         <div className="dog-detail-card">
           <div className="dog-detail-photo-section">
-            <img
-              className="dog-detail-photo"
-              src={dog.photo_url || dogPlaceholder}
-              alt={dog.name}
-            />
+            <img className="dog-detail-photo" src={dog.photo_url || dogPlaceholder} alt={dog.name} />
           </div>
           <div className="dog-detail-info">
             <div className="dog-detail-row">
@@ -175,18 +181,15 @@ const DogDetailPage = () => {
         </div>
       </section>
 
-      {/* ── Участие в выставках ── */}
       <section className="dog-detail-section">
         <h2 className="dog-detail-section-title">ВЫСТАВКИ</h2>
-        {exhibitions.length > 0 ? (
+        {pastExhibitions.length > 0 ? (
           <div className="dog-detail-exhibitions">
-            {exhibitions.map((ex) => (
+            {pastExhibitions.map((ex) => (
               <div key={ex.id} className="dog-detail-exhibition-card" onClick={() => navigate(`/exhibitions/${ex.id}`)}>
                 <div className="dog-detail-exhibition-info">
                   <h3 className="dog-detail-exhibition-name">{ex.name}</h3>
-                  <p className="dog-detail-exhibition-meta">
-                    {formatDate(ex.date)} — {ex.address}
-                  </p>
+                  <p className="dog-detail-exhibition-meta">{formatDate(ex.date)} — {ex.address}</p>
                 </div>
                 {ex.place && (
                   <span className={`dog-detail-medal dog-detail-medal--place-${ex.place}`}>

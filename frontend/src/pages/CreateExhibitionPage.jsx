@@ -30,14 +30,16 @@ const CreateExhibitionPage = () => {
 
     if (!name.trim()) { setError('Введите название выставки'); return; }
     if (!date) { setError('Выберите дату'); return; }
+    if (!address.trim()) { setError('Введите адрес'); return; }
 
     // Проверка на прошедшую дату
     const today = new Date();
     today.setHours(0, 0, 0, 0);
     const selectedDate = new Date(date);
     selectedDate.setHours(0, 0, 0, 0);
-    if (selectedDate < today) {
-      setError('Нельзя создать выставку на прошедшую дату');
+
+    if (selectedDate <= today) {
+      setError('Выставку можно создать только на будущую дату');
       return;
     }
 
@@ -59,7 +61,7 @@ const CreateExhibitionPage = () => {
       }
 
       setSuccess('Выставка создана!');
-      setTimeout(() => navigate('/exhibitions'), 800);
+      setTimeout(() => navigate('/exhibitions'), 500);
     } catch (err) {
       setError(err.response?.data?.detail || 'Ошибка при создании выставки');
     }
@@ -87,7 +89,7 @@ const CreateExhibitionPage = () => {
 
           <div className="create-exhibition-field">
             <label className="create-exhibition-label" htmlFor="exAddress">Адрес</label>
-            <input id="exAddress" className="create-exhibition-input" type="text" placeholder="Введите адрес (необязательно)" value={address} onChange={(e) => setAddress(e.target.value)} />
+            <input id="exAddress" className="create-exhibition-input" type="text" placeholder="Введите адрес" value={address} onChange={(e) => setAddress(e.target.value)} required />
           </div>
 
           <div className="create-exhibition-field">
