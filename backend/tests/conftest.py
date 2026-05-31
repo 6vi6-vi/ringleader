@@ -1,8 +1,10 @@
+import pytest
 import pytest_asyncio
 from httpx import AsyncClient, ASGITransport
 from sqlalchemy.ext.asyncio import create_async_engine, async_sessionmaker, AsyncSession
 from database import Base, get_db
 from main import app
+from security import hash_password
 
 TEST_DATABASE_URL = "sqlite+aiosqlite:///./test.db"
 
@@ -22,7 +24,24 @@ async def override_get_db():
 async def setup_db():
     async with engine.begin() as conn:
         await conn.run_sync(Base.metadata.create_all)
+
+    # Создать админа
+    from models import User, UserRole
+    async with TestSessionLocal() as session:
+        from sqlalchemy import select
+        result = await session.execute(select(User).where(User.login == "admin"))
+        if not result.scalar_one_or_none():
+            session.add(User(
+                login="admin",
+                password_hash=hash_password("admin"),
+                role=UserRole.ADMIN,
+                full_name="Администратор",
+                passport="0000 000000",
+            ))
+            await session.commit()
+
     yield
+
     async with engine.begin() as conn:
         await conn.run_sync(Base.metadata.drop_all)
 
