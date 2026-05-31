@@ -99,6 +99,11 @@ async def get_me(current_user: User = Depends(get_current_user)):
     return current_user
 
 
+@auth_router.post("/logout")
+async def logout(current_user: User = Depends(get_current_user)):
+    return {"message": "Выход выполнен"}
+
+
 # ══════════════════════════════════════════════
 #  USERS
 # ══════════════════════════════════════════════
@@ -114,22 +119,6 @@ async def get_all_users(
         query = query.where(User.role == role)
     result = await db.execute(query)
     return result.scalars().all()
-
-
-@users_router.get("/{user_id}", response_model=UserOut)
-async def get_user(
-    user_id: int,
-    current_user: User = Depends(get_current_user),
-    db: AsyncSession = Depends(get_db),
-):
-    if current_user.role != UserRole.ADMIN and current_user.id != user_id:
-        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Доступ запрещён")
-
-    result = await db.execute(select(User).where(User.id == user_id))
-    user = result.scalar_one_or_none()
-    if not user:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Пользователь не найден")
-    return user
 
 
 @users_router.put("/{user_id}", response_model=UserOut)
@@ -175,44 +164,6 @@ async def upload_avatar(
     await db.commit()
     await db.refresh(current_user)
     return {"avatar_url": avatar_url}
-
-
-@users_router.post("/{user_id}/block", response_model=UserOut)
-async def block_user(
-    user_id: int,
-    data: UserBlock,
-    admin: User = Depends(get_admin_user),
-    db: AsyncSession = Depends(get_db),
-):
-    if admin.id == user_id:
-        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Нельзя заблокировать самого себя")
-
-    result = await db.execute(select(User).where(User.id == user_id))
-    user = result.scalar_one_or_none()
-    if not user:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Пользователь не найден")
-
-    user.is_blocked = data.is_blocked
-    await db.commit()
-    await db.refresh(user)
-    return user
-
-
-@users_router.post("/{user_id}/reset-password")
-async def reset_password(
-    user_id: int,
-    admin: User = Depends(get_admin_user),
-    db: AsyncSession = Depends(get_db),
-):
-    result = await db.execute(select(User).where(User.id == user_id))
-    user = result.scalar_one_or_none()
-    if not user:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Пользователь не найден")
-
-    new_password = "reset123"
-    user.password_hash = hash_password(new_password)
-    await db.commit()
-    return {"detail": f"Пароль сброшен. Новый пароль: {new_password}"}
 
 
 # ══════════════════════════════════════════════

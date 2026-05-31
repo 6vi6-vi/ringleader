@@ -104,6 +104,9 @@ const RequestsPage = () => {
       {/* Фильтры пользователя */}
       {!isAdmin && (
         <div className="requests-tabs">
+          <button className={`requests-tab ${userFilter === '' ? 'requests-tab--active' : ''}`} onClick={() => setUserFilter('')}>
+            Все ({myRequests.length})
+          </button>
           <button className={`requests-tab ${userFilter === 'Pending' ? 'requests-tab--active' : ''}`} onClick={() => setUserFilter('Pending')}>
             На рассмотрении ({pendingMy.length})
           </button>

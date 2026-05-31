@@ -1,10 +1,20 @@
 import { useNavigate } from 'react-router-dom';
+import client from '../api/client';
 import './UserMenu.css';
 
 const UserMenu = ({ isOpen, onClose, onLogout }) => {
   const navigate = useNavigate();
 
   if (!isOpen) return null;
+
+  const handleLogout = async () => {
+    try {
+      await client.post('/auth/logout');
+    } catch (err) {
+    }
+    onClose();
+    onLogout();
+  };
 
   return (
     <>
@@ -21,10 +31,7 @@ const UserMenu = ({ isOpen, onClose, onLogout }) => {
         </button>
         <button
           className="user-menu-item user-menu-item--logout"
-          onClick={() => {
-            onClose();
-            onLogout();
-          }}
+          onClick={handleLogout}
         >
           Выход
         </button>

@@ -39,3 +39,6 @@ docker-compose.override.yml
 # Операционные системы
 .DS_Store
 Thumbs.db
+
+# Pytest
+.pytest_cache/
