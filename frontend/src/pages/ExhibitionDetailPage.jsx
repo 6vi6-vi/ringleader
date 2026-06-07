@@ -127,7 +127,6 @@ const ExhibitionDetailPage = () => {
 
       <button className="exhibition-detail-back" onClick={() => navigate('/exhibitions')}>&larr; Назад</button>
 
-      {/* ── Информация ── */}
       <section className="exhibition-detail-section">
         <div className="exhibition-detail-section-header">
           <h2 className="exhibition-detail-section-title">ИНФОРМАЦИЯ</h2>
@@ -203,7 +202,6 @@ const ExhibitionDetailPage = () => {
         )}
       </section>
 
-      {/* ── Участники ── */}
       <section className="exhibition-detail-section">
         <div className="exhibition-detail-section-header">
           <h2 className="exhibition-detail-section-title">УЧАСТНИКИ ({exhibition.participants?.length || 0})</h2>
@@ -249,7 +247,6 @@ const ExhibitionDetailPage = () => {
         )}
       </section>
 
-      {/* ── Результаты ── */}
       {exhibitionResults.filter((r) => r.place).length > 0 && (
         <section className="exhibition-detail-section">
           <h2 className="exhibition-detail-section-title">РЕЗУЛЬТАТЫ</h2>

@@ -61,7 +61,6 @@
 
 .club-detail-back:hover { transform: translateX(-2px); }
 
-/* ── Секция ── */
 .club-detail-section {
   background-color: #fdf7da;
   border-radius: 43px;
@@ -119,7 +118,6 @@
 .club-detail-delete-btn:hover { transform: translateY(-2px); }
 .club-detail-delete-btn:disabled { opacity: 0.6; cursor: not-allowed; }
 
-/* ── Карточка ── */
 .club-detail-card {
   display: flex;
   gap: 50px;
@@ -178,7 +176,6 @@
   font-size: 20px;
 }
 
-/* ── Собаки ── */
 .club-detail-dogs {
   display: flex;
   flex-wrap: wrap;
@@ -229,7 +226,6 @@
   margin-top: 15px;
 }
 
-/* ── Форма редактирования ── */
 .club-detail-edit-form {
   display: flex;
   flex-direction: column;
@@ -356,3 +352,121 @@
 }
 
 .club-detail-logo-button:hover { transform: translateY(-2px); }
+
+
+@media (max-width: 1200px) {
+  .club-detail-page {
+    padding: 20px 40px 40px;
+    gap: 24px;
+  }
+
+  .club-detail-hero {
+    padding: 80px 60px;
+  }
+
+  .club-detail-hero-title {
+    font-size: 36px;
+  }
+
+  .club-detail-hero-paws {
+    display: none;
+  }
+
+  .club-detail-section {
+    padding: 25px 35px;
+  }
+
+  .club-detail-card {
+    gap: 30px;
+  }
+
+  .club-detail-photo {
+    height: 180px;
+    width: 180px;
+  }
+}
+
+@media (max-width: 768px) {
+  .club-detail-page {
+    padding: 15px 20px 30px;
+    gap: 20px;
+  }
+
+  .club-detail-hero {
+    padding: 60px 30px;
+    border-radius: 30px;
+  }
+
+  .club-detail-hero-title {
+    font-size: 28px;
+  }
+
+  .club-detail-section {
+    padding: 20px 25px;
+    border-radius: 30px;
+  }
+
+  .club-detail-card {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .club-detail-info {
+    grid-template-columns: 1fr;
+    width: 100%;
+  }
+
+  .club-detail-row--full {
+    grid-column: auto;
+  }
+
+  .club-detail-edit-fields {
+    grid-template-columns: 1fr;
+  }
+
+  .club-detail-edit-field--full {
+    grid-column: auto;
+  }
+
+  .club-detail-section-title {
+    font-size: 22px;
+  }
+
+  .club-detail-label,
+  .club-detail-value {
+    font-size: 18px;
+  }
+}
+
+@media (max-width: 480px) {
+  .club-detail-hero {
+    padding: 40px 20px;
+  }
+
+  .club-detail-hero-title {
+    font-size: 22px;
+  }
+
+  .club-detail-section {
+    padding: 16px;
+    border-radius: 20px;
+  }
+
+  .club-detail-section-title {
+    font-size: 20px;
+  }
+
+  .club-detail-label,
+  .club-detail-value {
+    font-size: 16px;
+  }
+
+  .club-detail-photo {
+    height: 150px;
+    width: 150px;
+  }
+
+  .club-detail-dogs {
+    justify-content: center;
+  }
+}

@@ -46,7 +46,6 @@
 .requests-hero-paws--left { left: 31px; }
 .requests-hero-paws--right { right: 31px; }
 
-/* ── Вкладки ── */
 .requests-tabs {
   display: flex;
   gap: 0;
@@ -68,7 +67,6 @@
 .requests-tab:last-child { border-radius: 0 12px 12px 0; }
 .requests-tab--active { background-color: #a36b3d; color: #fdf7da; }
 
-/* ── Сетка карточек ── */
 .requests-grid {
   display: grid;
   gap: 24px;
@@ -125,7 +123,6 @@
   gap: 10px;
 }
 
-/* ── Кнопки ── */
 .requests-approve-btn {
   background-color: #b9c1d4;
   border: none;
@@ -156,7 +153,6 @@
 
 .requests-reject-btn:hover { transform: translateY(-2px); }
 
-/* ── Бейджи ── */
 .requests-badge {
   border-radius: 12px;
   font-family: 'Balsamiq Sans', sans-serif;
@@ -177,4 +173,93 @@
   grid-column: 1 / -1;
   text-align: center;
   margin-top: 15px;
+}
+
+@media (max-width: 1200px) {
+  .requests-page {
+    padding: 20px 40px 40px;
+    gap: 24px;
+  }
+
+  .requests-hero {
+    padding: 80px 60px;
+  }
+
+  .requests-hero-title {
+    font-size: 36px;
+  }
+
+  .requests-hero-paws {
+    display: none;
+  }
+
+  .requests-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .requests-page {
+    padding: 15px 20px 30px;
+    gap: 20px;
+  }
+
+  .requests-hero {
+    padding: 60px 30px;
+    border-radius: 30px;
+  }
+
+  .requests-hero-title {
+    font-size: 28px;
+  }
+
+  .requests-tab {
+    font-size: 16px;
+    padding: 10px 18px;
+  }
+
+  .request-card {
+    padding: 18px 20px;
+  }
+
+  .request-card-name {
+    font-size: 20px;
+  }
+
+  .request-card-row {
+    font-size: 16px;
+  }
+}
+
+@media (max-width: 480px) {
+  .requests-hero {
+    padding: 40px 20px;
+  }
+
+  .requests-hero-title {
+    font-size: 22px;
+  }
+
+  .requests-tab {
+    font-size: 14px;
+    padding: 8px 12px;
+  }
+
+  .request-card {
+    padding: 14px 16px;
+    border-radius: 14px;
+  }
+
+  .request-card-name {
+    font-size: 18px;
+  }
+
+  .request-card-row {
+    font-size: 14px;
+  }
+
+  .request-card-actions {
+    flex-direction: column;
+    gap: 8px;
+  }
 }

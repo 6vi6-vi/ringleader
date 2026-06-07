@@ -65,3 +65,53 @@
   text-align: right;
   margin-top: 3px;
 }
+
+
+@media (max-width: 768px) {
+  .footer {
+    padding: 0 20px;
+  }
+
+  .footer-content {
+    flex-direction: column;
+    gap: 16px;
+    padding: 16px 0;
+    text-align: center;
+  }
+
+  .footer-brand {
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .footer-logo {
+    height: 50px;
+    width: 65px;
+  }
+
+  .footer-copyright {
+    font-size: 15px;
+  }
+
+  .footer-contacts,
+  .footer-links {
+    font-size: 14px;
+    text-align: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .footer-content {
+    gap: 12px;
+    padding: 12px 0;
+  }
+
+  .footer-copyright {
+    font-size: 14px;
+  }
+
+  .footer-contacts,
+  .footer-links {
+    font-size: 13px;
+  }
+}

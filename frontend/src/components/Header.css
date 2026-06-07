@@ -1,11 +1,9 @@
-/* ── Обёртка (фиксация) ── */
 .header-wrapper {
   height: 81px;
   position: relative;
   width: 100%;
 }
 
-/* ── Сам хедер ── */
 .header {
   background-color: transparent;
   height: 81px;
@@ -16,7 +14,6 @@
   z-index: 100;
 }
 
-/* ── Фон ── */
 .header-background {
   background-color: #a36b3d;
   height: 81px;
@@ -26,7 +23,6 @@
   width: 100%;
 }
 
-/* ── Логотип ── */
 .header-logo {
   left: 40px;
   position: absolute;
@@ -42,7 +38,6 @@
   display: block;
 }
 
-/* ── Навигация ── */
 .header-nav {
   align-items: center;
   display: flex;
@@ -70,7 +65,6 @@
   transform: translateY(-3px);
 }
 
-/* ── Авторизация ── */
 .header-auth {
   align-items: center;
   display: flex;
@@ -80,7 +74,6 @@
   transform: translateY(-50%);
 }
 
-/* Кнопка "Войти"*/
 .header-auth-login {
   background: none;
   border: none;
@@ -99,7 +92,6 @@
   transform: translateY(-3px);
 }
 
-/* Панель пользователя */
 .header-auth-user {
   align-items: center;
   display: flex;
@@ -107,7 +99,6 @@
   position: relative;
 }
 
-/* Триггер (имя + аватар) */
 .header-auth-user-trigger {
   align-items: center;
   background: none;
@@ -118,7 +109,6 @@
   padding: 0;
 }
 
-/* Имя пользователя */
 .header-auth-name {
   display: flex;
   flex-direction: column;
@@ -136,7 +126,6 @@
   transition: color 0.2s;
 }
 
-/* Аватар */
 .header-auth-avatar {
   border-radius: 50%;
   height: 50px;
@@ -145,7 +134,6 @@
   transition: opacity 0.2s;
 }
 
-/* Кнопка уведомлений */
 .header-auth-notifications {
   background: none;
   border: none;
@@ -162,4 +150,110 @@
   display: block;
   height: 33px;
   width: 33px;
+}
+
+
+@media (max-width: 1200px) {
+  .header-nav {
+    gap: 24px;
+  }
+
+  .header-nav-item {
+    font-size: 16px;
+  }
+
+  .header-logo {
+    left: 20px;
+  }
+
+  .header-auth {
+    right: 20px;
+  }
+}
+
+@media (max-width: 768px) {
+  .header-wrapper {
+    height: auto;
+  }
+
+  .header {
+    height: auto;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .header-background {
+    height: 100%;
+    min-height: 60px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+  }
+
+  .header-logo {
+    position: relative;
+    left: auto;
+    top: auto;
+    transform: none;
+    margin: 8px 0;
+  }
+
+  .header-logo-image {
+    height: 50px;
+  }
+
+  .header-nav {
+    position: relative;
+    flex-wrap: wrap;
+    gap: 12px;
+    padding: 8px 16px;
+    height: auto;
+  }
+
+  .header-nav-item {
+    font-size: 14px;
+  }
+
+  .header-auth {
+    position: relative;
+    right: auto;
+    top: auto;
+    transform: none;
+    padding: 8px 16px 12px;
+  }
+
+  .header-auth-name-line {
+    font-size: 16px;
+  }
+
+  .header-auth-avatar {
+    height: 40px;
+    width: 42px;
+  }
+}
+
+@media (max-width: 480px) {
+  .header-nav {
+    gap: 8px;
+  }
+
+  .header-nav-item {
+    font-size: 12px;
+  }
+
+  .header-auth-login {
+    font-size: 18px;
+  }
+
+  .header-auth-name-line {
+    font-size: 14px;
+  }
+
+  .header-auth-avatar {
+    height: 36px;
+    width: 38px;
+  }
 }

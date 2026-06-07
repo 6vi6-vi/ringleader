@@ -32,7 +32,6 @@ const CreateExhibitionPage = () => {
     if (!date) { setError('Выберите дату'); return; }
     if (!address.trim()) { setError('Введите адрес'); return; }
 
-    // Проверка на прошедшую дату
     const today = new Date();
     today.setHours(0, 0, 0, 0);
     const selectedDate = new Date(date);

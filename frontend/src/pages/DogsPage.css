@@ -1,7 +1,3 @@
-/* ═══════════════════════════════════════════
-   СТРАНИЦА СОБАК
-   ═══════════════════════════════════════════ */
-
 .dogs-page {
   background-color: #fae5bc;
   display: flex;
@@ -12,7 +8,6 @@
   width: 100%;
 }
 
-/* ── Герой ── */
 .dogs-hero {
   background-color: #fdf7da;
   border-radius: 43px;
@@ -50,7 +45,6 @@
   right: 31px;
 }
 
-/* ── Панель фильтров ── */
 .dogs-toolbar {
   align-items: flex-end;
   display: flex;
@@ -81,7 +75,6 @@
   line-height: normal;
 }
 
-/* ── Селект (общий для всех трёх фильтров) ── */
 .dogs-filter-select {
   align-items: center;
   background-color: #fdf7da;
@@ -134,7 +127,6 @@
   transform: rotate(180deg);
 }
 
-/* ── Инпут для клички ── */
 .dogs-filter-input {
   background: none;
   border: none;
@@ -153,7 +145,6 @@
   color: #bbc099;
 }
 
-/* ── Инпут поиска внутри выпадающего списка ── */
 .dogs-filter-search {
   background: none;
   border: none;
@@ -172,7 +163,6 @@
   color: #bbc099;
 }
 
-/* ── Выпадающий список ── */
 .dogs-filter-dropdown {
   background-color: #fdf7da;
   border-radius: 0 0 5px 5px;
@@ -220,7 +210,6 @@
   background-color: transparent;
 }
 
-/* ── Кнопка «Зарегистрировать собаку» ── */
 .dogs-register-button {
   align-items: center;
   text-align: center;
@@ -249,10 +238,91 @@
   transform: translateY(-2px);
 }
 
-/* ── Сетка карточек ── */
 .dogs-grid {
   display: grid;
   gap: 24px;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   width: 100%;
+}
+
+
+@media (max-width: 1200px) {
+  .dogs-page {
+    padding: 20px 40px 40px;
+    gap: 24px;
+  }
+
+  .dogs-hero {
+    padding: 80px 60px;
+  }
+
+  .dogs-hero-title {
+    font-size: 36px;
+  }
+
+  .dogs-hero-paws {
+    display: none;
+  }
+
+  .dogs-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .dogs-filter-select {
+    width: 220px;
+  }
+}
+
+@media (max-width: 768px) {
+  .dogs-page {
+    padding: 15px 20px 30px;
+    gap: 20px;
+  }
+
+  .dogs-hero {
+    padding: 60px 30px;
+    border-radius: 30px;
+  }
+
+  .dogs-hero-title {
+    font-size: 28px;
+  }
+
+  .dogs-toolbar {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 16px;
+  }
+
+  .dogs-filters {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .dogs-filter-select {
+    width: 100%;
+  }
+
+  .dogs-filter-dropdown {
+    width: 100%;
+  }
+
+  .dogs-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .dogs-register-button {
+    max-width: none;
+    width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .dogs-hero {
+    padding: 40px 20px;
+  }
+
+  .dogs-hero-title {
+    font-size: 22px;
+  }
 }

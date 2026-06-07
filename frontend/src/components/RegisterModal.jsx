@@ -74,10 +74,8 @@ const RegisterModal = ({ isOpen, onClose, onSwitchToLogin }) => {
         if (err.response?.status === 409) {
             setError('Пользователь с таким логином уже существует');
         } else if (err.response?.status === 422) {
-            // Ошибка валидации Pydantic
             const detail = err.response.data?.detail;
             if (Array.isArray(detail)) {
-                // FastAPI возвращает массив ошибок валидации
                 const messages = detail.map((d) => d.msg).join('; ');
                 setError(messages);
             } else if (typeof detail === 'string') {

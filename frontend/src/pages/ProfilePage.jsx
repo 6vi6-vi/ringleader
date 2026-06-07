@@ -22,6 +22,8 @@ const ProfilePage = () => {
   const [editPassport, setEditPassport] = useState('');
   const [editError, setEditError] = useState('');
   const [editSuccess, setEditSuccess] = useState('');
+  const [avatarFile, setAvatarFile] = useState(null);
+  const [avatarPreview, setAvatarPreview] = useState(null);
 
   useEffect(() => {
     if (!isAuthenticated) {
@@ -50,6 +52,16 @@ const ProfilePage = () => {
     fetchData();
   }, [isAuthenticated, navigate]);
 
+  const handleAvatarChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setAvatarFile(file);
+      const reader = new FileReader();
+      reader.onloadend = () => setAvatarPreview(reader.result);
+      reader.readAsDataURL(file);
+    }
+  };
+
   const handleSaveProfile = async (e) => {
     e.preventDefault();
     setEditError('');
@@ -71,10 +83,24 @@ const ProfilePage = () => {
       });
       setUser({ ...user, full_name: editFullName.trim(), passport: editPassport.trim() });
 
+      let newAvatarUrl = avatarUrl;
+
+      if (avatarFile) {
+        const formData = new FormData();
+        formData.append('file', avatarFile);
+        const res = await client.post('/users/me/avatar', formData, {
+          headers: { 'Content-Type': 'multipart/form-data' },
+        });
+        newAvatarUrl = res.data.avatar_url;
+        setAvatarUrl(newAvatarUrl);
+        setAvatar(newAvatarUrl);
+        setAvatarFile(null);
+        setAvatarPreview(null);
+      }
+
       const token = localStorage.getItem('token');
       const role = localStorage.getItem('role');
-      const currentAvatarUrl = avatarUrl || localStorage.getItem('avatarUrl');
-      authLogin(token, role, editFullName.trim(), currentAvatarUrl);
+      authLogin(token, role, editFullName.trim(), newAvatarUrl);
 
       setEditing(false);
     } catch (err) {
@@ -82,21 +108,14 @@ const ProfilePage = () => {
     }
   };
 
-  const handleAvatarChange = async (e) => {
-    const file = e.target.files[0];
-    if (!file) return;
-
-    try {
-      const formData = new FormData();
-      formData.append('file', file);
-      const res = await client.post('/users/me/avatar', formData, {
-        headers: { 'Content-Type': 'multipart/form-data' },
-      });
-      setAvatarUrl(res.data.avatar_url);
-      setAvatar(res.data.avatar_url);
-    } catch (err) {
-      console.error('Ошибка загрузки аватара:', err);
-    }
+  const handleCancelEdit = () => {
+    setEditing(false);
+    setAvatarFile(null);
+    setAvatarPreview(null);
+    setEditFullName(user?.full_name || '');
+    setEditPassport(user?.passport || '');
+    setEditError('');
+    setEditSuccess('');
   };
 
   if (loading) {
@@ -109,103 +128,100 @@ const ProfilePage = () => {
 
   return (
     <div className="profile-page">
-      {/* ── Герой ── */}
       <section className="profile-hero">
         <img className="profile-hero-paws profile-hero-paws--left" src={pawsPatternLeft} alt="" />
         <img className="profile-hero-paws profile-hero-paws--right" src={pawsPatternRight} alt="" />
         <h1 className="profile-hero-title">ЛИЧНЫЙ КАБИНЕТ</h1>
       </section>
 
-      {/* ── Профиль ── */}
-    <section className="profile-section">
-    <div className="profile-section-header">
-        <h2 className="profile-section-title">МОИ ДАННЫЕ</h2>
-        {!editing && (
-        <button className="profile-edit-btn" onClick={() => setEditing(true)}>
-            Редактировать
-        </button>
-        )}
-    </div>
-
-    <div className="profile-content">
-        <div className="profile-avatar-section">
-            <img
-            className="profile-avatar"
-            src={avatarUrl || avatarPlaceholder}
-            alt="Аватар"
-            />
-            {editing && (
-            <>
-                <button
-                className="profile-avatar-button"
-                onClick={() => fileInputRef.current.click()}
-                >
-                Изменить фото
-                </button>
-                <input
-                ref={fileInputRef}
-                type="file"
-                accept="image/*"
-                onChange={handleAvatarChange}
-                hidden
-                />
-            </>
-            )}
+      <section className="profile-section">
+        <div className="profile-section-header">
+          <h2 className="profile-section-title">МОИ ДАННЫЕ</h2>
+          {!editing && (
+            <button className="profile-edit-btn" onClick={() => setEditing(true)}>
+              Редактировать
+            </button>
+          )}
         </div>
 
-        <div className="profile-details">
-            {editing ? (
-            <form className="profile-edit-form" onSubmit={handleSaveProfile}>
-                <div className="profile-field">
-                <label className="profile-label" htmlFor="editFullName">ФИО</label>
+        <div className="profile-content">
+          <div className="profile-avatar-section">
+            <img
+              className="profile-avatar"
+              src={avatarPreview || avatarUrl || avatarPlaceholder}
+              alt="Аватар"
+            />
+            {editing && (
+              <>
+                <button
+                  className="profile-avatar-button"
+                  onClick={() => fileInputRef.current.click()}
+                >
+                  Изменить фото
+                </button>
                 <input
+                  ref={fileInputRef}
+                  type="file"
+                  accept="image/*"
+                  onChange={handleAvatarChange}
+                  hidden
+                />
+              </>
+            )}
+          </div>
+
+          <div className="profile-details">
+            {editing ? (
+              <form className="profile-edit-form" onSubmit={handleSaveProfile}>
+                <div className="profile-field">
+                  <label className="profile-label" htmlFor="editFullName">ФИО</label>
+                  <input
                     id="editFullName"
                     className="profile-input"
                     type="text"
                     value={editFullName}
                     onChange={(e) => setEditFullName(e.target.value)}
                     required
-                />
+                  />
                 </div>
                 <div className="profile-field">
-                <label className="profile-label" htmlFor="editPassport">Паспортные данные</label>
-                <input
+                  <label className="profile-label" htmlFor="editPassport">Паспортные данные</label>
+                  <input
                     id="editPassport"
                     className="profile-input"
                     type="text"
                     value={editPassport}
                     onChange={(e) => setEditPassport(e.target.value)}
                     required
-                />
+                  />
                 </div>
                 {editError && <p className="profile-error">{editError}</p>}
                 {editSuccess && <p className="profile-success">{editSuccess}</p>}
                 <div className="profile-buttons">
-                <button type="button" className="profile-cancel-btn" onClick={() => setEditing(false)}>Отмена</button>
-                <button type="submit" className="profile-save-btn">Сохранить</button>
+                  <button type="button" className="profile-cancel-btn" onClick={handleCancelEdit}>Отмена</button>
+                  <button type="submit" className="profile-save-btn">Сохранить</button>
                 </div>
-            </form>
+              </form>
             ) : (
-            <div className="profile-info">
+              <div className="profile-info">
                 <div className="profile-info-row">
-                <span className="profile-info-label">Логин:</span>
-                <span className="profile-info-value">{user?.login}</span>
+                  <span className="profile-info-label">Логин:</span>
+                  <span className="profile-info-value">{user?.login}</span>
                 </div>
                 <div className="profile-info-row">
-                <span className="profile-info-label">ФИО:</span>
-                <span className="profile-info-value">{user?.full_name}</span>
+                  <span className="profile-info-label">ФИО:</span>
+                  <span className="profile-info-value">{user?.full_name}</span>
                 </div>
                 <div className="profile-info-row">
-                <span className="profile-info-label">Паспортные данные:</span>
-                <span className="profile-info-value">{user?.passport}</span>
+                  <span className="profile-info-label">Паспортные данные:</span>
+                  <span className="profile-info-value">{user?.passport}</span>
                 </div>
-            </div>
+              </div>
             )}
+          </div>
         </div>
-    </div>
-    </section>
+      </section>
 
-      {/* ── Мои собаки ── */}
       <section className="profile-section">
         <div className="profile-section-header">
           <h2 className="profile-section-title">МОИ СОБАКИ</h2>

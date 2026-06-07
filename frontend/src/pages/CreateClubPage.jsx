@@ -88,7 +88,6 @@ const CreateClubPage = () => {
 
       <form className="create-club-form" onSubmit={handleSubmit}>
         <div className="create-club-columns">
-          {/* Левая колонка — логотип */}
           <div className="create-club-photo-section">
             <img
               className="create-club-photo"
@@ -101,7 +100,6 @@ const CreateClubPage = () => {
             </label>
           </div>
 
-          {/* Правая колонка — поля */}
           <div className="create-club-fields">
             <div className="create-club-field">
               <label className="create-club-label" htmlFor="clubName">Название</label>

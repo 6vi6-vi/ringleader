@@ -121,7 +121,6 @@ const ClubDetailPage = () => {
 
       <button className="club-detail-back" onClick={() => navigate('/clubs')}>&larr; Назад</button>
 
-      {/* ── Информация ── */}
       <section className="club-detail-section">
         <div className="club-detail-section-header">
           <h2 className="club-detail-section-title">ИНФОРМАЦИЯ</h2>
@@ -233,7 +232,6 @@ const ClubDetailPage = () => {
         )}
       </section>
 
-      {/* ── Собаки клуба ── */}
       <section className="club-detail-section">
         <h2 className="club-detail-section-title">СОБАКИ КЛУБА</h2>
         {dogs.length > 0 ? (

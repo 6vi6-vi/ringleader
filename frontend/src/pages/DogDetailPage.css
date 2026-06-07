@@ -1,7 +1,3 @@
-/* ═══════════════════════════════════════════
-   СТРАНИЦА СОБАКИ
-   ═══════════════════════════════════════════ */
-
 .dog-detail-page {
   background-color: #fae5bc;
   display: flex;
@@ -12,7 +8,6 @@
   width: 100%;
 }
 
-/* ── Герой ── */
 .dog-detail-hero {
   background-color: #fdf7da;
   border-radius: 43px;
@@ -68,7 +63,6 @@
 
 .dog-detail-back:hover { transform: translateX(-2px); }
 
-/* ── Секция ── */
 .dog-detail-section {
   background-color: #fdf7da;
   border-radius: 43px;
@@ -86,7 +80,6 @@
   margin: 0 0 20px;
 }
 
-/* ── Карточка собаки ── */
 .dog-detail-card {
   display: flex;
   gap: 40px;
@@ -148,7 +141,6 @@
   line-height: normal;
 }
 
-/* ── Выставки ── */
 .dog-detail-exhibitions {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -212,7 +204,6 @@
   font-size: 18px;
 }
 
-/* ── Заголовок секции с кнопками ── */
 .dog-detail-section-header {
   align-items: center;
   display: flex;
@@ -270,4 +261,109 @@
 .dog-detail-delete-btn:disabled {
   opacity: 0.6;
   cursor: not-allowed;
+}
+
+
+@media (max-width: 1200px) {
+  .dog-detail-page {
+    padding: 20px 40px 40px;
+    gap: 24px;
+  }
+
+  .dog-detail-hero {
+    padding: 80px 60px;
+  }
+
+  .dog-detail-hero-title {
+    font-size: 36px;
+  }
+
+  .dog-detail-hero-paws {
+    display: none;
+  }
+
+  .dog-detail-section {
+    padding: 30px 35px;
+  }
+
+  .dog-detail-card {
+    gap: 30px;
+  }
+
+  .dog-detail-photo {
+    height: 200px;
+    width: 200px;
+  }
+}
+
+@media (max-width: 768px) {
+  .dog-detail-page {
+    padding: 15px 20px 30px;
+    gap: 20px;
+  }
+
+  .dog-detail-hero {
+    padding: 60px 30px;
+    border-radius: 30px;
+  }
+
+  .dog-detail-hero-title {
+    font-size: 28px;
+  }
+
+  .dog-detail-section {
+    padding: 20px 25px;
+    border-radius: 30px;
+  }
+
+  .dog-detail-card {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .dog-detail-info {
+    grid-template-columns: 1fr;
+    width: 100%;
+  }
+
+  .dog-detail-row--full {
+    grid-column: auto;
+  }
+
+  .dog-detail-exhibitions {
+    grid-template-columns: 1fr;
+  }
+
+  .dog-detail-section-title {
+    font-size: 22px;
+  }
+}
+
+@media (max-width: 480px) {
+  .dog-detail-hero {
+    padding: 40px 20px;
+  }
+
+  .dog-detail-hero-title {
+    font-size: 22px;
+  }
+
+  .dog-detail-section {
+    padding: 16px;
+    border-radius: 20px;
+  }
+
+  .dog-detail-section-title {
+    font-size: 20px;
+  }
+
+  .dog-detail-label,
+  .dog-detail-value {
+    font-size: 16px;
+  }
+
+  .dog-detail-photo {
+    height: 160px;
+    width: 160px;
+  }
 }

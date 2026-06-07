@@ -340,12 +340,10 @@ async def delete_dog(
     if current_user.role != UserRole.ADMIN and dog.owner_id != current_user.id:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Доступ запрещён")
 
-    # Проверить, есть ли активные (не удалённые) результаты
     res = await db.execute(select(Result).where(Result.dog_id == dog_id))
     if res.scalar_one_or_none():
         raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="Нельзя удалить собаку, у которой есть результаты выступлений")
 
-    # Удалить заявки собаки
     requests = await db.execute(select(ParticipationRequest).where(ParticipationRequest.dog_id == dog_id))
     for req in requests.scalars().all():
         await db.delete(req)
@@ -629,7 +627,9 @@ async def delete_exhibition(
     await db.commit()
 
 
-# ── Rings ──
+# ══════════════════════════════════════════════
+#  RINGS
+# ══════════════════════════════════════════════
 
 @exhibitions_router.get("/{exhibition_id}/rings")
 async def get_exhibition_rings(exhibition_id: int, db: AsyncSession = Depends(get_db)):

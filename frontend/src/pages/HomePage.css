@@ -1,7 +1,3 @@
-/* ═══════════════════════════════════════════
-   ГЛАВНАЯ СТРАНИЦА
-   ═══════════════════════════════════════════ */
-
 .home-page {
   background-color: #fae5bc;
   display: flex;
@@ -13,7 +9,6 @@
   width: 100%;
 }
 
-/* ── Приветственный блок (Hero) ── */
 .hero {
   background-color: #fdf7da;
   border-radius: 43px;
@@ -51,7 +46,6 @@
   right: 35px;
 }
 
-/* ── О нас ── */
 .about {
   background-color: #fdf7da;
   border-radius: 43px;
@@ -84,7 +78,6 @@
   font-weight: 700;
 }
 
-/* ── Ближайшие выставки ── */
 .upcoming-exhibitions {
   background-color: #fdf7da;
   border-radius: 43px;
@@ -168,7 +161,6 @@
   margin-top: -5px;
 }
 
-/* ── Победители последней выставки ── */
 .latest-results {
   background-color: #fdf7da;
   border-radius: 43px;
@@ -234,4 +226,107 @@
 
 .latest-results-button:hover {
   transform: translateY(-2px);
+}
+
+
+
+@media (max-width: 1200px) {
+  .home-page {
+    padding: 20px 40px 40px;
+    gap: 24px;
+  }
+
+  .hero {
+    padding: 80px 60px;
+  }
+
+  .hero-title {
+    font-size: 36px;
+  }
+
+  .hero-paws {
+    display: none;
+  }
+
+  .about,
+  .upcoming-exhibitions,
+  .latest-results {
+    padding: 30px 35px;
+  }
+
+  .about-content,
+  .upcoming-exhibitions-text,
+  .latest-results-exhibition {
+    font-size: 18px;
+  }
+}
+
+@media (max-width: 768px) {
+  .home-page {
+    padding: 15px 20px 30px;
+    gap: 20px;
+  }
+
+  .hero {
+    padding: 60px 30px;
+    border-radius: 30px;
+  }
+
+  .hero-title {
+    font-size: 28px;
+  }
+
+  .about,
+  .upcoming-exhibitions,
+  .latest-results {
+    padding: 25px;
+    border-radius: 30px;
+  }
+
+  .about-title,
+  .upcoming-exhibitions-title,
+  .latest-results-title {
+    font-size: 22px;
+  }
+
+  .about-content,
+  .upcoming-exhibitions-text,
+  .latest-results-exhibition {
+    font-size: 16px;
+  }
+
+  .upcoming-exhibitions-button,
+  .latest-results-button {
+    width: 100%;
+    text-align: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .hero {
+    padding: 40px 20px;
+  }
+
+  .hero-title {
+    font-size: 22px;
+  }
+
+  .about,
+  .upcoming-exhibitions,
+  .latest-results {
+    padding: 20px 18px;
+    border-radius: 20px;
+  }
+
+  .about-title,
+  .upcoming-exhibitions-title,
+  .latest-results-title {
+    font-size: 20px;
+  }
+
+  .about-content,
+  .upcoming-exhibitions-text,
+  .latest-results-exhibition {
+    font-size: 15px;
+  }
 }

@@ -150,17 +150,14 @@ const AddDogPage = () => {
 
   return (
     <div className="add-dog-page">
-      {/* ── Герой ── */}
       <section className="add-dog-hero">
         <img className="add-dog-hero-paws add-dog-hero-paws--left" src={pawsPatternLeft} alt="" />
         <img className="add-dog-hero-paws add-dog-hero-paws--right" src={pawsPatternRight} alt="" />
         <h1 className="add-dog-hero-title">РЕГИСТРАЦИЯ СОБАКИ</h1>
       </section>
 
-      {/* ── Форма ── */}
       <form className="add-dog-form" onSubmit={handleSubmit}>
         <div className="add-dog-columns">
-          {/* Левая колонка — фото */}
           <div className="add-dog-photo-section">
             <img
               className="add-dog-photo"
@@ -173,7 +170,6 @@ const AddDogPage = () => {
             </label>
           </div>
 
-          {/* Правая колонка — поля */}
           <div className="add-dog-fields">
             <div className="add-dog-field">
                 <label className="add-dog-label" htmlFor="dogName">Кличка</label>

@@ -105,3 +105,75 @@
   font-family: 'Balsamiq Sans', sans-serif;
   font-size: 14px;
 }
+
+
+@media (max-width: 1200px) {
+  .winners-carousel-arrow {
+    padding: 20px;
+    margin: 50px 40px 0;
+  }
+
+  .winners-carousel-cards {
+    gap: 25px;
+  }
+}
+
+@media (max-width: 768px) {
+  .winners-carousel {
+    flex-direction: column;
+    margin-top: 0;
+  }
+
+  .winners-carousel-arrow {
+    padding: 10px;
+    margin: 0;
+  }
+
+  .winners-carousel-arrow--left {
+    margin-right: 0;
+  }
+
+  .winners-carousel-arrow--right {
+    margin-left: 0;
+  }
+
+  .winners-carousel-cards {
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .winners-carousel-card {
+    width: 180px;
+  }
+
+  .winners-carousel-photo {
+    height: 140px;
+  }
+
+  .winners-carousel-breed {
+    font-size: 22px;
+  }
+
+  .winners-carousel-medal {
+    font-size: 20px;
+  }
+}
+
+@media (max-width: 480px) {
+  .winners-carousel-card {
+    width: 160px;
+  }
+
+  .winners-carousel-photo {
+    height: 120px;
+  }
+
+  .winners-carousel-breed {
+    font-size: 20px;
+  }
+
+  .winners-carousel-dog-name {
+    font-size: 17px;
+  }
+}

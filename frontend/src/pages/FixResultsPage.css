@@ -1,7 +1,3 @@
-/* ═══════════════════════════════════════════
-   СТРАНИЦА ФИКСАЦИИ РЕЗУЛЬТАТОВ
-   ═══════════════════════════════════════════ */
-
 .fix-results-page {
   background-color: #fae5bc;
   display: flex;
@@ -20,7 +16,6 @@
   margin-top: 100px;
 }
 
-/* ── Герой ── */
 .fix-results-hero {
   background-color: #fdf7da;
   border-radius: 43px;
@@ -51,7 +46,6 @@
 .fix-results-hero-paws--left { left: 31px; }
 .fix-results-hero-paws--right { right: 31px; }
 
-/* ── Название выставки ── */
 .fix-results-exhibition-name {
   color: #a36b3d;
   font-family: 'Balsamiq Sans', sans-serif;
@@ -65,7 +59,6 @@
   font-weight: 700;
 }
 
-/* ── Секции по породам ── */
 .fix-results-breeds {
   display: flex;
   flex-direction: column;
@@ -86,7 +79,6 @@
   margin: 0 0 20px;
 }
 
-/* ── Сетка карточек собак ── */
 .fix-results-dogs-grid {
   display: flex;
   flex-wrap: wrap;
@@ -129,7 +121,6 @@
   font-size: 14px;
 }
 
-/* ── Кастомный селект места ── */
 .fix-results-place-wrapper {
   position: relative;
   width: 100%;
@@ -200,14 +191,12 @@
   font-weight: 700;
 }
 
-/* ── Пустое состояние ── */
 .fix-results-empty {
   color: #7f8c8d;
   font-family: 'Balsamiq Sans', sans-serif;
   font-size: 18px;
 }
 
-/* ── Ошибка / Успех ── */
 .fix-results-error {
   color: #c0392b;
   font-family: 'Balsamiq Sans', sans-serif;
@@ -224,7 +213,6 @@
   text-align: center;
 }
 
-/* ── Кнопки ── */
 .fix-results-buttons {
   display: flex;
   gap: 7px;
@@ -262,3 +250,96 @@
 }
 
 .fix-results-cancel:hover { transform: translateY(-2px); }
+
+
+/* ═══════════════════════════════════════════
+   АДАПТИВНОСТЬ
+   ═══════════════════════════════════════════ */
+
+@media (max-width: 1200px) {
+  .fix-results-page {
+    padding: 20px 40px 40px;
+    gap: 24px;
+  }
+
+  .fix-results-hero {
+    padding: 80px 60px;
+  }
+
+  .fix-results-hero-title {
+    font-size: 36px;
+  }
+
+  .fix-results-hero-paws {
+    display: none;
+  }
+
+  .fix-results-breed-section {
+    padding: 25px 30px;
+  }
+}
+
+@media (max-width: 768px) {
+  .fix-results-page {
+    padding: 15px 20px 30px;
+    gap: 20px;
+  }
+
+  .fix-results-hero {
+    padding: 60px 30px;
+    border-radius: 30px;
+  }
+
+  .fix-results-hero-title {
+    font-size: 28px;
+  }
+
+  .fix-results-breed-section {
+    padding: 20px;
+    border-radius: 30px;
+  }
+
+  .fix-results-breed-title {
+    font-size: 20px;
+  }
+
+  .fix-results-dog-card {
+    width: 160px;
+  }
+}
+
+@media (max-width: 480px) {
+  .fix-results-hero {
+    padding: 40px 20px;
+  }
+
+  .fix-results-hero-title {
+    font-size: 22px;
+  }
+
+  .fix-results-breed-section {
+    padding: 16px;
+    border-radius: 20px;
+  }
+
+  .fix-results-exhibition-name {
+    font-size: 18px;
+  }
+
+  .fix-results-dogs-grid {
+    justify-content: center;
+  }
+
+  .fix-results-dog-card {
+    width: 140px;
+  }
+
+  .fix-results-buttons {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .fix-results-cancel {
+    margin-right: 0;
+  }
+}

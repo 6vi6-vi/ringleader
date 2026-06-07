@@ -1,7 +1,3 @@
-/* ═══════════════════════════════════════════
-   СТРАНИЦА СОЗДАНИЯ ВЫСТАВКИ
-   ═══════════════════════════════════════════ */
-
 .create-exhibition-page {
   background-color: #fae5bc;
   display: flex;
@@ -12,7 +8,6 @@
   width: 100%;
 }
 
-/* ── Герой ── */
 .create-exhibition-hero {
   background-color: #fdf7da;
   border-radius: 43px;
@@ -45,7 +40,6 @@
 .create-exhibition-hero-paws--left { left: 31px; }
 .create-exhibition-hero-paws--right { right: 31px; }
 
-/* ── Форма ── */
 .create-exhibition-form {
   background-color: #fdf7da;
   border-radius: 43px;
@@ -94,7 +88,6 @@
 .create-exhibition-input:focus { outline: none; border-color: #a36b3d; }
 .create-exhibition-input[type="date"] { color-scheme: light; }
 
-/* ── Ошибка / Успех ── */
 .create-exhibition-error {
   color: #c0392b;
   font-family: 'Balsamiq Sans', sans-serif;
@@ -111,7 +104,6 @@
   text-align: center;
 }
 
-/* ── Кнопки ── */
 .create-exhibition-buttons {
   display: flex;
   gap: 24px;
@@ -154,3 +146,77 @@
 }
 
 .create-exhibition-cancel:hover { transform: translateY(-2px); }
+
+
+@media (max-width: 1200px) {
+  .create-exhibition-page {
+    padding: 20px 40px 40px;
+    gap: 24px;
+  }
+
+  .create-exhibition-hero {
+    padding: 80px 60px;
+  }
+
+  .create-exhibition-hero-title {
+    font-size: 36px;
+  }
+
+  .create-exhibition-hero-paws {
+    display: none;
+  }
+
+  .create-exhibition-form {
+    padding: 35px 50px;
+  }
+}
+
+@media (max-width: 768px) {
+  .create-exhibition-page {
+    padding: 15px 20px 30px;
+    gap: 20px;
+  }
+
+  .create-exhibition-hero {
+    padding: 60px 30px;
+    border-radius: 30px;
+  }
+
+  .create-exhibition-hero-title {
+    font-size: 28px;
+  }
+
+  .create-exhibition-form {
+    padding: 25px 30px;
+    border-radius: 30px;
+  }
+
+  .create-exhibition-label {
+    font-size: 20px;
+  }
+
+  .create-exhibition-input {
+    font-size: 18px;
+    padding: 12px 14px;
+  }
+}
+
+@media (max-width: 480px) {
+  .create-exhibition-hero {
+    padding: 40px 20px;
+  }
+
+  .create-exhibition-hero-title {
+    font-size: 22px;
+  }
+
+  .create-exhibition-form {
+    padding: 18px 16px;
+    border-radius: 20px;
+  }
+
+  .create-exhibition-buttons {
+    flex-direction: column;
+    gap: 10px;
+  }
+}

@@ -89,7 +89,6 @@ const RequestsPage = () => {
         <h1 className="requests-hero-title">ЗАЯВКИ</h1>
       </section>
 
-      {/* Вкладки админа */}
       {isAdmin && (
         <div className="requests-tabs">
           <button className={`requests-tab ${tab === 'incoming' ? 'requests-tab--active' : ''}`} onClick={() => setTab('incoming')}>
@@ -101,7 +100,6 @@ const RequestsPage = () => {
         </div>
       )}
 
-      {/* Фильтры пользователя */}
       {!isAdmin && (
         <div className="requests-tabs">
           <button className={`requests-tab ${userFilter === '' ? 'requests-tab--active' : ''}`} onClick={() => setUserFilter('')}>
@@ -119,7 +117,6 @@ const RequestsPage = () => {
         </div>
       )}
 
-      {/* Входящие (админ) */}
       {tab === 'incoming' && isAdmin && (
         <div className="requests-grid">
           {allRequests.filter((r) => r.status === 'Pending').length > 0 ? (
@@ -161,7 +158,6 @@ const RequestsPage = () => {
         </div>
       )}
 
-      {/* Обработанные (админ) */}
       {tab === 'processed' && isAdmin && (
         <div className="requests-grid">
           {allRequests.filter((r) => r.status !== 'Pending').length > 0 ? (
@@ -205,7 +201,6 @@ const RequestsPage = () => {
         </div>
       )}
 
-      {/* Мои заявки (пользователь) */}
       {!isAdmin && (
         <div className="requests-grid">
           {displayedMy.length > 0 ? (

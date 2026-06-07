@@ -1,7 +1,3 @@
-/* ═══════════════════════════════════════════
-   СТРАНИЦА СОЗДАНИЯ КЛУБА
-   ═══════════════════════════════════════════ */
-
 .create-club-page {
   background-color: #fae5bc;
   display: flex;
@@ -12,7 +8,6 @@
   width: 100%;
 }
 
-/* ── Герой ── */
 .create-club-hero {
   background-color: #fdf7da;
   border-radius: 43px;
@@ -45,7 +40,6 @@
 .create-club-hero-paws--left { left: 31px; }
 .create-club-hero-paws--right { right: 31px; }
 
-/* ── Форма ── */
 .create-club-form {
   background-color: #fdf7da;
   border-radius: 43px;
@@ -59,7 +53,6 @@
   gap: 60px;
 }
 
-/* ── Левая колонка: логотип ── */
 .create-club-photo-section {
   align-items: center;
   display: flex;
@@ -97,7 +90,6 @@
   transform: translateY(-2px);
 }
 
-/* ── Правая колонка: поля ── */
 .create-club-fields {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -145,7 +137,6 @@
   resize: vertical;
 }
 
-/* ── Ошибка / Успех ── */
 .create-club-error {
   color: #c0392b;
   font-family: 'Balsamiq Sans', sans-serif;
@@ -162,7 +153,6 @@
   text-align: center;
 }
 
-/* ── Кнопки ── */
 .create-club-buttons {
   display: flex;
   gap: 20px;
@@ -205,3 +195,104 @@
 }
 
 .create-club-cancel:hover { transform: translateY(-2px); }
+
+
+@media (max-width: 1200px) {
+  .create-club-page {
+    padding: 20px 40px 40px;
+    gap: 24px;
+  }
+
+  .create-club-hero {
+    padding: 80px 60px;
+  }
+
+  .create-club-hero-title {
+    font-size: 36px;
+  }
+
+  .create-club-hero-paws {
+    display: none;
+  }
+
+  .create-club-form {
+    padding: 30px 35px;
+  }
+
+  .create-club-columns {
+    gap: 40px;
+  }
+}
+
+@media (max-width: 768px) {
+  .create-club-page {
+    padding: 15px 20px 30px;
+    gap: 20px;
+  }
+
+  .create-club-hero {
+    padding: 60px 30px;
+    border-radius: 30px;
+  }
+
+  .create-club-hero-title {
+    font-size: 28px;
+  }
+
+  .create-club-form {
+    padding: 20px 25px;
+    border-radius: 30px;
+  }
+
+  .create-club-columns {
+    flex-direction: column;
+    align-items: center;
+    gap: 25px;
+  }
+
+  .create-club-photo-section {
+    width: auto;
+  }
+
+  .create-club-photo {
+    height: 160px;
+    width: 160px;
+  }
+
+  .create-club-fields {
+    grid-template-columns: 1fr;
+    width: 100%;
+  }
+
+  .create-club-field--full {
+    grid-column: auto;
+  }
+}
+
+@media (max-width: 480px) {
+  .create-club-hero {
+    padding: 40px 20px;
+  }
+
+  .create-club-hero-title {
+    font-size: 22px;
+  }
+
+  .create-club-form {
+    padding: 16px;
+    border-radius: 20px;
+  }
+
+  .create-club-label {
+    font-size: 18px;
+  }
+
+  .create-club-input {
+    font-size: 16px;
+  }
+
+  .create-club-buttons {
+    flex-direction: column;
+    gap: 10px;
+  }
+}

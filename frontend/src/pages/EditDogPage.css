@@ -1,7 +1,3 @@
-/* ═══════════════════════════════════════════
-   СТРАНИЦА РЕДАКТИРОВАНИЯ СОБАКИ
-   ═══════════════════════════════════════════ */
-
 .edit-dog-page {
   background-color: #fae5bc;
   display: flex;
@@ -20,7 +16,6 @@
   margin-top: 100px;
 }
 
-/* ── Герой ── */
 .edit-dog-hero {
   background-color: #fdf7da;
   border-radius: 43px;
@@ -53,7 +48,6 @@
 .edit-dog-hero-paws--left { left: 31px; }
 .edit-dog-hero-paws--right { right: 31px; }
 
-/* ── Форма ── */
 .edit-dog-form {
   background-color: #fdf7da;
   border-radius: 43px;
@@ -66,7 +60,6 @@
   gap: 60px;
 }
 
-/* ── Фото ── */
 .edit-dog-photo-section {
   align-items: center;
   display: flex;
@@ -101,7 +94,6 @@
 
 .edit-dog-photo-button:hover { transform: translateY(-2px); }
 
-/* ── Поля ── */
 .edit-dog-fields {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -140,7 +132,6 @@
 .edit-dog-input:focus { outline: none; border-color: #a36b3d; }
 .edit-dog-input[type="date"] { color-scheme: light; }
 
-/* ── Селект ── */
 .edit-dog-select {
   align-items: center;
   background-color: #fdf7da;
@@ -231,11 +222,9 @@
 .edit-dog-dropdown-option--empty { color: #bbc099; cursor: default; font-style: italic; }
 .edit-dog-dropdown-option--empty:hover { background-color: transparent; }
 
-/* ── Ошибка / Успех ── */
 .edit-dog-error { color: #c0392b; font-family: 'Balsamiq Sans', sans-serif; font-size: 16px; margin: 20px 0 0; text-align: center; }
 .edit-dog-success { color: #27ae60; font-family: 'Balsamiq Sans', sans-serif; font-size: 16px; margin: 20px 0 0; text-align: center; }
 
-/* ── Кнопки ── */
 .edit-dog-buttons {
   display: flex;
   gap: 20px;
@@ -278,3 +267,100 @@
 }
 
 .edit-dog-cancel:hover { transform: translateY(-2px); }
+
+
+@media (max-width: 1200px) {
+  .edit-dog-page {
+    padding: 20px 40px 40px;
+    gap: 24px;
+  }
+
+  .edit-dog-hero {
+    padding: 80px 60px;
+  }
+
+  .edit-dog-hero-title {
+    font-size: 36px;
+  }
+
+  .edit-dog-hero-paws {
+    display: none;
+  }
+
+  .edit-dog-form {
+    padding: 30px 35px;
+  }
+
+  .edit-dog-columns {
+    gap: 40px;
+  }
+}
+
+@media (max-width: 768px) {
+  .edit-dog-page {
+    padding: 15px 20px 30px;
+    gap: 20px;
+  }
+
+  .edit-dog-hero {
+    padding: 60px 30px;
+    border-radius: 30px;
+  }
+
+  .edit-dog-hero-title {
+    font-size: 28px;
+  }
+
+  .edit-dog-form {
+    padding: 20px 25px;
+    border-radius: 30px;
+  }
+
+  .edit-dog-columns {
+    flex-direction: column;
+    align-items: center;
+    gap: 25px;
+  }
+
+  .edit-dog-photo-section {
+    width: auto;
+  }
+
+  .edit-dog-photo {
+    height: 160px;
+    width: 160px;
+  }
+
+  .edit-dog-fields {
+    grid-template-columns: 1fr;
+    width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .edit-dog-hero {
+    padding: 40px 20px;
+  }
+
+  .edit-dog-hero-title {
+    font-size: 22px;
+  }
+
+  .edit-dog-form {
+    padding: 16px;
+    border-radius: 20px;
+  }
+
+  .edit-dog-label {
+    font-size: 18px;
+  }
+
+  .edit-dog-input {
+    font-size: 16px;
+  }
+
+  .edit-dog-buttons {
+    flex-direction: column;
+    gap: 10px;
+  }
+}

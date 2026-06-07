@@ -1,7 +1,3 @@
-/* ═══════════════════════════════════════════
-   СТРАНИЦА ДОБАВЛЕНИЯ СОБАКИ
-   ═══════════════════════════════════════════ */
-
 .add-dog-page {
   background-color: #fae5bc;
   display: flex;
@@ -12,7 +8,6 @@
   width: 100%;
 }
 
-/* ── Герой ── */
 .add-dog-hero {
   background-color: #fdf7da;
   border-radius: 43px;
@@ -45,7 +40,6 @@
 .add-dog-hero-paws--left { left: 31px; }
 .add-dog-hero-paws--right { right: 31px; }
 
-/* ── Форма ── */
 .add-dog-form {
   background-color: #fdf7da;
   border-radius: 43px;
@@ -58,7 +52,6 @@
   gap: 60px;
 }
 
-/* ── Левая колонка: фото ── */
 .add-dog-photo-section {
   align-items: center;
   display: flex;
@@ -96,7 +89,6 @@
   transform: translateY(-2px);
 }
 
-/* ── Правая колонка: поля ── */
 .add-dog-fields {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -137,7 +129,6 @@
 .add-dog-input:focus { outline: none; border-color: #a36b3d; }
 .add-dog-input[type="date"] { color-scheme: light; }
 
-/* ── Селект ── */
 .add-dog-select {
   align-items: center;
   background-color: #fdf7da;
@@ -228,11 +219,9 @@
 .add-dog-dropdown-option--empty { color: #bbc099; cursor: default; font-style: italic; }
 .add-dog-dropdown-option--empty:hover { background-color: transparent; }
 
-/* ── Ошибка / Успех ── */
 .add-dog-error { color: #c0392b; font-family: 'Balsamiq Sans', sans-serif; font-size: 16px; margin: 20px 0 0; text-align: center; }
 .add-dog-success { color: #27ae60; font-family: 'Balsamiq Sans', sans-serif; font-size: 16px; margin: 20px 0 0; text-align: center; }
 
-/* ── Кнопки ── */
 .add-dog-buttons {
   display: flex;
   gap: 20px;
@@ -275,3 +264,101 @@
 }
 
 .add-dog-cancel:hover { transform: translateY(-2px); }
+
+
+@media (max-width: 1200px) {
+  .add-dog-page {
+    padding: 20px 40px 40px;
+    gap: 24px;
+  }
+
+  .add-dog-hero {
+    padding: 80px 60px;
+  }
+
+  .add-dog-hero-title {
+    font-size: 36px;
+  }
+
+  .add-dog-hero-paws {
+    display: none;
+  }
+
+  .add-dog-form {
+    padding: 30px 35px;
+  }
+
+  .add-dog-columns {
+    gap: 40px;
+  }
+}
+
+@media (max-width: 768px) {
+  .add-dog-page {
+    padding: 15px 20px 30px;
+    gap: 20px;
+  }
+
+  .add-dog-hero {
+    padding: 60px 30px;
+    border-radius: 30px;
+  }
+
+  .add-dog-hero-title {
+    font-size: 28px;
+  }
+
+  .add-dog-form {
+    padding: 20px 25px;
+    border-radius: 30px;
+  }
+
+  .add-dog-columns {
+    flex-direction: column;
+    align-items: center;
+    gap: 25px;
+  }
+
+  .add-dog-photo-section {
+    width: auto;
+  }
+
+  .add-dog-photo {
+    height: 160px;
+    width: 160px;
+    margin-top: 0;
+  }
+
+  .add-dog-fields {
+    grid-template-columns: 1fr;
+    width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .add-dog-hero {
+    padding: 40px 20px;
+  }
+
+  .add-dog-hero-title {
+    font-size: 22px;
+  }
+
+  .add-dog-form {
+    padding: 16px;
+    border-radius: 20px;
+  }
+
+  .add-dog-label {
+    font-size: 18px;
+  }
+
+  .add-dog-input {
+    font-size: 16px;
+  }
+
+  .add-dog-buttons {
+    flex-direction: column;
+    gap: 10px;
+  }
+}
